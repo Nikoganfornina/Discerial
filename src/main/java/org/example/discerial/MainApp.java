@@ -19,6 +19,7 @@ public class MainApp extends Application {
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
         primaryStage.show();
+        System.out.println("Tu puta madre");
 
     }
 
