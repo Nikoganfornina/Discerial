@@ -1,18 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="fondoInicioSesion" xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="org.example.discerial.Controladores.InicioSesionController"
-            prefHeight="1000.0" prefWidth="1500.0" stylesheets="@../../../Styles.css" >
+<AnchorPane id="fondoInicioSesion" prefHeight="1000.0" prefWidth="1500.0" stylesheets="@../../../Styles.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.discerial.Controladores.InicioSesionController">
 
 
-    <Label id="fotoInicioSesion" layoutX="1299.0" layoutY="11.0" prefHeight="149.0" prefWidth="149.0" />
+    <Label id="fotoInicioSesion" layoutX="20.0" layoutY="34.0" prefHeight="933.0" prefWidth="606.0" />
 
+
+    <Label id="TituloStyle" layoutX="916.0" layoutY="130.0" prefHeight="109.0" prefWidth="330.0" text="Inicio Sesión" />
+
+    <Label id="SubtituloStyle" layoutX="908.0" layoutY="344.0" prefHeight="54.0" prefWidth="346.0" text="Escribe tu correo electrónico" />
+    <TextField id="textFieldSesion" fx:id="SesionCorreo" layoutX="895.0" layoutY="398.0" prefHeight="61.0" prefWidth="371.0" promptText="Disccerial@ejemplo.com" />
+
+    <Label id="SubtituloStyle" layoutX="908.0" layoutY="473.0" prefHeight="54.0" prefWidth="346.0" text="Escribe tu contraseña" />
+
+    <TextField id="textFieldSesion" fx:id="SesionContrasena" layoutX="895.0" layoutY="533.0" prefHeight="61.0" prefWidth="371.0" promptText="******" />
+
+    <Button id="botonPersonalizado" layoutX="926.0" layoutY="626.0" prefHeight="62.0" prefWidth="310.0" text="Ingresar" />
+
+
+    <Label id="SubtituloStyleRegistro" layoutX="874.0" layoutY="224.0" onMouseClicked="#handleClick" prefHeight="54.0" prefWidth="414.0" text="No tienes una cuenta? Registrate aqui" />
 
 </AnchorPane>

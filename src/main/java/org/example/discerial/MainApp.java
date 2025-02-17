@@ -31,7 +31,6 @@ public class MainApp extends Application {
 
     public static void main(String[] args) {
         launch();
-
         // Font.getFamilies().forEach(System.out::println);
     }
 
