@@ -4,49 +4,50 @@
 }
 
 #fondoPrincipal {
-    -fx-background-image: url("Images/Discerial.png"); /* Ruta relativa dentro de /resources/ */
+    -fx-background-image: url("Images/Discerial.png");
     -fx-background-size: cover;
     -fx-background-position: center;
 }
 
 #botonPersonalizado {
-    -fx-background-color: #1E5631;  /* Verde oscuro */
-    -fx-text-fill: white;           /* Texto blanco */
+    -fx-background-color: #1E5631;
+    -fx-text-fill: white;
     -fx-font-size: 14px;
     -fx-padding: 12px 25px;
-    -fx-background-radius: 50px;    /* Más redondo */
+    -fx-background-radius: 50px;
     -fx-border-radius: 50px;
     -fx-border-color: transparent;
 }
 
 #botonPersonalizado:hover {
-    -fx-background-color: #2E8540;  /* Un poco más claro al pasar el ratón */
+    -fx-background-color: #2E8540;
 }
 
 #botonPersonalizado:pressed {
-    -fx-background-color: #3AA655;  /* Verde más claro al presionar */
+    -fx-background-color: #3AA655;
 }
-
-}
-
 #imagenPerfil {
     -fx-background-image: url("Images/Logo.png");
     -fx-background-size: cover;
     -fx-shape: "M 10,0 Q 0,0 0,10 L 0,90 Q 0,100 10,100 L 90,100 Q 100,100 100,90 L 100,10 Q 100,0 90,0 Z";
 }
 #imagenAdyto {
-    -fx-background-image: url("Images/adytologo.png");
-        -fx-background-size: 50%; /* Ajusta la imagen al 50% del tamaño del contenedor */
-            -fx-background-position: center; /* Centra la imagen en el contenedor */
-        -fx-background-repeat: no-repeat; /* No repite la imagen */
-
+        -fx-background-image: url("Images/adytologo.png");
+        -fx-background-size: 60%;
+        -fx-background-position: center;
+        -fx-background-repeat: no-repeat;
 }
-
-
 #ngbernet {
     -fx-font-size: 22px;
     -fx-text-fill: #505050; /* Color gris */
 }
 #adytotext {
     -fx-font-size: 30px;
+}
+
+#fondoInicioSesion {
+    -fx-background-image: url("Images/FondoPaginas.png");
+     -fx-background-size: cover;
+        -fx-background-position: center;
+
 }

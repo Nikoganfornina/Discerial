@@ -8,4 +8,6 @@ module org.example.discerial {
 
     opens org.example.discerial to javafx.fxml;
     exports org.example.discerial;
+    exports org.example.discerial.Controladores;
+    opens org.example.discerial.Controladores to javafx.fxml;
 }

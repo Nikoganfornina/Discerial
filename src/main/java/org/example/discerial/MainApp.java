@@ -15,11 +15,11 @@ public class MainApp extends Application {
         primaryStage = Stage;
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/example/discerial/MainApp_View.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
-        primaryStage.setTitle("Biblioteca Niko");
+        primaryStage.setTitle("Discerial");
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
         primaryStage.show();
-        System.out.println("Tu puta madre");
+
 
     }
 
@@ -31,6 +31,10 @@ public class MainApp extends Application {
 
     public static void main(String[] args) {
         launch();
+
         Font.getFamilies().forEach(System.out::println);
     }
+
+
+
 }
