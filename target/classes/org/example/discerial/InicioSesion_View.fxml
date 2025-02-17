@@ -12,5 +12,7 @@
             prefHeight="1000.0" prefWidth="1500.0" stylesheets="@../../../Styles.css" >
 
 
+    <Label id="fotoInicioSesion" layoutX="1299.0" layoutY="11.0" prefHeight="149.0" prefWidth="149.0" />
+
 
 </AnchorPane>
