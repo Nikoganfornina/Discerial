@@ -8,9 +8,34 @@
     <Button id="botonPersonalizado" layoutX="774.0" layoutY="722.0" prefHeight="62.0" prefWidth="310.0" style="-fx-background-color: #1E5631; -fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold; -fx-padding: 12px 25px; -fx-background-radius: 50px; -fx-border-radius: 50px; -fx-border-color: transparent;" text="Buscar" />
 
     <Pane id="menuverde" prefHeight="1000.0" prefWidth="400.0">
-      <children>
-      
-          <Pane id="discerialName" layoutX="41.0" layoutY="52.0" prefHeight="108.0" prefWidth="310.0" />
-      </children></Pane>
+    <children>
+
+        <Pane id="discerialName" layoutX="41.0" layoutY="52.0" prefHeight="108.0" prefWidth="310.0" />
+
+        <VBox alignment="CENTER_LEFT" layoutX="65.0" layoutY="218.0" prefHeight="261.0" prefWidth="310.0" spacing="20">
+            <HBox spacing="10">
+                <Pane id="TabulaIcon" prefHeight="40.0" prefWidth="40.0" />
+                <Label id="MenuSelectorLabel" text="Tabula" />
+            </HBox>
+
+            <HBox spacing="10">
+                <Pane id="NuntiatioIcon" prefHeight="40.0" prefWidth="40.0" />
+                <Label id="MenuSelectorLabel" text="Nuntiatio" />
+            </HBox>
+
+            <HBox spacing="10">
+                <Pane  id="AdaptationesIcon" prefHeight="40.0" prefWidth="40.0" />
+                <Label id="MenuSelectorLabel" text="Adaptationes" />
+            </HBox>
+
+            <HBox spacing="10">
+                <Pane id="HomoIcon" prefHeight="40.0" prefWidth="40.0" />
+                <Label id="MenuSelectorLabel" text="Homo" />
+            </HBox>
+        </VBox>
+
+
+    </children>
+    </Pane>
 
 </AnchorPane>
