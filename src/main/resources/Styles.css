@@ -124,7 +124,7 @@
     -fx-repeat: no-repeat;
 }
 #NuntiatioIcon {
-    -fx-background-image: url("Images/MenuIcons/NuntiatioIcon.png");
+    -fx-background-image: url("Images/MenuIcons/NuntiatoIcon.png");
     -fx-background-size: cover;
     -fx-background-repeat: no-repeat;
     -fx-repeat: no-repeat;
@@ -137,6 +137,18 @@
 }
 #HomoIcon {
     -fx-background-image: url("Images/MenuIcons/HomoIcon.png");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-repeat: no-repeat;
+}
+AuxiliumIcon {
+    -fx-background-image: url("Images/MenuIcons/AuxiliumIcon.png");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-repeat: no-repeat;
+}
+ExireIcon {
+    -fx-background-image: url("Images/MenuIcons/ExireIcon.png");
     -fx-background-size: cover;
     -fx-background-repeat: no-repeat;
     -fx-repeat: no-repeat;

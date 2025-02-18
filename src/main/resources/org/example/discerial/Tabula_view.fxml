@@ -12,7 +12,7 @@
 
         <Pane id="discerialName" layoutX="41.0" layoutY="52.0" prefHeight="108.0" prefWidth="310.0" />
 
-        <VBox alignment="CENTER_LEFT" layoutX="65.0" layoutY="218.0" prefHeight="261.0" prefWidth="310.0" spacing="20">
+        <VBox alignment="CENTER_LEFT" layoutX="54.0" layoutY="254.0" prefHeight="261.0" prefWidth="310.0" spacing="40">
             <HBox spacing="10">
                 <Pane id="TabulaIcon" prefHeight="40.0" prefWidth="40.0" />
                 <Label id="MenuSelectorLabel" text="Tabula" />
@@ -24,7 +24,7 @@
             </HBox>
 
             <HBox spacing="10">
-                <Pane  id="AdaptationesIcon" prefHeight="40.0" prefWidth="40.0" />
+                <Pane id="AdaptationesIcon" prefHeight="40.0" prefWidth="40.0" />
                 <Label id="MenuSelectorLabel" text="Adaptationes" />
             </HBox>
 
@@ -34,6 +34,17 @@
             </HBox>
         </VBox>
 
+        <VBox alignment="CENTER_LEFT" layoutX="54.0" layoutY="767.0" prefHeight="165.0" prefWidth="310.0" spacing="40">
+            <HBox spacing="10">
+                <Pane id="ExireIcon" prefHeight="40.0" prefWidth="40.0" />
+                <Label id="MenuSelectorLabel" text="Exire" />
+            </HBox>
+
+            <HBox spacing="10">
+                <Pane id="AuxiliumIcon" prefHeight="40.0" prefWidth="40.0" />
+                <Label id="MenuSelectorLabel" text="Auxilium" />
+            </HBox>
+        </VBox>
 
     </children>
     </Pane>
