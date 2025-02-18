@@ -1,31 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
 <AnchorPane prefHeight="1000.0" prefWidth="1100.0" stylesheets="@../../../../Styles.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.discerial.Controladores.HomoPanelController">
 
     <Label fx:id="homoText" layoutX="160.0" layoutY="80.0" style="-fx-font-size: 50px; -fx-text-fill: #2E8540;" text="HOMO" />
 
+    <ComboBox fx:id="comboBoxImagenes" layoutX="87.0" layoutY="618.0" prefWidth="200.0" />
+
+    <ImageView fx:id="imagenSeleccionada" fitHeight="150.0" fitWidth="150.0" layoutX="112.0" layoutY="309.0" preserveRatio="true" />
 
 
-        <Pane id="ErrorIcon" layoutX="97.0" layoutY="236.0" prefHeight="300.0" prefWidth="300.0" />
+    <VBox alignment="CENTER_LEFT" layoutX="474.0" layoutY="236.0" prefHeight="300.0" prefWidth="600.0" spacing="15">
+        <HBox alignment="CENTER_LEFT" spacing="20">
+            <Label id="SubstitulosStyle" prefWidth="200.0" style="-fx-font-size: 18px;" text="NickName:" />
+            <TextField id="textFieldSesion" prefWidth="250.0" text="Usuario_Register1978" />
+        </HBox>
+        <HBox alignment="CENTER_LEFT" spacing="20">
+            <Label id="SubstitulosStyle" prefWidth="200.0" style="-fx-font-size: 18px;" text="Correo:" />
+            <TextField id="textFieldSesion" prefWidth="250.0" text="Usuario@registrado.com" />
+        </HBox>
+        <HBox alignment="CENTER_LEFT" spacing="20">
+            <Label id="SubstitulosStyle" prefWidth="200.0" style="-fx-font-size: 18px;" text="Rango:" />
+            <TextField id="textFieldSesion" prefWidth="250.0" text="Homo" />
+        </HBox>
+        <HBox alignment="CENTER_LEFT" spacing="20">
+            <Label id="SubstitulosStyle" prefWidth="200.0" style="-fx-font-size: 18px;" text="Preguntas Acertadas:" />
+            <TextField id="textFieldSesion" prefWidth="250.0" text="230" />
+        </HBox>
+        <HBox alignment="CENTER_LEFT" spacing="20">
+            <Label id="SubstitulosStyle" prefWidth="200.0" style="-fx-font-size: 18px;" text="Preguntas Erróneas:" />
+            <TextField id="textFieldSesion" prefWidth="250.0" text="30" />
+        </HBox>
+        <HBox alignment="CENTER_LEFT" spacing="20">
+            <Label id="SubstitulosStyle" prefWidth="200.0" style="-fx-font-size: 18px;" text="Categoría Favorita:" />
+            <TextField id="textFieldSesion" prefWidth="250.0" text="Historia" />
+        </HBox>
+        <HBox alignment="CENTER_LEFT" spacing="20">
+            <Label id="SubstitulosStyle" prefWidth="200.0" style="-fx-font-size: 18px;" text="Horas en juego:" />
+            <TextField id="textFieldSesion" prefWidth="250.0" text="10" />
+        </HBox>
+    </VBox>
 
 
-        <VBox alignment="CENTER_LEFT" layoutX="474.0" layoutY="236.0" prefHeight="300.0" prefWidth="475.0" spacing="10">
-            <Label style="-fx-font-size: 30px; -fx-font-weight: bold;" text="NickName: Usuario_Register1978" />
-            <Label style="-fx-font-size: 18px;" text="Correo: Usuario@registrado.com" />
-            <Label style="-fx-font-size: 18px;" text="Rango: Homo" />
-            <Label style="-fx-font-size: 18px;" text="Preguntas Acertadas: 230" />
-            <Label style="-fx-font-size: 18px;" text="Preguntas Erroneas: 30" />
-            <Label style="-fx-font-size: 18px;" text="Categoría Favorita: Historia" />
-            <Label style="-fx-font-size: 18px;" text="Horas en juego: 10" />
-        </VBox>
 
-
-        <Button id="botonPersonalizado" layoutX="543.0" layoutY="553.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="220.0" style="-fx-background-color: #4c5b3d; -fx-text-fill: white;" text="Editar">
+        <Button id="botonPersonalizado" layoutX="569.0" layoutY="688.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="168.0" style="-fx-background-color: #4c5b3d; -fx-text-fill: white;" text="Editar">
             <graphic>
-                <Pane id="PlumaIcon" prefHeight="30.0" prefWidth="30.0" />
+                <Pane id="PlumaIcon" prefHeight="50.0" prefWidth="50.0" />
             </graphic>
         </Button>
 

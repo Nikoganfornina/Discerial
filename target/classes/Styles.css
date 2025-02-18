@@ -50,7 +50,7 @@
 #fondoInicioSesion {
     -fx-background-image: url("Images/FondoPaginas.png");
      -fx-background-size: cover;
-        -fx-background-position: center;
+      -fx-background-position: center;
 
 }
 
@@ -163,8 +163,8 @@
     -fx-repeat: no-repeat;
 }
 
-#ErrorIcon {
-    -fx-background-image: url("Images/PerfilIcons/ErrorIcon.png");
+#PlumaIcon {
+    -fx-background-image: url("Images/MenuIcons/PlumaIcon.png");
     -fx-background-size: cover;
     -fx-background-repeat: no-repeat;
     -fx-repeat: no-repeat;

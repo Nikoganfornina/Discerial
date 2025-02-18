@@ -163,12 +163,6 @@
     -fx-repeat: no-repeat;
 }
 
-#ErrorIcon {
-    -fx-background-image: url("Images/MenuIcons/ExireIcon.png"");
-    -fx-background-size: cover;
-    -fx-repeat: no-repeat;
-}
-
 #PlumaIcon {
     -fx-background-image: url("Images/MenuIcons/PlumaIcon.png");
     -fx-background-size: cover;

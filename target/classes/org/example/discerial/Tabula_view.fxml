@@ -28,7 +28,7 @@
 
             <HBox spacing="10">
                 <Pane id="HomoIcon" prefHeight="40.0" prefWidth="40.0" />
-                <Label id="MenuSelectorLabel" text="Homo" />
+                <Label id="MenuSelectorLabel"  onMouseClicked="#cargarFXMLPequeno" text="Homo" />
             </HBox>
         </VBox>
 
@@ -46,5 +46,8 @@
 
     </children>
     </Pane>
+
+    <Pane fx:id="contenedorFXML" layoutX="400.0"  prefWidth="1100.0" prefHeight="1000.0" />
+
 
 </AnchorPane>
