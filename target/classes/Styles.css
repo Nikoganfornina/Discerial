@@ -100,3 +100,25 @@
     -fx-background-size: cover;
      -fx-background-position: center;
 }
+/* Estilo del Label principal */
+#main-label {
+    -fx-background-color: #004d00; /* Verde oscuro */
+    -fx-min-width: 500px;
+    -fx-min-height: 1000px;
+    -fx-padding: 20px;
+    -fx-alignment: center;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+}
+
+/* VBox interno */
+#vbox-container {
+    -fx-alignment: center;
+}
+
+/* Estilos para los textos internos */
+#text-label {
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}

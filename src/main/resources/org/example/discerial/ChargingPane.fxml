@@ -5,6 +5,6 @@
 <?import javafx.scene.image.Image?>
 <Pane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:id="loadingPane" prefHeight="1000.0" prefWidth="1500.0">
     <ImageView fx:id="loadingGif" fitHeight="1000" fitWidth="1500" preserveRatio="true">
-        <Image url="@/Images/CArgando ....gif" />
+        <Image url="@/Images/LoadingFrame.gif" />
     </ImageView>
 </Pane>

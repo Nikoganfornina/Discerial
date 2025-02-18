@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="fondoInicioSesion" prefHeight="1000.0" prefWidth="1500.0" stylesheets="@../../../Styles.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.discerial.Controladores.TabulaController" >
+
+    <Label id="mainLabel" text="" xmlns="http://javafx.com/javafx/8.0.171"
+           xmlns:fx="http://javafx.com/fxml/1"
+           styleClass="main-label">
+
+        <VBox id="vboxContainer" spacing="10" styleClass="vbox-container">
+            <children>
+                <Label id="text-label" text="Texto 1" styleClass="text-label"/>
+                <Label id="text-label"  text="Texto 2" styleClass="text-label"/>
+                <Label id="text-label"  text="Texto 3" styleClass="text-label"/>
+                <Label id="text-label"  text="Texto 4" styleClass="text-label"/>
+                <Label id="text-label"  text="Texto 5" styleClass="text-label"/>
+                <Label id="text-label"  text="Texto 6" styleClass="text-label"/>
+            </children>
+        </VBox>
+
+    </Label>
+
+
+</AnchorPane>
