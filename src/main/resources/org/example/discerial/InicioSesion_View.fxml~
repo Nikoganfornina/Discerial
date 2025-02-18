@@ -18,7 +18,7 @@
 
     <TextField id="textFieldSesion" fx:id="SesionContrasena" layoutX="895.0" layoutY="533.0" prefHeight="61.0" prefWidth="371.0" promptText="******" />
 
-    <Button id="botonPersonalizado" onMouseClicked="#handleClickIngresar"  fx:id="BotonIngresar" layoutX="926.0" layoutY="626.0" prefHeight="62.0" prefWidth="310.0" text="Ingresar" />
+    <Button id="botonPersonalizado" fx:id="BotonIngresar" layoutX="926.0" layoutY="626.0" prefHeight="62.0" prefWidth="310.0" text="Ingresar" />
 
 
     <Label id="SubtituloStyleRegistro" layoutX="874.0" layoutY="224.0" onMouseClicked="#handleClick" prefHeight="54.0" prefWidth="414.0" text="No tienes una cuenta? Registrate aqui" />
