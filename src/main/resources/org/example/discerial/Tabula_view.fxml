@@ -7,8 +7,10 @@
 
     <Button id="botonPersonalizado" layoutX="774.0" layoutY="722.0" prefHeight="62.0" prefWidth="310.0" style="-fx-background-color: #1E5631; -fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold; -fx-padding: 12px 25px; -fx-background-radius: 50px; -fx-border-radius: 50px; -fx-border-color: transparent;" text="Buscar" />
 
-    <Pane id="menuverde" prefHeight="1000.0" prefWidth="400.0" />
-
-    <Pane id="discerialName" layoutX="23.0" layoutY="-54.0" prefHeight="353.0" prefWidth="354.0"  />
+    <Pane id="menuverde" prefHeight="1000.0" prefWidth="400.0">
+      <children>
+      
+          <Pane id="discerialName" layoutX="41.0" layoutY="52.0" prefHeight="108.0" prefWidth="310.0" />
+      </children></Pane>
 
 </AnchorPane>
