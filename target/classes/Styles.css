@@ -110,5 +110,55 @@
     -fx-background-image: url("Images/DiscerialName.png");
     -fx-background-size: cover;
     -fx-background-repeat: no-repeat;
+    -fx-repeat: no-repeat;
 }
 
+#MenuSelectorLabel {
+    -fx-font-size: 35px;
+    -fx-text-fill: white;
+}
+#MenuSelectorLabel:hover {
+    -fx-text-fill: #A0A0A0;
+}
+
+#TabulaIcon {
+    -fx-background-image: url("Images/MenuIcons/TabulaIcon.png");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-repeat: no-repeat;
+}
+
+#NuntiatioIcon {
+    -fx-background-image: url("Images/MenuIcons/NuntiatoIcon.png");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-repeat: no-repeat;
+}
+
+#AdaptationesIcon {
+    -fx-background-image: url("Images/MenuIcons/AdaptationesIcon.png");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-repeat: no-repeat;
+}
+
+#HomoIcon {
+    -fx-background-image: url("Images/MenuIcons/HomoIcon.png");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-repeat: no-repeat;
+}
+
+#AuxiliumIcon {
+    -fx-background-image: url("Images/MenuIcons/AuxiliumIcon.png");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-repeat: no-repeat;
+}
+
+#ExireIcon {
+    -fx-background-image: url("Images/MenuIcons/ExireIcon.png");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-repeat: no-repeat;
+}
