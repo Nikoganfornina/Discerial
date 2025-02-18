@@ -162,3 +162,10 @@
     -fx-background-repeat: no-repeat;
     -fx-repeat: no-repeat;
 }
+
+#ErrorIcon {
+    -fx-background-image: url("Images/PerfilIcons/ErrorIcon.png");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-repeat: no-repeat;
+}

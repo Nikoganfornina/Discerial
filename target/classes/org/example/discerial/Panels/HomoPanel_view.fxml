@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="1000.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.discerial.Controladores.HomoPanelController">
+
+
+
+    <!-- Contenedor horizontal para la imagen y el texto -->
+    <HBox alignment="CENTER_LEFT" layoutX="160.0" layoutY="317.0" prefWidth="707.0" spacing="20">
+
+        <!-- Imagen de 300x300 -->
+        <Pane id="ErrorIcon" prefHeight="500.0" prefWidth="500.0" />
+
+        <!-- Contenedor del texto -->
+        <VBox alignment="TOP_LEFT" spacing="10">
+            <Label style="-fx-font-size: 20px; -fx-font-weight: bold;" text="NickName: Usuario_Register1978" />
+            <Label style="-fx-font-size: 18px;" text="Correo: Usuario@registrado.com" />
+            <Label style="-fx-font-size: 18px;" text="Rango: Homo" />
+            <Label style="-fx-font-size: 18px;" text="Preguntas Acertadas: 230" />
+            <Label style="-fx-font-size: 18px;" text="Preguntas Erroneas: 30" />
+            <Label style="-fx-font-size: 18px;" text="Horas en juego: 10" />
+            <Label style="-fx-font-size: 18px;" text="Categoría Favorita: Historia" />
+        </VBox>
+    </HBox>
+
+</AnchorPane>
