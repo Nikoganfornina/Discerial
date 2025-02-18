@@ -10,7 +10,7 @@
 }
 
 #botonPersonalizado {
-    -fx-background-color: #1E5631;
+    -fx-background-color: #4c5b3d;
     -fx-text-fill: white;
     -fx-font-size: 24px;
     -fx-font-weight: bold;
@@ -41,7 +41,7 @@
 }
 #ngbernet {
     -fx-font-size: 22px;
-    -fx-text-fill: #505050; /* Color gris */
+    -fx-text-fill: #505050;
 }
 #adytotext {
     -fx-font-size: 30px;
@@ -62,7 +62,7 @@
 }
 #TituloStyle {
     -fx-font-size: 50px;
-    -fx-text-fill: #505050; /* Color gris */
+    -fx-text-fill: #505050;
     -fx-alignment: center;
     }
 #SubtituloStyle {
@@ -100,25 +100,17 @@
     -fx-background-size: cover;
      -fx-background-position: center;
 }
-/* Estilo del Label principal */
-#main-label {
-    -fx-background-color: #004d00; /* Verde oscuro */
-    -fx-min-width: 500px;
-    -fx-min-height: 1000px;
-    -fx-padding: 20px;
-    -fx-alignment: center;
-    -fx-border-radius: 10px;
-    -fx-background-radius: 10px;
+
+
+#menuverde {
+    -fx-background-color: #4c5b3d;
 }
 
-/* VBox interno */
-#vbox-container {
-    -fx-alignment: center;
+#discerialName {
+    -fx-background-image: url("Images/DiscerialName.png");
+    -fx-background-size: cover;
+    -fx-background-position: center;
+    -fx-background-size: 60%;
+    -fx-background-repeat: no-repeat;
 }
 
-/* Estilos para los textos internos */
-#text-label {
-    -fx-text-fill: white;
-    -fx-font-size: 18px;
-    -fx-font-weight: bold;
-}
