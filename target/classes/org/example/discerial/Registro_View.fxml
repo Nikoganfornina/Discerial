@@ -7,26 +7,28 @@
 
     <Label id="fotoRegistro" layoutX="20.0" layoutY="34.0" prefHeight="933.0" prefWidth="606.0" />
 
+    <VBox alignment="CENTER" layoutX="898.0" layoutY="88.0" spacing="20">
+        <Label id="TituloStyle" text="Crear Una Cuenta" />
 
-    <Label id="TituloStyle" layoutX="858.0" layoutY="133.0" prefHeight="109.0" prefWidth="447.0" text="Crear Una Cuenta" />
-    <Label id="SubtituloStyleRegistro" alignment="CENTER" contentDisplay="CENTER" layoutX="881.0" layoutY="229.0" onMouseClicked="#handleClick" prefHeight="54.0" prefWidth="399.0" text="¿ Ya te registraste? Inicia Sesion" />
+        <Label id="SubtituloStyleRegistro" alignment="CENTER" contentDisplay="CENTER" onMouseClicked="#handleClick" text="¿Ya te registraste? Inicia Sesión" />
 
-    <Label id="SubtituloStyle" layoutX="909.0" layoutY="311.0" prefHeight="54.0" prefWidth="346.0" text="Escribe tu Nombre" />
-    <TextField id="textFieldSesion" fx:id="RegistroNombre" layoutX="898.0" layoutY="351.0" prefHeight="61.0" prefWidth="371.0" promptText="Nombre Completo" />
+        <Label id="SubtituloStyle" text="Escribe tu Nombre" />
+        <TextField id="textFieldSesion" fx:id="RegistroNombre" prefHeight="63.0" prefWidth="375.0" promptText="Nombre Completo" />
 
-    <Label id="SubtituloStyle" layoutX="908.0" layoutY="412.0" prefHeight="54.0" prefWidth="346.0" text="Escribe tu correo electrónico" />
+        <Label id="SubtituloStyle" text="Escribe tu Nickname" />
+        <TextField id="textFieldSesion" fx:id="RegistroNickname" prefHeight="63.0" prefWidth="375.0" promptText="Nickname" />
 
-    <TextField id="textFieldSesion" fx:id="RegistroCorreo" layoutX="897.0" layoutY="456.0" prefHeight="61.0" prefWidth="371.0" promptText="Discerial@ejemplo.com" />
+        <Label id="SubtituloStyle" text="Escribe tu correo electrónico" />
+        <TextField id="textFieldSesion" fx:id="RegistroCorreo" prefHeight="63.0" prefWidth="375.0" promptText="Discerial@ejemplo.com" />
 
-    <Label id="SubtituloStyle" layoutX="908.0" layoutY="632.0" prefHeight="54.0" prefWidth="346.0" text="Escribe tu fecha de Nacimiento" />
+        <Label id="SubtituloStyle" text="Escribe tu contraseña" />
+        <TextField id="textFieldSesion" fx:id="RegistroContrasena" prefHeight="63.0" prefWidth="375.0" promptText="******" />
 
-    <TextField id="textFieldSesion" fx:id="RegistroFecha" layoutX="895.0" layoutY="679.0" prefHeight="61.0" prefWidth="371.0" promptText="Fecha De Nacimiento" />
-
-    <Label id="SubtituloStyle" layoutX="908.0" layoutY="523.0" prefHeight="54.0" prefWidth="346.0" text="Escribe tu contraseña" />
-
-    <TextField id="textFieldSesion" fx:id="RegistroContrasena" layoutX="897.0" layoutY="571.0" prefHeight="61.0" prefWidth="371.0" promptText="******" />
+        <Label id="SubtituloStyle" text="Confirma tu contraseña" />
+        <TextField id="textFieldSesion" fx:id="RegistroConfirmarContrasena" prefHeight="63.0" prefWidth="375.0" promptText="******" />
+    </VBox>
 
 
-    <Button id="botonPersonalizado" layoutX="929.0" layoutY="793.0" prefHeight="62.0" prefWidth="310.0" text="Ingresar" />
+    <Button id="botonPersonalizado" layoutX="930.0" layoutY="868.0" prefHeight="62.0" prefWidth="310.0"  onAction="#crearCuenta" text="Ingresar" />
 
 </AnchorPane>

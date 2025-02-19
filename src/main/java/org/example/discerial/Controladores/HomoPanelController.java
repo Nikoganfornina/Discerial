@@ -24,7 +24,6 @@ public class HomoPanelController {
         List<Image> imagenes = cargarImagenesPerfil();
         comboBoxImagenes.getItems().addAll(imagenes);
 
-        // Personalizar el ComboBox para mostrar imágenes en miniatura
         comboBoxImagenes.setCellFactory(new Callback<ListView<Image>, ListCell<Image>>() {
             @Override
             public ListCell<Image> call(ListView<Image> listView) {

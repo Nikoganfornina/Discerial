@@ -3,9 +3,12 @@ package org.example.discerial.Controladores;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
 import java.io.IOException;
+
+import static org.example.discerial.MainApp.switchScene;
 
 public class TabulaController {
 
@@ -24,5 +27,11 @@ public class TabulaController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+   
+
+    public void ExireBoton(MouseEvent mouseEvent) throws Exception {
+        switchScene("/org/example/discerial/InicioSesion_View.fxml");
+
     }
 }
