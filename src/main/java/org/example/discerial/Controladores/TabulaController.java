@@ -3,13 +3,19 @@ package org.example.discerial.Controladores;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+<<<<<<< HEAD
 import javafx.scene.input.MouseEvent;
+=======
+>>>>>>> origin/main
 import javafx.scene.layout.Pane;
 
 import java.io.IOException;
 
+<<<<<<< HEAD
 import static org.example.discerial.MainApp.switchScene;
 
+=======
+>>>>>>> origin/main
 public class TabulaController {
 
     @FXML
@@ -28,10 +34,13 @@ public class TabulaController {
             e.printStackTrace();
         }
     }
+<<<<<<< HEAD
    
 
     public void ExireBoton(MouseEvent mouseEvent) throws Exception {
         switchScene("/org/example/discerial/InicioSesion_View.fxml");
 
     }
+=======
+>>>>>>> origin/main
 }
