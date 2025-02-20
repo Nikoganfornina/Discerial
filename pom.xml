@@ -82,6 +82,13 @@
             <version>3.0.2</version> <!-- Usa la versión más reciente si es necesario -->
         </dependency>
 
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>5.1.0</version>
+        </dependency>
+
+
     </dependencies>
 
     <build>

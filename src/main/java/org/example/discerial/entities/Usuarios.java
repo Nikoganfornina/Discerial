@@ -135,43 +135,33 @@ public class Usuarios {
     }
 
     // Inicializar valores por defecto antes de persistir en la BD
+
     @PrePersist
     public void prePersist() {
         if (preguntasAcertadas == 0) preguntasAcertadas = 0;
         if (preguntasErroneas == 0) preguntasErroneas = 0;
-    }
+        if (imagen == null) imagen = "hombre2.jpg";
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        Usuarios usuarios = (Usuarios) obj;
-        return id == usuarios.id;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
     }
 
 
     @Override
     public String toString() {
         return """
-           ┌───────────────────────────────────────────────────────┐
-           │                     USUARIO                           │
-           ├───────────────────────────────────────────────────────┤
-           │ ID: %-48d │
-           │ Nombre: %-44s │
-           │ Nickname: %-42s │
-           │ Correo: %-44s │
-           │ Contraseña: %-41s │
-           │ Preguntas Acertadas: %-31d │
-           │ Preguntas Erróneas: %-32d │
-           │ Imagen: %-43s │
-           └───────────────────────────────────────────────────────┘
-           """.formatted(id, nombre, nickname, correo, "********",
+       ┌───────────────────────────────────────────────────────┐
+       │                     USUARIO                           │
+       └───────────────────────────────────────────────────────┘
+       - ID: %d
+       - Nombre: %s
+       - Nickname: %s
+       - Correo: %s
+       - Contraseña: %s
+       - Preguntas Acertadas: %d
+       - Preguntas Erróneas: %d
+       - Imagen: %s 
+       """.formatted(id, nombre, nickname, correo, "********",
                 preguntasAcertadas, preguntasErroneas,
                 (imagen != null && !imagen.isEmpty()) ? imagen : "No disponible");
     }
+
 }

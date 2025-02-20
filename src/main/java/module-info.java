@@ -7,6 +7,7 @@ module org.example.discerial {
     requires jakarta.persistence;
     requires java.validation;
     requires jakarta.validation;
+    requires org.apache.commons.pool2;
 
     opens org.example.discerial to javafx.fxml;
     exports org.example.discerial;
