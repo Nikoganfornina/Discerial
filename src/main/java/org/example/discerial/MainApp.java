@@ -5,7 +5,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import org.example.discerial.Sqlite.InicializarBD;
 
 public class MainApp extends Application {
 
@@ -31,7 +30,6 @@ public class MainApp extends Application {
     }
 
     public static void main(String[] args) {
-        InicializarBD.inicializarBD();
         launch();
         // Font.getFamilies().forEach(System.out::println);
     }

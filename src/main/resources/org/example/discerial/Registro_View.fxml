@@ -29,6 +29,6 @@
     </VBox>
 
 
-    <Button id="botonPersonalizado" layoutX="930.0" layoutY="868.0" prefHeight="62.0" prefWidth="310.0"  onAction="#crearCuenta" text="Ingresar" />
+    <Button id="botonPersonalizado" layoutX="930.0" layoutY="868.0" prefHeight="62.0" prefWidth="310.0"   text="Ingresar" />
 
 </AnchorPane>
