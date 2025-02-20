@@ -1,0 +1,4 @@
+package org.example.discerial.Util;
+
+public class HibernateUtil {
+}

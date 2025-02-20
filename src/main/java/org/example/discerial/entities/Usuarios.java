@@ -1,0 +1,177 @@
+package org.example.discerial.entities;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.Pattern;  // Cambiado aquí
+
+import java.util.Objects;
+
+@Entity
+@Table(name = "usuarios")
+public class Usuarios {
+
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private int id;
+
+    // Validación del nombre
+
+    // La expresión regular garantiza que el nombre solo contenga letras (mayúsculas y minúsculas) y que tenga entre 2 y 20 caracteres.
+    // Esto asegura que el nombre sea adecuado para un usuario (sin números ni caracteres especiales).
+
+    @Pattern(regexp = "^[A-Za-zÁÉÍÓÚáéíóúÑñ]{2,20}$", message = "El nombre debe contener solo letras y tener entre 2 y 20 caracteres.")
+    @Column(nullable = false, length = 20)
+    private String nombre;
+
+    // Validación del nickname
+
+    // La expresión regular asegura que el nickname solo contenga letras, números y guiones bajos, con una longitud de entre 3 y 15 caracteres.
+    // Esto es útil para definir un nombre de usuario único y legible.
+
+    @Pattern(regexp = "^[A-Za-z0-9_]{3,15}$", message = "El nickname debe tener entre 3 y 15 caracteres y solo puede contener letras, números y guiones bajos.")
+    @Column(unique = true, nullable = false, length = 15)
+    private String nickname;
+
+    // Validación del correo
+
+    // Utiliza la anotación @Email para validar que el correo electrónico tenga un formato correcto (ejemplo: user@domain.com).
+    // Esto es necesario para asegurarse de que los usuarios proporcionen un correo electrónico válido para la autenticación o comunicaciones.
+
+    @Email(message = "El correo debe tener un formato válido.")
+    @Column(unique = true, nullable = false, length = 100)
+    private String correo;
+
+    // Validación de la contraseña
+
+    // La expresión regular valida que la contraseña cumpla con varios requisitos:
+    // - Debe contener al menos una letra mayúscula ( (?=.*[A-Z]) ),
+    // - Al menos un número ( (?=.*\\d) ),
+    // - Al menos un carácter especial como #, @, $, etc. ( (?=.*[@#$%^&+=!]) ),
+    // - La longitud mínima es de 8 caracteres.
+    // Esto asegura que las contraseñas sean lo suficientemente seguras y difíciles de adivinar.
+
+    @Pattern(regexp = "(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=!]).{8,}",
+            message = "La contraseña debe contener al menos una mayúscula, un número, un símbolo y tener al menos 8 caracteres.")
+    @Size(min = 8, message = "La contraseña debe tener al menos 8 caracteres.")
+    private String contrasena;
+
+    @Column  private int preguntasAcertadas;
+    @Column  private int preguntasErroneas;
+    @Lob @Column(columnDefinition = "TEXT")private String imagen;
+
+    public Usuarios() {}
+
+    public Usuarios(String nombre, String nickname, String correo, String contrasena, int preguntasAcertadas, int preguntasErroneas, String imagen) {
+        this.nombre = nombre;
+        this.nickname = nickname;
+        this.correo = correo;
+        this.contrasena = contrasena;
+        this.preguntasAcertadas = preguntasAcertadas;
+        this.preguntasErroneas = preguntasErroneas;
+        this.imagen = imagen;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    public String getContrasena() {
+        return contrasena;
+    }
+
+    public void setContrasena(String contrasena) {
+        this.contrasena = contrasena;
+    }
+
+    public int getPreguntasAcertadas() {
+        return preguntasAcertadas;
+    }
+
+    public void setPreguntasAcertadas(int preguntasAcertadas) {
+        this.preguntasAcertadas = preguntasAcertadas;
+    }
+
+    public int getPreguntasErroneas() {
+        return preguntasErroneas;
+    }
+
+    public void setPreguntasErroneas(int preguntasErroneas) {
+        this.preguntasErroneas = preguntasErroneas;
+    }
+
+    public String getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
+    }
+
+    // Inicializar valores por defecto antes de persistir en la BD
+    @PrePersist
+    public void prePersist() {
+        if (preguntasAcertadas == 0) preguntasAcertadas = 0;
+        if (preguntasErroneas == 0) preguntasErroneas = 0;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Usuarios usuarios = (Usuarios) obj;
+        return id == usuarios.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+
+    @Override
+    public String toString() {
+        return """
+           ┌───────────────────────────────────────────────────────┐
+           │                     USUARIO                           │
+           ├───────────────────────────────────────────────────────┤
+           │ ID: %-48d │
+           │ Nombre: %-44s │
+           │ Nickname: %-42s │
+           │ Correo: %-44s │
+           │ Contraseña: %-41s │
+           │ Preguntas Acertadas: %-31d │
+           │ Preguntas Erróneas: %-32d │
+           │ Imagen: %-43s │
+           └───────────────────────────────────────────────────────┘
+           """.formatted(id, nombre, nickname, correo, "********",
+                preguntasAcertadas, preguntasErroneas,
+                (imagen != null && !imagen.isEmpty()) ? imagen : "No disponible");
+    }
+}

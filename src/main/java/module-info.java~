@@ -6,7 +6,6 @@ module org.example.discerial {
     requires org.hibernate.orm.core;
     requires jakarta.persistence;
     requires java.validation;
-    requires jakarta.validation;
 
     opens org.example.discerial to javafx.fxml;
     exports org.example.discerial;

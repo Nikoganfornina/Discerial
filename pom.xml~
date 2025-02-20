@@ -5,9 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.example</groupId>
-    <artifactId>Discerial</artifactId>
+    <artifactId>BibliotecaHiberFx</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>Discerial</name>
+    <name>BibliotecaHiberFx</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -38,7 +38,6 @@
             <version>${javafx.version}</version>
         </dependency>
 
-        <!-- JUnit -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
@@ -75,11 +74,11 @@
             <version>6.2.0.Final</version> <!-- Usa la versión más reciente si es necesario -->
         </dependency>
 
-        <!-- Dependencia para Jakarta Bean Validation API -->
+        <!-- Dependencia para Bean Validation API -->
         <dependency>
-            <groupId>jakarta.validation</groupId>
-            <artifactId>jakarta.validation-api</artifactId>
-            <version>3.0.2</version> <!-- Usa la versión más reciente si es necesario -->
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>2.0.1.Final</version> <!-- Usa la versión más reciente si es necesario -->
         </dependency>
 
     </dependencies>
