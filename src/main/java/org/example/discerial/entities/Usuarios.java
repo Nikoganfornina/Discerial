@@ -1,6 +1,7 @@
 package org.example.discerial.entities;
 
 import jakarta.persistence.*;
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import jakarta.validation.constraints.Pattern;  // Cambiado aquí
@@ -58,9 +59,12 @@ public class Usuarios {
     @Column  private int preguntasErroneas;
     @Lob @Column(columnDefinition = "TEXT")private String imagen;
 
+    @Column(name = "session_active", nullable = false)
+    private boolean sessionActive = false;
+
     public Usuarios() {}
 
-    public Usuarios(String nombre, String nickname, String correo, String contrasena, int preguntasAcertadas, int preguntasErroneas, String imagen) {
+    public Usuarios(String nombre, String nickname, String correo, String contrasena, int preguntasAcertadas, int preguntasErroneas, String imagen ,  boolean sessionActive ) {
         this.nombre = nombre;
         this.nickname = nickname;
         this.correo = correo;
@@ -68,6 +72,7 @@ public class Usuarios {
         this.preguntasAcertadas = preguntasAcertadas;
         this.preguntasErroneas = preguntasErroneas;
         this.imagen = imagen;
+        this.sessionActive = sessionActive;
     }
 
     public int getId() {
@@ -134,6 +139,7 @@ public class Usuarios {
         this.imagen = imagen;
     }
 
+    public boolean isSessionActive() { return sessionActive;}  public void setSessionActive(boolean sessionActive) { this.sessionActive = sessionActive; }
     // Inicializar valores por defecto antes de persistir en la BD
 
     @PrePersist

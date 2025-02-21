@@ -21,19 +21,7 @@ import static org.example.discerial.MainApp.switchScene;
 public class RegistroController {
 
     @FXML
-    public static TextField RegistroNombre;
-
-    @FXML
-    public static TextField RegistroNickname;
-
-    @FXML
-    public static TextField RegistroCorreo;
-
-    @FXML
-    public static TextField RegistroContrasena;
-
-    @FXML
-    public static TextField RegistroConfirmarContrasena;
+    public  TextField RegistroNombre , RegistroNickname , RegistroCorreo , RegistroContrasena , RegistroConfirmarContrasena;
 
     public void handleClick(MouseEvent event) throws Exception {
         switchScene("/org/example/discerial/InicioSesion_View.fxml");
@@ -46,8 +34,16 @@ public class RegistroController {
         RegistroNickname.setFocusTraversable(false);
         RegistroConfirmarContrasena.setFocusTraversable(false);
     }
+    private void limpiarCampos() {
+        RegistroNombre.clear();
+        RegistroNickname.clear();
+        RegistroCorreo.clear();
+        RegistroContrasena.clear();
+        RegistroConfirmarContrasena.clear();
+    }
 
-    public static void AgregarUsuario(String Nombre, String Nickname, String Correo, String Contrasena) throws Exception {
+    public  void AgregarUsuario() throws Exception {
+
         IusuariosImpl dao = new IusuariosImpl();
 
         String nombre = RegistroNombre.getText();
@@ -63,11 +59,18 @@ public class RegistroController {
             return;
         }
 
-        Usuarios usuario = new Usuarios(Nombre, Nickname, Correo, Contrasena, 0, 0, null);
+        Usuarios usuario = new Usuarios(nombre, nickname, correo, contrasena, 0, 0, null ,false ) ;
 
-        dao.save(usuario);
+
+        try {
+            if (dao.save(usuario) != null) usuario switchScene("/org/example/discerial/Tabula_view.fxml");
+            else throw new Exception("Error al registrar el usuario");
+        } catch (Exception e) {
+            new Alert(Alert.AlertType.ERROR, "Error: " + e.getMessage()).showAndWait();
+        }
 
     }
+
 
 }
 

@@ -8,7 +8,7 @@ public class Sesion {
 
     @Id
     @GeneratedValue
-    private int id;
+     private int id;
 
     @OneToOne
     @JoinColumn(name = "usuario_id", nullable = false)
