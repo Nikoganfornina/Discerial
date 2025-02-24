@@ -16,31 +16,27 @@
     <VBox alignment="CENTER_LEFT" layoutX="474.0" layoutY="236.0" prefHeight="300.0" prefWidth="600.0" spacing="15">
         <HBox alignment="CENTER_LEFT" spacing="20">
             <Label id="SubstitulosStyle" prefWidth="200.0" style="-fx-font-size: 18px;" text="NickName:" />
-            <TextField id="textFieldSesion" prefWidth="250.0" text="Usuario_Register1978" />
+            <TextField  fx:id="usuarioNombre" id="textFieldSesion" prefWidth="250.0" text="Usuario_Register1978" />
         </HBox>
         <HBox alignment="CENTER_LEFT" spacing="20">
             <Label id="SubstitulosStyle" prefWidth="200.0" style="-fx-font-size: 18px;" text="Correo:" />
-            <TextField id="textFieldSesion" prefWidth="250.0" text="Usuario@registrado.com" />
-        </HBox>
-        <HBox alignment="CENTER_LEFT" spacing="20">
-            <Label id="SubstitulosStyle" prefWidth="200.0" style="-fx-font-size: 18px;" text="Rango:" />
-            <TextField id="textFieldSesion" prefWidth="250.0" text="Homo" />
+            <TextField fx:id="usuarioCorreo"  id="textFieldSesion" prefWidth="250.0" text="Usuario@registrado.com" />
         </HBox>
         <HBox alignment="CENTER_LEFT" spacing="20">
             <Label id="SubstitulosStyle" prefWidth="200.0" style="-fx-font-size: 18px;" text="Preguntas Acertadas:" />
-            <TextField id="textFieldSesion" prefWidth="250.0" text="230" />
+            <TextField fx:id="usuarioPreguntasAcertadas" id="textFieldSesion" prefWidth="250.0" text="230" />
         </HBox>
         <HBox alignment="CENTER_LEFT" spacing="20">
             <Label id="SubstitulosStyle" prefWidth="200.0" style="-fx-font-size: 18px;" text="Preguntas Erróneas:" />
-            <TextField id="textFieldSesion" prefWidth="250.0" text="30" />
+            <TextField fx:id="usuarioPreguntasErroneas" id="textFieldSesion" prefWidth="250.0" text="30" />
         </HBox>
         <HBox alignment="CENTER_LEFT" spacing="20">
             <Label id="SubstitulosStyle" prefWidth="200.0" style="-fx-font-size: 18px;" text="Categoría Favorita:" />
-            <TextField id="textFieldSesion" prefWidth="250.0" text="Historia" />
+            <TextField fx:id="usuarioCategoriaFavorita" id="textFieldSesion" prefWidth="250.0" text="Historia" />
         </HBox>
         <HBox alignment="CENTER_LEFT" spacing="20">
             <Label id="SubstitulosStyle" prefWidth="200.0" style="-fx-font-size: 18px;" text="Horas en juego:" />
-            <TextField id="textFieldSesion" prefWidth="250.0" text="10" />
+            <TextField fx:id="usuarioHorasEnJuego" id="textFieldSesion" prefWidth="250.0" text="10" />
         </HBox>
     </VBox>
 

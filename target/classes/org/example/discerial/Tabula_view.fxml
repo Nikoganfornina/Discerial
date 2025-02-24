@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
 <AnchorPane id="fondoInicioSesion" prefHeight="1000.0" prefWidth="1500.0" stylesheets="@../../../Styles.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.discerial.Controladores.TabulaController">
@@ -10,7 +11,14 @@
 
         <Pane id="discerialName" layoutX="41.0" layoutY="52.0" prefHeight="108.0" prefWidth="310.0" />
 
-        <VBox alignment="CENTER_LEFT" layoutX="54.0" layoutY="254.0" prefHeight="261.0" prefWidth="310.0" spacing="40">
+        <Pane layoutX="12.0" layoutY="186.0" prefHeight="152.0" prefWidth="379.0">
+            <children>
+                <ImageView fx:id="usuarioImagen" fitHeight="125.0" fitWidth="125.0" layoutX="14.0" layoutY="14.0" />
+                <Label id="MenuSelectorLabel" fx:id="usuarioNombre" layoutX="172.0" layoutY="46.0" prefHeight="61.0" prefWidth="180.0" style="-fx-font-size: 30px;" text="Nombre" />
+            </children>
+        </Pane>
+
+        <VBox alignment="CENTER_LEFT" layoutX="54.0" layoutY="390.0" prefHeight="261.0" prefWidth="310.0" spacing="40">
             <HBox spacing="10">
                 <Pane id="TabulaIcon" prefHeight="40.0" prefWidth="40.0" />
                 <Label id="MenuSelectorLabel" text="Tabula" />
@@ -28,14 +36,14 @@
 
             <HBox spacing="10">
                 <Pane id="HomoIcon" prefHeight="40.0" prefWidth="40.0" />
-                <Label id="MenuSelectorLabel"  onMouseClicked="#cargarFXMLPequeno" text="Homo" />
+                <Label id="MenuSelectorLabel" onMouseClicked="#FxmlHomoPanel" text="Homo" />
             </HBox>
         </VBox>
 
         <VBox alignment="CENTER_LEFT" layoutX="54.0" layoutY="767.0" prefHeight="165.0" prefWidth="310.0" spacing="40">
             <HBox spacing="10">
                 <Pane id="ExireIcon" prefHeight="40.0" prefWidth="40.0" />
-                <Label  onMouseClicked="#ExireBoton" id="MenuSelectorLabel" text="Exire" />
+                <Label id="MenuSelectorLabel" onMouseClicked="#cerrarSesion" text="Exire" />
             </HBox>
 
             <HBox spacing="10">
@@ -47,7 +55,7 @@
     </children>
     </Pane>
 
-    <Pane fx:id="contenedorFXML" layoutX="400.0"  prefWidth="1100.0" prefHeight="1000.0" />
+    <Pane fx:id="contenedorFXML" layoutX="400.0" prefHeight="1000.0" prefWidth="1100.0" />
 
 
 </AnchorPane>

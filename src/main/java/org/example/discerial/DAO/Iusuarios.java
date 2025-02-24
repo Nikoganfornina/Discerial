@@ -57,6 +57,10 @@ public interface Iusuarios {
      */
     Usuarios save(Usuarios usuarios);
 
+    void activateUser(int id);
+    void deactivateUser(int id);
+    boolean isUserActive(int id);
+    Usuarios login(String correo, String contrasena);
     /**
      * Actualiza la información de un usuario existente.
      *

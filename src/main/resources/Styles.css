@@ -169,3 +169,11 @@
     -fx-background-repeat: no-repeat;
     -fx-repeat: no-repeat;
 }
+
+#usuarioImagen {
+
+ -fx-background-radius: 50%; /* Hace que la imagen tenga bordes redondeados */
+     -fx-border-radius: 50%; /* Asegura que el borde sea redondeado */
+     -fx-border-color: #000000; /* Color del borde */
+     -fx-border-width: 2px; /* Ancho del borde */
+}

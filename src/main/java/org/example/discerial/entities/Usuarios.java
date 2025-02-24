@@ -59,12 +59,15 @@ public class Usuarios {
     @Column  private int preguntasErroneas;
     @Lob @Column(columnDefinition = "TEXT")private String imagen;
 
+    @Column(nullable = false)
+    private long horasJugadas = 0;
+
     @Column(name = "session_active", nullable = false)
     private boolean sessionActive = false;
 
     public Usuarios() {}
 
-    public Usuarios(String nombre, String nickname, String correo, String contrasena, int preguntasAcertadas, int preguntasErroneas, String imagen ,  boolean sessionActive ) {
+    public Usuarios(String nombre, String nickname, String correo, String contrasena, int preguntasAcertadas, int preguntasErroneas, String imagen ,  boolean sessionActive , long horasJugadas) {
         this.nombre = nombre;
         this.nickname = nickname;
         this.correo = correo;
@@ -73,6 +76,7 @@ public class Usuarios {
         this.preguntasErroneas = preguntasErroneas;
         this.imagen = imagen;
         this.sessionActive = sessionActive;
+        this.horasJugadas = horasJugadas;
     }
 
     public int getId() {
@@ -139,6 +143,13 @@ public class Usuarios {
         this.imagen = imagen;
     }
 
+    public long getHorasJugadas() {return horasJugadas;}
+
+    public void setHorasJugadas(long horasJugadas) {
+        this.horasJugadas = horasJugadas;
+    }
+
+    //Sesion activa sera un buleano dentro de la propia clase, el programa preguntara cual es el estado de la sesion si es true o false, en caso de ser true se guardaran los datos en ese menu
     public boolean isSessionActive() { return sessionActive;}  public void setSessionActive(boolean sessionActive) { this.sessionActive = sessionActive; }
     // Inicializar valores por defecto antes de persistir en la BD
 
@@ -150,6 +161,12 @@ public class Usuarios {
 
     }
 
+    // Convertir el tiempo en formato "hh:mm"
+    public String getHorasJugadasFormato() {
+        long horas = horasJugadas / 3600;
+        long minutos = (horasJugadas % 3600) / 60;
+        return String.format("%02d:%02d", horas, minutos);
+    }
 
     @Override
     public String toString() {

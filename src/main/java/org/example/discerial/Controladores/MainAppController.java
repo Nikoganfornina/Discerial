@@ -1,6 +1,7 @@
 package org.example.discerial.Controladores;
 
-import static org.example.discerial.MainApp.switchScene;
+
+import static org.example.discerial.Util.SessionManager.switchScene;
 
 public class MainAppController {
 

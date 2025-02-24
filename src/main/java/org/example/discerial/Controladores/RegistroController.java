@@ -9,6 +9,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import org.example.discerial.DAO.Iusuarios;
 import org.example.discerial.DAO.IusuariosImpl;
+import org.example.discerial.Util.SessionManager;
 import org.example.discerial.entities.Usuarios;
 
 import java.sql.Connection;
@@ -16,7 +17,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static org.example.discerial.MainApp.switchScene;
+import static org.example.discerial.Util.SessionManager.switchScene;
+
 
 public class RegistroController {
 
@@ -59,14 +61,28 @@ public class RegistroController {
             return;
         }
 
-        Usuarios usuario = new Usuarios(nombre, nickname, correo, contrasena, 0, 0, null ,false ) ;
+        Usuarios usuario = new Usuarios(nombre, nickname, correo, contrasena, 0, 0, "hombre2.jpg" ,false , 0); ;
 
 
         try {
-            if (dao.save(usuario) != null) usuario switchScene("/org/example/discerial/Tabula_view.fxml");
-            else throw new Exception("Error al registrar el usuario");
+            // Guarda el usuario en la BD (esto generará su ID automáticamente)
+            Usuarios usuarioGuardado = dao.save(usuario);
+
+            if (usuarioGuardado != null) {
+                // Activa la sesión en la base de datos
+                dao.activateUser(usuarioGuardado.getId());
+
+                // Actualiza el objeto local para reflejar el estado activo
+                usuarioGuardado.setSessionActive(true);
+
+                // Guarda el usuario activo en memoria (para usar en otras vistas)
+                SessionManager.setCurrentUser(usuarioGuardado);
+
+                // Cambia de pantalla
+                switchScene("/org/example/discerial/Tabula_view.fxml");
+            }
         } catch (Exception e) {
-            new Alert(Alert.AlertType.ERROR, "Error: " + e.getMessage()).showAndWait();
+            new Alert(AlertType.ERROR, "Error: " + e.getMessage()).showAndWait();
         }
 
     }

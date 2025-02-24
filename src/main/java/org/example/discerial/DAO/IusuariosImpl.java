@@ -3,6 +3,8 @@ package org.example.discerial.DAO;
 import org.example.discerial.Util.HibernateUtil;
 import org.example.discerial.entities.Usuarios;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 import java.util.List;
 
@@ -123,4 +125,77 @@ public class IusuariosImpl implements Iusuarios {
         session.close();
         return usuarios;
     }
+    @Override
+    public void activateUser(int id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            session.beginTransaction();
+            session.createQuery("UPDATE Usuarios SET sessionActive = true WHERE id = :id")
+                    .setParameter("id", id)
+                    .executeUpdate();
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            if (session.getTransaction() != null) {
+                session.getTransaction().rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+    }
+
+    @Override
+    public void deactivateUser(int id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            session.beginTransaction();
+            session.createQuery("UPDATE Usuarios SET sessionActive = false WHERE id = :id")
+                    .setParameter("id", id)
+                    .executeUpdate();
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            if (session.getTransaction() != null) {
+                session.getTransaction().rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+    }
+
+    @Override
+    public boolean isUserActive(int id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Usuarios user = session.get(Usuarios.class, id);
+        session.close();
+        return user != null && user.isSessionActive();
+    }
+    public Usuarios login(String correo, String contrasena) {
+        Transaction transaction = null;
+        Usuarios usuario = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+
+            // Consulta para buscar al usuario con las credenciales proporcionadas
+            Query<Usuarios> query = session.createQuery(
+                    "FROM Usuarios WHERE correo = :correo AND contrasena = :contrasena", Usuarios.class);
+            query.setParameter("correo", correo);
+            query.setParameter("contrasena", contrasena);
+
+            usuario = query.uniqueResult();
+            if (usuario != null) {
+                // Marca el usuario como activo
+                usuario.setSessionActive(true);
+                session.update(usuario);
+            }
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            throw e;
+        }
+        return usuario;
+    }
+
 }
