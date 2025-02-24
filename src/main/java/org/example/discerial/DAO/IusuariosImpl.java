@@ -100,10 +100,17 @@ public class IusuariosImpl implements Iusuarios {
     @Override
     public Usuarios update(Usuarios usuarios) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        session.beginTransaction();
-        session.update(usuarios);
-        session.getTransaction().commit();
-        session.close();
+        Transaction transaction = null;
+        try {
+            transaction = session.beginTransaction();
+            session.update(usuarios);
+            transaction.commit(); // Confirma los cambios
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close(); // Cierra la sesión de Hibernate
+        }
         return usuarios;
     }
 

@@ -33,17 +33,17 @@ public class SessionManager {
     }
 
     public static void setMainStage(Stage stage) {
-        mainStage = stage; // Configurar al inicio
+        mainStage = stage;
     }
 
     public static void switchScene(String fxmlPath) throws IOException {
         if (mainStage == null) {
-            throw new IllegalStateException("Error: mainStage no configurado.");
+            throw new IllegalStateException("mainStage no ha sido configurado. Llama a setMainStage() primero.");
         }
 
-        // Cargar y mostrar la nueva escena
         Parent root = FXMLLoader.load(SessionManager.class.getResource(fxmlPath));
         mainStage.setScene(new Scene(root));
+        mainStage.show();
     }
 
 

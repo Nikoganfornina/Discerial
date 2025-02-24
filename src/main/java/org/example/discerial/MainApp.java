@@ -4,13 +4,13 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import org.example.discerial.Controladores.TabulaController;
 import org.example.discerial.Util.SessionManager;
 
 import java.io.IOException;
-
 public class MainApp extends Application {
 
     private static Stage primaryStage;
@@ -18,8 +18,16 @@ public class MainApp extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         primaryStage = stage;
-        // Aseguramos que mainStage esté inicializado en SessionManager
-        SessionManager.setMainStage(primaryStage);
+        SessionManager.setMainStage(primaryStage); // <-- Obligatorio
+
+        // Cargar el ícono (ruta corregida)
+        try {
+            Image icon = new Image(getClass().getResourceAsStream("/Images/Dlogo.png"));
+            primaryStage.getIcons().add(icon);
+        } catch (NullPointerException e) {
+            System.err.println("Error: No se encontró el ícono en /Images/Dlogo.png");
+            // Puedes continuar sin ícono o salir
+        }
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/example/discerial/MainApp_View.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
@@ -30,11 +38,6 @@ public class MainApp extends Application {
     }
 
     public static void main(String[] args) {
-
         launch();
-        // Font.getFamilies().forEach(System.out::println);
     }
-
-
-
 }

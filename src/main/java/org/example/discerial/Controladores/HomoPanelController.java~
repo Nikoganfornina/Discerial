@@ -55,10 +55,11 @@ public class HomoPanelController {
     }
 
     private void iniciarContadorTiempo() {
-        // Corrección: Añade una coma después de Duration.seconds(1)
+        // Actualizar cada segundo
         timeline = new Timeline(
-                new KeyFrame(Duration.seconds(1), // <-- Aquí va la coma
-                        event -> actualizarTiempo()));
+                new KeyFrame(Duration.seconds(1),
+                        event -> actualizarTiempo()
+                );
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
     }

@@ -36,7 +36,7 @@
         </HBox>
         <HBox alignment="CENTER_LEFT" spacing="20">
             <Label id="SubstitulosStyle" prefWidth="200.0" style="-fx-font-size: 18px;" text="Horas en juego:" />
-            <TextField fx:id="usuarioHorasEnJuego" id="textFieldSesion" prefWidth="250.0" text="10" />
+            <Label fx:id="lblTiempoJugado" id="textFieldSesion" prefWidth="250.0" text="10" />
         </HBox>
     </VBox>
 

@@ -43,7 +43,7 @@
         <VBox alignment="CENTER_LEFT" layoutX="54.0" layoutY="767.0" prefHeight="165.0" prefWidth="310.0" spacing="40">
             <HBox spacing="10">
                 <Pane id="ExireIcon" prefHeight="40.0" prefWidth="40.0" />
-                <Label id="MenuSelectorLabel" onMouseClicked="#BotoncerrarSesion" text="Exire" />
+                <Label id="MenuSelectorLabel" onMouseClicked="#cerrarSesion" text="Exire" />
             </HBox>
 
             <HBox spacing="10">
