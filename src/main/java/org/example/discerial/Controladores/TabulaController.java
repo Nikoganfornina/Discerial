@@ -41,21 +41,6 @@ public class TabulaController {
             // Muestra el nombre del usuario
             usuarioNombre.setText(currentUser.getNombre());
 
-            // Cargar la imagen del usuario.
-            String imagePath = "/Images/IconosPerfil/" + currentUser.getImagen();
-            try {
-                Image image = new Image(getClass().getResourceAsStream(imagePath));
-                usuarioImagen.setImage(image);
-
-                // Aplicar borde redondeado
-                Circle clip = new Circle(usuarioImagen.getFitWidth() / 2, usuarioImagen.getFitHeight() / 2, usuarioImagen.getFitWidth() / 2);
-                usuarioImagen.setClip(clip);
-
-                // Agregar borde blanco o del color que quieras
-                usuarioImagen.setStyle("-fx-border-color: white; -fx-border-width: 3px; -fx-border-radius: 50%;");
-            } catch (Exception e) {
-                System.err.println("No se pudo cargar la imagen: " + imagePath);
-            }
         }
     }
 
@@ -74,7 +59,7 @@ public class TabulaController {
         }
     }
 
-    public void BotoncerrarSesion() {
+    public void BotoncerrarSesion() throws IOException {
         Usuarios usuario = SessionManager.getCurrentUser();
 
         if (usuario != null) {
@@ -92,6 +77,7 @@ public class TabulaController {
             if (result.isPresent()) {
                 if (result.get() == buttonTypeYes) {
                     SessionManager.cerrarSesion(); // Cierra la sesión
+                    switchScene("/org/example/discerial/InicioSesion_view.fxml");
 
                 } else {
                     // No hacer nada
