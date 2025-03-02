@@ -6,7 +6,7 @@
 <hibernate-configuration>
 
     <session-factory>
-        <!-- EL NOMBRE DE LA BD ES BibliotecaFx -->
+        <!-- El nombre de la BD es discerial -->
         <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
         <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/discerial</property>
         <property name="hibernate.connection.username">root</property>
@@ -16,11 +16,9 @@
         <property name="format_sql">true</property>
         <property name="hbm2ddl.auto">update</property>
 
-
         <!-- Clases que se van a mapear -->
-
         <mapping class="org.example.discerial.entities.Usuarios"/>
-
+        <mapping class="org.example.discerial.entities.Categoria"/>
+        <mapping class="org.example.discerial.entities.Pregunta"/>
     </session-factory>
 </hibernate-configuration>
-

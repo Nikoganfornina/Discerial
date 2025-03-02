@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="fondoPrincipal" prefHeight="1000.0" prefWidth="1500.0" stylesheets="@../../../Styles.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.discerial.Controladores.MainAppController">
+<AnchorPane fx:id="rootPane" id="fondoPrincipal" prefHeight="1000.0" prefWidth="1500.0" stylesheets="@../../../Styles.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.discerial.Controladores.MainAppController">
 
     <Button id="botonPersonalizado" onAction="#switchToInicioSesion" layoutX="595.0" layoutY="500.0" prefHeight="62.0" prefWidth="310.0" text="Get Started" />
 

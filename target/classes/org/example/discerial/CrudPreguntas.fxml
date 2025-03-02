@@ -1,0 +1,65 @@
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?xml version="1.0" encoding="UTF-8"?>
+
+<AnchorPane fx:id="root" id="fondoInicioSesion" prefHeight="1000.0" prefWidth="1500.0" stylesheets="@../../../Styles.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.discerial.Controladores.CrudPreguntasController">
+    <children>
+        <!-- Título de la vista -->
+        <Label layoutX="50.0" layoutY="20.0" text="CRUD de Preguntas" style="-fx-font-size: 36px; -fx-text-fill: #4c5b3d;"/>
+
+        <!-- TableView para listar las preguntas -->
+        <TableView fx:id="preguntaTable" layoutX="50.0" layoutY="80.0" prefHeight="400.0" prefWidth="1400.0">
+            <columns>
+                <TableColumn fx:id="colId" text="ID" prefWidth="50.0"/>
+                <TableColumn fx:id="colCategoria" text="Categoría" prefWidth="150.0"/>
+                <TableColumn fx:id="colPregunta" text="Pregunta" prefWidth="800.0"/>
+                <TableColumn fx:id="colTipo" text="Tipo" prefWidth="100.0"/>
+            </columns>
+        </TableView>
+
+        <!-- Botonera de acciones: Nuevo, Editar, Eliminar -->
+        <HBox layoutX="50.0" layoutY="490.0" spacing="10.0">
+            <Button fx:id="btnNuevo" text="Nuevo" onAction="#handleNuevo" style="-fx-background-color: #4c5b3d; -fx-text-fill: white;"/>
+            <Button fx:id="btnEditar" text="Editar" onAction="#handleEditar" style="-fx-background-color: #4c5b3d; -fx-text-fill: white;"/>
+            <Button fx:id="btnEliminar" text="Eliminar" onAction="#handleEliminar" style="-fx-background-color: #4c5b3d; -fx-text-fill: white;"/>
+        </HBox>
+
+        <!-- Formulario para crear/editar preguntas -->
+        <VBox layoutX="50.0" layoutY="540.0" spacing="10.0">
+            <HBox spacing="10.0">
+                <Label text="Categoría:"/>
+                <ComboBox fx:id="categoriaComboBox" prefWidth="200.0"/>
+                <Label text="Tipo:"/>
+                <ComboBox fx:id="tipoComboBox" prefWidth="150.0"/>
+            </HBox>
+            <HBox spacing="10.0">
+                <Label text="Pregunta:"/>
+                <TextField fx:id="preguntaField" prefWidth="800.0" promptText="Ingresa la pregunta"/>
+            </HBox>
+            <HBox spacing="10.0">
+                <Label text="Respuesta Correcta:"/>
+                <TextField fx:id="respuestaCorrectaField" prefWidth="400.0" promptText="Respuesta correcta"/>
+            </HBox>
+            <HBox spacing="10.0">
+                <Label text="Respuesta 2:"/>
+                <TextField fx:id="respuesta2Field" prefWidth="400.0" promptText="Respuesta 2"/>
+            </HBox>
+            <HBox spacing="10.0">
+                <Label text="Respuesta 3:"/>
+                <TextField fx:id="respuesta3Field" prefWidth="400.0" promptText="Respuesta 3"/>
+            </HBox>
+            <HBox spacing="10.0">
+                <Label text="Respuesta 4:"/>
+                <TextField fx:id="respuesta4Field" prefWidth="400.0" promptText="Respuesta 4"/>
+            </HBox>
+            <HBox spacing="10.0">
+                <Label text="Imagen URL:"/>
+                <TextField fx:id="imagenField" prefWidth="400.0" promptText="URL de la imagen"/>
+            </HBox>
+            <HBox spacing="10.0">
+                <Button fx:id="btnGuardar" text="Guardar" onAction="#handleGuardar" style="-fx-background-color: #4c5b3d; -fx-text-fill: white;"/>
+                <Button fx:id="btnCancelar" text="Cancelar" onAction="#handleCancelar" style="-fx-background-color: #4c5b3d; -fx-text-fill: white;"/>
+            </HBox>
+        </VBox>
+    </children>
+</AnchorPane>
