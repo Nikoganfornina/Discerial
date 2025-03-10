@@ -2,16 +2,16 @@ package org.example.discerial.entities;
 
 import jakarta.persistence.*;
 
-
 @Entity
 @Table(name = "preguntas")
 public class Pregunta {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    // Relación con la categoría
-    @ManyToOne(fetch = FetchType.LAZY)
+    // Relación con la categoría con carga EAGER para evitar problemas de LazyInitializationException
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "categoria_id", nullable = false)
     private Categoria categoria;
 

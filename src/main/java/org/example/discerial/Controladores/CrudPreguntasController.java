@@ -4,15 +4,19 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.event.ActionEvent;
+import org.example.discerial.DAO.ICategoria;
+import org.example.discerial.DAO.ICategoriaImpl;
 import org.example.discerial.DAO.IPregunta;
 import org.example.discerial.DAO.IPreguntaImpl;
 import org.example.discerial.entities.Pregunta;
 import org.example.discerial.entities.Categoria;
 
 import java.util.List;
+
+import static org.example.discerial.Util.SessionManager.switchScene;
 
 public class CrudPreguntasController {
 
@@ -46,15 +50,17 @@ public class CrudPreguntasController {
     private TextField imagenField;
 
     @FXML
-    private Button btnGuardar;
-    @FXML
-    private Button btnCancelar;
-    @FXML
     private Button btnNuevo;
     @FXML
     private Button btnEditar;
     @FXML
     private Button btnEliminar;
+    @FXML
+    private Button btnVer;      // Botón para ver detalles
+    @FXML
+    private Button btnGuardar;
+    @FXML
+    private Button btnCancelar;
 
     private ObservableList<Pregunta> preguntaList;
     private IPregunta preguntaDAO;
@@ -81,14 +87,12 @@ public class CrudPreguntasController {
     }
 
     private void loadCategorias() {
-        // Cargar categorías predefinidas
-        ObservableList<Categoria> categorias = FXCollections.observableArrayList();
-        categorias.add(new Categoria("Historia"));
-        categorias.add(new Categoria("Filosofía"));
-        categorias.add(new Categoria("Literatura"));
-        categorias.add(new Categoria("Biología"));
-        // Si deseas agregar la categoría "Mixta", podrías hacerlo aquí (opcional)
-        categoriaComboBox.setItems(categorias);
+        // Se instancia el DAO de Categoría
+        ICategoria categoriaDao = new ICategoriaImpl();
+        // Se recuperan todas las categorías desde la base de datos
+        List<Categoria> categorias = categoriaDao.findAll();
+        // Se asignan al ComboBox
+        categoriaComboBox.setItems(FXCollections.observableArrayList(categorias));
     }
 
     private void loadTipos() {
@@ -115,6 +119,8 @@ public class CrudPreguntasController {
             respuesta3Field.setText(selectedPregunta.getRespuesta3());
             respuesta4Field.setText(selectedPregunta.getRespuesta4());
             imagenField.setText(selectedPregunta.getImagen());
+        } else {
+            showAlert("Advertencia", "Seleccione una pregunta para editar.");
         }
     }
 
@@ -125,6 +131,8 @@ public class CrudPreguntasController {
             preguntaDAO.deleteById(selectedPregunta.getId());
             loadPreguntas();
             clearForm();
+        } else {
+            showAlert("Advertencia", "Seleccione una pregunta para eliminar.");
         }
     }
 
@@ -176,6 +184,33 @@ public class CrudPreguntasController {
         clearForm();
     }
 
+    // Nuevo método para ver detalles en modo solo lectura
+    @FXML
+    private void handleVer(ActionEvent event) {
+        selectedPregunta = preguntaTable.getSelectionModel().getSelectedItem();
+        if (selectedPregunta != null) {
+            StringBuilder detalles = new StringBuilder();
+            detalles.append("ID: ").append(selectedPregunta.getId()).append("\n");
+            detalles.append("Categoría: ").append(selectedPregunta.getCategoria().getNombre()).append("\n");
+            detalles.append("Pregunta: ").append(selectedPregunta.getPregunta()).append("\n");
+            detalles.append("Tipo: ").append(selectedPregunta.getTipo()).append("\n");
+            detalles.append("Respuesta Correcta: ").append(selectedPregunta.getRespuestaCorrecta()).append("\n");
+            detalles.append("Respuesta 2: ").append(selectedPregunta.getRespuesta2()).append("\n");
+            if (selectedPregunta.getTipo().equals("multiple")) {
+                detalles.append("Respuesta 3: ").append(selectedPregunta.getRespuesta3()).append("\n");
+                detalles.append("Respuesta 4: ").append(selectedPregunta.getRespuesta4()).append("\n");
+            }
+            detalles.append("Imagen URL: ").append(selectedPregunta.getImagen()).append("\n");
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Detalles de la Pregunta");
+            alert.setHeaderText(null);
+            alert.setContentText(detalles.toString());
+            alert.showAndWait();
+        } else {
+            showAlert("Advertencia", "Seleccione una pregunta para ver sus detalles.");
+        }
+    }
+
     private void clearForm() {
         categoriaComboBox.setValue(null);
         tipoComboBox.setValue(null);
@@ -193,4 +228,9 @@ public class CrudPreguntasController {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
+    public void irMain() throws Exception {
+        switchScene("/org/example/discerial/MainApp_View.fxml");
+    }
+
 }

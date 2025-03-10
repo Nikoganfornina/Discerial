@@ -3,9 +3,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="rootPane" id="fondoPrincipal" prefHeight="1000.0" prefWidth="1500.0" stylesheets="@../../../Styles.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.discerial.Controladores.MainAppController">
+<AnchorPane id="fondoPrincipal" fx:id="rootPane" prefHeight="1000.0" prefWidth="1500.0" stylesheets="@../../../Styles.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.discerial.Controladores.MainAppController">
 
-    <Button id="botonPersonalizado" onAction="#switchToInicioSesion" layoutX="595.0" layoutY="500.0" prefHeight="62.0" prefWidth="310.0" text="Get Started" />
+    <Button id="botonPersonalizado" layoutX="595.0" layoutY="500.0" onAction="#switchToInicioSesion" prefHeight="62.0" prefWidth="310.0" text="Get Started" />
 
     <Label id="imagenPerfil" layoutX="576.0" layoutY="109.0" prefHeight="349.0" prefWidth="349.0" />
 
@@ -17,5 +17,7 @@
     <Label id="adytotext" layoutX="1168.0" layoutY="60.0" prefHeight="50.0" prefWidth="301.0" text="AdytoGroup" />
 
     <Label id="imagenAdyto" layoutX="1299.0" layoutY="11.0" prefHeight="149.0" prefWidth="149.0" />
+
+    <Button id="botonPersonalizado" layoutX="1286.0" layoutY="885.0" onAction="#irCrudPreguntas" prefHeight="78.0" prefWidth="174.0" text="Preguntas" />
 
 </AnchorPane>

@@ -1,8 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?xml version="1.0" encoding="UTF-8"?>
 
-<AnchorPane fx:id="root" id="fondoInicioSesion" prefHeight="1000.0" prefWidth="1500.0" stylesheets="@../../../Styles.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.discerial.Controladores.CrudPreguntasController">
+<AnchorPane fx:id="root"  prefHeight="1000.0" prefWidth="1500.0" stylesheets="@../../../Styles.css"
+            xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.example.discerial.Controladores.CrudPreguntasController">
     <children>
         <!-- Título de la vista -->
         <Label layoutX="50.0" layoutY="20.0" text="CRUD de Preguntas" style="-fx-font-size: 36px; -fx-text-fill: #4c5b3d;"/>
@@ -17,11 +19,12 @@
             </columns>
         </TableView>
 
-        <!-- Botonera de acciones: Nuevo, Editar, Eliminar -->
+        <!-- Botonera de acciones: Nuevo, Editar, Eliminar, Ver -->
         <HBox layoutX="50.0" layoutY="490.0" spacing="10.0">
             <Button fx:id="btnNuevo" text="Nuevo" onAction="#handleNuevo" style="-fx-background-color: #4c5b3d; -fx-text-fill: white;"/>
             <Button fx:id="btnEditar" text="Editar" onAction="#handleEditar" style="-fx-background-color: #4c5b3d; -fx-text-fill: white;"/>
             <Button fx:id="btnEliminar" text="Eliminar" onAction="#handleEliminar" style="-fx-background-color: #4c5b3d; -fx-text-fill: white;"/>
+            <Button fx:id="btnVer" text="Ver" onAction="#handleVer" style="-fx-background-color: #4c5b3d; -fx-text-fill: white;"/>
         </HBox>
 
         <!-- Formulario para crear/editar preguntas -->
@@ -62,4 +65,7 @@
             </HBox>
         </VBox>
     </children>
+
+    <Button id="botonPersonalizado" layoutX="1286.0" layoutY="885.0" onAction="#irMain" prefHeight="78.0" prefWidth="174.0" text="Preguntas" />
+
 </AnchorPane>
