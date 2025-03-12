@@ -26,14 +26,7 @@ public class MainAppController {
         switchScene("/org/example/discerial/CrudPreguntas.fxml");
     }
 
-    @FXML
-    public void initialize() {
-        crearCategorias();
-        PreguntasFilosofia.crearPreguntasFilosofia();
-        PreguntasHistoria.crearPreguntasHistoria();
-        PreguntasBiologia.crearPreguntasBiologia();
-        PreguntasLiteratura.crearPreguntasLiteratura();
-    }
+
 
     /**
      * Verifica si ya existen categorías en la base de datos.
