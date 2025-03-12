@@ -78,6 +78,14 @@
             <artifactId>jakarta.validation-api</artifactId>
             <version>3.0.2</version>
         </dependency>
+
+        <!-- Versión alineada con las demás dependencias de JavaFX -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-media</artifactId>
+            <version>${javafx.version}</version> <!-- Usa la misma variable -->
+        </dependency>
+
     </dependencies>
 
     <build>

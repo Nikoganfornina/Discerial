@@ -2,11 +2,12 @@ module org.example.discerial {
 
     requires javafx.controls;
     requires javafx.fxml;
-    requires javafx.graphics;
     requires org.hibernate.orm.core;
     requires jakarta.persistence;
     requires transitive jakarta.validation;
     requires java.naming;
+    requires java.desktop;
+    requires javafx.media;
 
     opens org.example.discerial to javafx.fxml;
     exports org.example.discerial;

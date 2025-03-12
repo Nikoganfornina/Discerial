@@ -56,6 +56,8 @@ public class SessionManager {
 
     // Iniciar el contador en segundo plano
     private static void iniciarContador() {
+        System.out.println("Metodo comentado, arreglar contador de tiempo");
+        /*
         timer = Executors.newSingleThreadScheduledExecutor();
         timer.scheduleAtFixedRate(() -> {
             long segundosTranscurridos = Duration.between(inicioSesion, LocalDateTime.now()).getSeconds();
@@ -66,6 +68,8 @@ public class SessionManager {
                     tiempoAcumulado / 3600, (tiempoAcumulado % 3600) / 60);
 
         }, 0, 1, TimeUnit.SECONDS); // Actualizar cada segundo
+
+         */
     }
 
     // Cerrar sesión y guardar tiempo
@@ -84,6 +88,7 @@ public class SessionManager {
     }
 
     public static String getTiempoJugadoFormateado() {
+
         if (currentUser == null) return "00:00";
 
         long segundosTotales = currentUser.getHorasJugadas() +

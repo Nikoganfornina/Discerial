@@ -77,7 +77,7 @@ public class TabulaController {
             if (result.isPresent()) {
                 if (result.get() == buttonTypeYes) {
                     SessionManager.cerrarSesion(); // Cierra la sesión
-                    switchScene("/org/example/discerial/InicioSesion_view.fxml");
+                    switchScene("/org/example/discerial/MainApp_View.fxml");
 
                 } else {
                     // No hacer nada

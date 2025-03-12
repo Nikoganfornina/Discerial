@@ -2,12 +2,14 @@ package org.example.discerial.Controladores;
 
 import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import org.example.discerial.Controladores.Preguntas.PreguntasBiologia;
 import org.example.discerial.Controladores.Preguntas.PreguntasFilosofia;
 import org.example.discerial.Controladores.Preguntas.PreguntasHistoria;
 import org.example.discerial.Controladores.Preguntas.PreguntasLiteratura;
 import org.example.discerial.DAO.ICategoriaImpl;
 import org.example.discerial.Util.HibernateUtil;
+import org.example.discerial.Util.LoadingManager;
 import org.example.discerial.entities.Categoria;
 import org.hibernate.Session;
 
@@ -15,8 +17,7 @@ import static org.example.discerial.Util.SessionManager.switchScene;
 
 public class MainAppController {
 
-    @FXML
-    private AnchorPane root;
+
 
     public void switchToInicioSesion() throws Exception {
         switchScene("/org/example/discerial/InicioSesion_View.fxml");
