@@ -7,7 +7,6 @@ import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
 import javafx.scene.layout.AnchorPane;
 
-
 public class LoadingManager {
     private static MediaPlayer mediaPlayer;
     private static MediaView mediaView;
@@ -28,24 +27,21 @@ public class LoadingManager {
             mediaPlayer = new MediaPlayer(media);
             mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
 
-            // Configuración crítica del MediaView
+            // Configuración crítica
             mediaView = new MediaView(mediaPlayer);
-            mediaView.setFitWidth(300);
-            mediaView.setFitHeight(300);
-
-            // Posicionamiento absoluto centrado (para AnchorPane)
-            AnchorPane.setTopAnchor(mediaView, 350.0);
-            AnchorPane.setLeftAnchor(mediaView, 600.0);
-
-            // Asegurar visibilidad y capa superior
+            mediaView.setFitWidth(1500); // Cubrir toda la pantalla
+            mediaView.setFitHeight(1000);
+            mediaView.setLayoutX(0);
+            mediaView.setLayoutY(0);
             mediaView.setVisible(false);
-            mediaView.toFront();
+            mediaView.setStyle("-fx-border-color: red; -fx-border-width: 5px;"); // Debug visual
 
+            // Añadir al contenedor raíz
             rootContainer.getChildren().add(mediaView);
 
-            // Manejo de errores del reproductor
+            // Manejo de errores
             mediaPlayer.setOnError(() -> {
-                System.err.println("Error en MediaPlayer: " + mediaPlayer.getError().getMessage());
+                System.err.println("ERROR en MediaPlayer: " + mediaPlayer.getError().getMessage());
             });
 
         } catch (Exception e) {
@@ -55,16 +51,16 @@ public class LoadingManager {
     }
 
     public static void showLoading() {
-        System.out.println("Mostrando loading...");
+        System.out.println("[DEBUG] Mostrando loading...");
         Platform.runLater(() -> {
             mediaView.setVisible(true);
-            mediaView.toFront(); // Asegurar que está encima de todo
+            mediaView.toFront(); // Asegurar capa superior
             mediaPlayer.play();
         });
     }
 
     public static void hideLoading() {
-        System.out.println("Ocultando loading...");
+        System.out.println("[DEBUG] Ocultando loading...");
         Platform.runLater(() -> {
             mediaView.setVisible(false);
             mediaPlayer.stop();

@@ -250,41 +250,37 @@ public class IusuariosImpl implements Iusuarios {
 
     }
 
-    public Usuarios login(String correo, String contrasena) {
-
+    public Usuarios login(String identificador, String contrasena) {
         Transaction transaction = null;
         Usuarios usuario = null;
         LoadingManager.showLoading();
 
-        try {
-            try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-                transaction = session.beginTransaction();
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
 
-                // Consulta para buscar al usuario con las credenciales proporcionadas
-                Query<Usuarios> query = session.createQuery(
-                        "FROM Usuarios WHERE correo = :correo AND contrasena = :contrasena", Usuarios.class);
-                query.setParameter("correo", correo);
-                query.setParameter("contrasena", contrasena);
+            // Consulta mejorada
+            Query<Usuarios> query = session.createQuery(
+                    "FROM Usuarios WHERE (correo = :identificador OR nickname = :identificador) AND contrasena = :contrasena",
+                    Usuarios.class
+            );
+            query.setParameter("identificador", identificador);
+            query.setParameter("contrasena", contrasena);
 
-                usuario = query.uniqueResult();
-                if (usuario != null) {
-                    // Marca el usuario como activo
-                    usuario.setSessionActive(true);
-                    session.update(usuario);
-                }
+            usuario = query.uniqueResult();
+
+            if (usuario != null) {
+                usuario.setSessionActive(true);
+                session.update(usuario);
                 transaction.commit();
-            } catch (Exception e) {
-                if (transaction != null) {
-                    transaction.rollback();
-                }
-                throw e;
             }
+
             return usuario;
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            throw e;
         } finally {
             LoadingManager.hideLoading();
-
         }
-
     }
 
 }
