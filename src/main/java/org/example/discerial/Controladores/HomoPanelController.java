@@ -2,122 +2,155 @@ package org.example.discerial.Controladores;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.VBox;
+import org.example.discerial.DAO.IusuariosImpl;
+import org.example.discerial.entities.Usuarios;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class HomoPanelController {
 
-    // FXML de la vista
-    @FXML
-    private VBox contenedor;  // Contenedor donde añadimos elementos dinámicamente
+    @FXML private Label TituloStyle;
+    @FXML private ImageView imagenSeleccionada;
+    @FXML private TextField usuarioNombre;
+    @FXML private TextField usuarioCorreo;
+    @FXML private TextField usuarioPreguntasAcertadas;
+    @FXML private TextField usuarioPreguntasErroneas;
+    @FXML private TextField usuarioCategoriaFavorita;
+    @FXML private Label lblTiempoJugado;
+    @FXML private Button btnEditar;
+    @FXML private Button btnGuardar;
+    @FXML private ComboBox<String> imageComboBox;
 
-    @FXML
-    private Label homoText, lblTiempoJugado;  // Labels para mostrar información
+    private IusuariosImpl usuariosDao = new IusuariosImpl();
+    private Usuarios usuarioActual;
+    private final String IMAGE_PATH = "E:/REPOSITORIO/JAVA/Discerial/src/main/resources/Images/IconosPerfil/";
 
-    @FXML
-    private ImageView imagenSeleccionada;  // Imagen del perfil
-
-    @FXML
-    private TextField usuarioNombre, usuarioCorreo, usuarioPreguntasAcertadas, usuarioPreguntasErroneas, usuarioCategoriaFavorita;  // Campos de texto
-
-    @FXML
-    private Button btnEditar, btnGuardar;  // Botón para activar el modo de edición y guardar cambios
-
-    // Método que se ejecuta al inicializar el controlador
     @FXML
     public void initialize() {
-        // Verificamos si el contenedor ha sido correctamente inicializado
-        if (contenedor == null) {
-            System.out.println("ERROR: El contenedor es NULL. Revisa el FXML.");
-        } else {
-            System.out.println("Contenedor cargado correctamente.");
-            // Llamamos a crearComboBox para añadir un ComboBox de ejemplo al contenedor
-            crearComboBox();
-        }
+        cargarUsuarioActivo();
+        configurarCampos();
+        cargarImagenes();
+        configurarVisibilidadInicial();
+    }
 
-        // Deshabilitar todos los campos de texto al inicio
+    private void configurarVisibilidadInicial() {
+        TituloStyle.setVisible(false);
+        imageComboBox.setVisible(false);
+        btnGuardar.setVisible(false);
+    }
+
+    private void cargarUsuarioActivo() {
+        usuarioActual = usuariosDao.currentUser();
+        if(usuarioActual != null) {
+            actualizarCamposUsuario();
+            cargarImagenPerfil();
+        }
+    }
+
+    private void actualizarCamposUsuario() {
+        usuarioNombre.setText(usuarioActual.getNickname());
+        usuarioCorreo.setText(usuarioActual.getCorreo());
+        usuarioPreguntasAcertadas.setText(String.valueOf(usuarioActual.getPreguntasAcertadas()));
+        usuarioPreguntasErroneas.setText(String.valueOf(usuarioActual.getPreguntasErroneas()));
+        lblTiempoJugado.setText(usuarioActual.getHorasJugadasFormato());
+    }
+
+    private void cargarImagenPerfil() {
+        if(usuarioActual.getImagen() != null) {
+            Image image = new Image(new File(IMAGE_PATH + usuarioActual.getImagen()).toURI().toString());
+            imagenSeleccionada.setImage(image);
+        }
+    }
+
+    private void configurarCampos() {
         usuarioNombre.setEditable(false);
         usuarioCorreo.setEditable(false);
         usuarioPreguntasAcertadas.setEditable(false);
         usuarioPreguntasErroneas.setEditable(false);
         usuarioCategoriaFavorita.setEditable(false);
-
-        // Deshabilitar el botón de guardar hasta que el usuario edite el perfil
-        btnGuardar.setDisable(true);
     }
 
-    // Método para crear dinámicamente un ComboBox y añadirlo al VBox
-    private void crearComboBox() {
-        // Creamos un ComboBox con algunas opciones
-        ComboBox<String> comboBox = new ComboBox<>();
-        comboBox.getItems().addAll("Opción 1", "Opción 2", "Opción 3");
-        comboBox.setValue("Opción 1");
-
-        // Añadimos el ComboBox al contenedor
-        contenedor.getChildren().add(comboBox);
+    private void cargarImagenes() {
+        List<String> imagenes = new ArrayList<>();
+        for(int i = 1; i <= 8; i++) {
+            imagenes.add("hombre" + i + ".jpg");
+            imagenes.add("mujer" + i + ".jpg");
+        }
+        imageComboBox.getItems().addAll(imagenes);
+        configurarListenerImagen();
     }
 
-    // Método que se ejecuta cuando el usuario hace click en el botón "Editar"
+    private void configurarListenerImagen() {
+        imageComboBox.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+            if(newVal != null) {
+                Image image = new Image(new File(IMAGE_PATH + newVal).toURI().toString());
+                imagenSeleccionada.setImage(image);
+            }
+        });
+    }
+
     @FXML
-    private void editarPerfil() {
-        System.out.println("Editar perfil pulsado.");
-
-        // Habilitamos solo los campos nombre y correo
-        usuarioNombre.setEditable(true);
-        usuarioCorreo.setEditable(true);
-
-        // Los demás campos siguen deshabilitados
-        usuarioPreguntasAcertadas.setEditable(false);
-        usuarioPreguntasErroneas.setEditable(false);
-        usuarioCategoriaFavorita.setEditable(false);
-
-        // Habilitar el botón de guardar
-        btnGuardar.setDisable(false);
+    private void entrarModoEdicion() {
+        habilitarEdicion(true);
+        configurarVisibilidadEdicion(true);
+        seleccionarImagenActual();
     }
 
-    // Método que se ejecuta cuando el usuario hace click en el botón "Guardar"
     @FXML
-    private void guardarPerfil() {
-        System.out.println("Guardando perfil...");
-
-        // Validar los campos antes de guardar
-        if (usuarioNombre.getText().trim().isEmpty() || usuarioCorreo.getText().trim().isEmpty()) {
-            // Si los campos son vacíos, mostrar un mensaje de error
-            mostrarError("Por favor, complete los campos obligatorios (Nombre y Correo).");
-        } else {
-            // Si todo está bien, guardar los cambios (esto es solo un ejemplo)
-            // Aquí agregarías la lógica para guardar los datos en una base de datos, archivo, etc.
-            System.out.println("Nombre: " + usuarioNombre.getText());
-            System.out.println("Correo: " + usuarioCorreo.getText());
-
-            // Mostrar mensaje de éxito
-            mostrarExito("Perfil actualizado correctamente.");
+    private void guardarCambios() {
+        if(validarCampos()) {
+            actualizarDatosUsuario();
+            usuariosDao.update(usuarioActual);
+            habilitarEdicion(false);
+            configurarVisibilidadEdicion(false);
         }
     }
 
-    // Método para mostrar un mensaje de error
-    private void mostrarError(String mensaje) {
+    private boolean validarCampos() {
+        if(usuarioNombre.getText().isBlank() || usuarioCorreo.getText().isBlank()) {
+            mostrarAlerta("Campos requeridos", "Nickname y correo son obligatorios");
+            return false;
+        }
+        return true;
+    }
+
+    private void actualizarDatosUsuario() {
+        usuarioActual.setNickname(usuarioNombre.getText());
+        usuarioActual.setCorreo(usuarioCorreo.getText());
+
+        String nuevaImagen = imageComboBox.getValue();
+        if(nuevaImagen != null) {
+            usuarioActual.setImagen(nuevaImagen);
+            cargarImagenPerfil();
+        }
+    }
+
+    private void habilitarEdicion(boolean habilitar) {
+        usuarioNombre.setEditable(habilitar);
+        usuarioCorreo.setEditable(habilitar);
+        imageComboBox.setVisible(habilitar);
+        TituloStyle.setVisible(habilitar);
+    }
+
+    private void configurarVisibilidadEdicion(boolean enEdicion) {
+        btnEditar.setVisible(!enEdicion);
+        btnGuardar.setVisible(enEdicion);
+    }
+
+    private void seleccionarImagenActual() {
+        if(usuarioActual.getImagen() != null) {
+            imageComboBox.getSelectionModel().select(usuarioActual.getImagen());
+        }
+    }
+
+    private void mostrarAlerta(String titulo, String mensaje) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error");
+        alert.setTitle(titulo);
         alert.setHeaderText(null);
         alert.setContentText(mensaje);
         alert.showAndWait();
-    }
-
-    // Método para mostrar un mensaje de éxito
-    private void mostrarExito(String mensaje) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Éxito");
-        alert.setHeaderText(null);
-        alert.setContentText(mensaje);
-        alert.showAndWait();
-    }
-
-    // Método para manejar el cambio de imagen de perfil
-    @FXML
-    private void cambiarImagenPerfil() {
-        System.out.println("Cambiar imagen de perfil.");
-        // Aquí implementas la lógica para que el usuario pueda cambiar su imagen de perfil
-        // Podrías abrir un diálogo de selección de archivo y actualizar la imagen del ImageView
     }
 }

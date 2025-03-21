@@ -7,10 +7,10 @@
 <AnchorPane prefHeight="1000.0" prefWidth="1100.0" stylesheets="@../../../../Styles.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.discerial.Controladores.HomoPanelController">
 
     <Label fx:id="homoText" layoutX="160.0" layoutY="80.0" style="-fx-font-size: 50px; -fx-text-fill: #2E8540;" text="HOMO" />
+    <Label fx:id="TituloStyle" layoutX="321.0" layoutY="80.0" style="-fx-font-size: 50px; -fx-text-fill: #2E8540;" text="MODO EDICION" />
 
     <ImageView id="imagenPerfilRedonda" fx:id="imagenSeleccionada" fitHeight="320.0" fitWidth="320.0" layoutX="95.0" layoutY="243.0" preserveRatio="true" />
 
-    <VBox fx:id="contenedor" layoutX="474.0" layoutY="236.0" prefHeight="300.0" prefWidth="600.0" spacing="15">
 
     <VBox alignment="CENTER_LEFT" layoutX="474.0" layoutY="236.0" prefHeight="300.0" prefWidth="600.0" spacing="15">
         <HBox alignment="CENTER_LEFT" spacing="20">
@@ -38,13 +38,13 @@
             <Label id="textFieldSesion" fx:id="lblTiempoJugado" prefWidth="250.0" text="10" />
         </HBox>
     </VBox>
-    </VBox>
 
 
 
-    <Button fx:id="btnEditar" layoutX="696.0" layoutY="751.0" mnemonicParsing="false"
-            onAction="#editarPerfil" prefHeight="77.0" prefWidth="156.0"
-            style="-fx-background-color: #4c5b3d; -fx-text-fill: white;"
-            text="Editar"/>
+
+    <Button id="botonPersonalizado" fx:id="btnEditar" layoutX="622.0" layoutY="740.0" onAction="#entrarModoEdicion" prefHeight="80.0" prefWidth="193.0" text="Editar" visible="true" />
+    <Button id="botonPersonalizado" fx:id="btnGuardar" layoutX="622.0" layoutY="740.0" onAction="#guardarCambios" prefHeight="80.0" prefWidth="193.0" text="Guardar"  visible="false" />
+
+    <ComboBox fx:id="imageComboBox" layoutX="95.0" layoutY="594.0" prefWidth="320.0" visible="false" />
 
 </AnchorPane>

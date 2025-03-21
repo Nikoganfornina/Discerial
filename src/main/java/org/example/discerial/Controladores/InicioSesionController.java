@@ -2,19 +2,13 @@ package org.example.discerial.Controladores;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import org.example.discerial.DAO.IusuariosImpl;
-import org.example.discerial.Util.HibernateUtil;
 import org.example.discerial.Util.SessionManager;
 import org.example.discerial.entities.Usuarios;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.hibernate.query.Query;
+
 
 import java.io.IOException;
-import java.sql.*;
 
 import static org.example.discerial.Util.SessionManager.switchScene;
 
