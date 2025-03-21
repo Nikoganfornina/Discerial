@@ -58,8 +58,6 @@ public interface Iusuarios {
     Usuarios save(Usuarios usuarios);
 
     void activateUser(int id);
-    void deactivateUser(int id);
-    boolean isUserActive(int id);
     Usuarios login(String correo, String contrasena);
     /**
      * Actualiza la información de un usuario existente.
@@ -76,4 +74,9 @@ public interface Iusuarios {
      * @return El usuario eliminado, o {@code null} si no se encuentra un usuario con el ID proporcionado.
      */
     Usuarios deleteById(int id);
+
+    Usuarios cerrarSesion(int id);
+
+    Usuarios currentUser();
+
 }

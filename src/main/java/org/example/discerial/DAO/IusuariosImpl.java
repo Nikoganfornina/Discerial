@@ -1,11 +1,9 @@
 package org.example.discerial.DAO;
 
 import org.example.discerial.Util.HibernateUtil;
-import org.example.discerial.Util.LoadingManager;
 import org.example.discerial.entities.Usuarios;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.query.Query;
 
 import java.util.List;
 
@@ -22,15 +20,16 @@ public class IusuariosImpl implements Iusuarios {
      */
     @Override
     public List<Usuarios> findAll() {
-        LoadingManager.showLoading();
+
         try {
             Session session = HibernateUtil.getSessionFactory().openSession();
 
             List<Usuarios> UsuarioList = session.createQuery("from Usuarios", Usuarios.class).list();
             session.close();
             return UsuarioList;
-        } finally {
-            LoadingManager.hideLoading();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 
@@ -42,7 +41,7 @@ public class IusuariosImpl implements Iusuarios {
      */
     @Override
     public List<Usuarios> findById(int id) {
-        LoadingManager.showLoading();
+
         try {
             Session session = HibernateUtil.getSessionFactory().openSession();
             List<Usuarios> UsuarioList = session.createQuery("from Usuarios where id = :id", Usuarios.class)
@@ -51,7 +50,6 @@ public class IusuariosImpl implements Iusuarios {
             session.close();
             return UsuarioList;
         } finally {
-            LoadingManager.hideLoading();
         }
 
     }
@@ -64,7 +62,6 @@ public class IusuariosImpl implements Iusuarios {
      */
     @Override
     public List<Usuarios> findByCorreo(String correo) {
-        LoadingManager.showLoading();
         try {
             Session session = HibernateUtil.getSessionFactory().openSession();
             List<Usuarios> UsuarioList = session.createQuery("from Usuarios where correo = :correo", Usuarios.class)
@@ -72,8 +69,9 @@ public class IusuariosImpl implements Iusuarios {
                     .list();
             session.close();
             return UsuarioList;
-        } finally {
-            LoadingManager.hideLoading();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
 
     }
@@ -87,7 +85,6 @@ public class IusuariosImpl implements Iusuarios {
 
     @Override
     public List<Usuarios> findByNickname(String nickname) {
-        LoadingManager.showLoading();
 
         try {
             Session session = HibernateUtil.getSessionFactory().openSession();
@@ -96,8 +93,9 @@ public class IusuariosImpl implements Iusuarios {
                     .list();
             session.close();
             return UsuarioList;
-        } finally {
-            LoadingManager.hideLoading();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
 
     }
@@ -110,7 +108,6 @@ public class IusuariosImpl implements Iusuarios {
      */
     @Override
     public Usuarios save(Usuarios usuarios) {
-        LoadingManager.showLoading();
 
         try {
             Session session = HibernateUtil.getSessionFactory().openSession();
@@ -119,9 +116,11 @@ public class IusuariosImpl implements Iusuarios {
             session.getTransaction().commit();
             session.close();
             return usuarios;
-        } finally {
-            LoadingManager.showLoading();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
+
 
     }
 
@@ -133,7 +132,6 @@ public class IusuariosImpl implements Iusuarios {
      */
     @Override
     public Usuarios update(Usuarios usuarios) {
-        LoadingManager.showLoading();
         try {
             Session session = HibernateUtil.getSessionFactory().openSession();
             Transaction transaction = null;
@@ -148,8 +146,9 @@ public class IusuariosImpl implements Iusuarios {
                 session.close(); // Cierra la sesión de Hibernate
             }
             return usuarios;
-        } finally {
-            LoadingManager.hideLoading();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
 
     }
@@ -162,7 +161,6 @@ public class IusuariosImpl implements Iusuarios {
      */
     @Override
     public Usuarios deleteById(int id) {
-        LoadingManager.showLoading();
 
         try {
             Session session = HibernateUtil.getSessionFactory().openSession();
@@ -174,112 +172,96 @@ public class IusuariosImpl implements Iusuarios {
             }
             session.close();
             return usuarios;
-        } finally {
-            LoadingManager.hideLoading();
+        }catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
 
+    }
+
+    @Override
+    public Usuarios cerrarSesion(int id) {
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+
+            // Actualizar el estado de la sesión
+            session.createQuery("UPDATE Usuarios SET sessionActive = false WHERE id = :id")
+                    .setParameter("id", id)
+                    .executeUpdate();
+
+            // Obtener el usuario actualizado para devolverlo
+            Usuarios usuario = session.get(Usuarios.class, id);
+            transaction.commit();
+            return usuario;
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public Usuarios currentUser() {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery("FROM Usuarios WHERE sessionActive = true", Usuarios.class)
+                    .uniqueResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
     public void activateUser(int id) {
-        LoadingManager.showLoading();
-
-        try {
-            Session session = HibernateUtil.getSessionFactory().openSession();
-            try {
-                session.beginTransaction();
-                session.createQuery("UPDATE Usuarios SET sessionActive = true WHERE id = :id")
-                        .setParameter("id", id)
-                        .executeUpdate();
-                session.getTransaction().commit();
-            } catch (Exception e) {
-                if (session.getTransaction() != null) {
-                    session.getTransaction().rollback();
-                }
-                e.printStackTrace();
-            } finally {
-                session.close();
-            }
-        } finally {
-            LoadingManager.hideLoading();
-
-        }
-
-    }
-
-    @Override
-    public void deactivateUser(int id) {
-        LoadingManager.showLoading();
-
-        try {
-            Session session = HibernateUtil.getSessionFactory().openSession();
-            try {
-                session.beginTransaction();
-                session.createQuery("UPDATE Usuarios SET sessionActive = false WHERE id = :id")
-                        .setParameter("id", id)
-                        .executeUpdate();
-                session.getTransaction().commit();
-            } catch (Exception e) {
-                if (session.getTransaction() != null) {
-                    session.getTransaction().rollback();
-                }
-                e.printStackTrace();
-            } finally {
-                session.close();
-            }
-        } finally {
-            LoadingManager.hideLoading();
-
-        }
-
-    }
-
-    @Override
-    public boolean isUserActive(int id) {
-        LoadingManager.showLoading();
-
-        try {
-            Session session = HibernateUtil.getSessionFactory().openSession();
-            Usuarios user = session.get(Usuarios.class, id);
-            session.close();
-            return user != null && user.isSessionActive();
-        } finally {
-            LoadingManager.hideLoading();
-
-        }
-
-    }
-
-    public Usuarios login(String identificador, String contrasena) {
         Transaction transaction = null;
-        Usuarios usuario = null;
-        LoadingManager.showLoading();
-
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
 
-            // Consulta mejorada
-            Query<Usuarios> query = session.createQuery(
-                    "FROM Usuarios WHERE (correo = :identificador OR nickname = :identificador) AND contrasena = :contrasena",
-                    Usuarios.class
-            );
-            query.setParameter("identificador", identificador);
-            query.setParameter("contrasena", contrasena);
+            // Primero desactivar todas las sesiones activas
+            session.createQuery("UPDATE Usuarios SET sessionActive = false")
+                    .executeUpdate();
 
-            usuario = query.uniqueResult();
+            // Activar la sesión específica
+            session.createQuery("UPDATE Usuarios SET sessionActive = true WHERE id = :id")
+                    .setParameter("id", id)
+                    .executeUpdate();
+
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public Usuarios login(String identificador, String contrasena) {
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+
+            Usuarios usuario = session.createQuery(
+                            "FROM Usuarios WHERE (correo = :identificador OR nickname = :identificador) AND contrasena = :contrasena",
+                            Usuarios.class)
+                    .setParameter("identificador", identificador)
+                    .setParameter("contrasena", contrasena)
+                    .uniqueResult();
 
             if (usuario != null) {
+                // Desactivar cualquier sesión previa
+                session.createQuery("UPDATE Usuarios SET sessionActive = false")
+                        .executeUpdate();
+
+                // Activar la nueva sesión
                 usuario.setSessionActive(true);
                 session.update(usuario);
-                transaction.commit();
             }
 
+            transaction.commit();
             return usuario;
         } catch (Exception e) {
             if (transaction != null) transaction.rollback();
-            throw e;
-        } finally {
-            LoadingManager.hideLoading();
+            e.printStackTrace();
+            return null;
         }
     }
 

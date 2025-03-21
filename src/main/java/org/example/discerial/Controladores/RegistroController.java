@@ -1,21 +1,13 @@
 package org.example.discerial.Controladores;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import org.example.discerial.DAO.Iusuarios;
 import org.example.discerial.DAO.IusuariosImpl;
-import org.example.discerial.Util.SessionManager;
 import org.example.discerial.entities.Usuarios;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 import static org.example.discerial.Util.SessionManager.switchScene;
 
@@ -74,9 +66,6 @@ public class RegistroController {
 
                 // Actualiza el objeto local para reflejar el estado activo
                 usuarioGuardado.setSessionActive(true);
-
-                // Guarda el usuario activo en memoria (para usar en otras vistas)
-                SessionManager.setCurrentUser(usuarioGuardado);
 
                 // Cambia de pantalla
                 switchScene("/org/example/discerial/Tabula_view.fxml");

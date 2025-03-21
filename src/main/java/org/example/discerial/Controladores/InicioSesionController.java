@@ -47,9 +47,6 @@ public class InicioSesionController {
         Usuarios usuario = dao.login(correo, contrasena);
 
         if (usuario != null) {
-            // Si las credenciales son correctas, establecemos el usuario en la sesión (esto inicia el contador)
-            SessionManager.setCurrentUser(usuario);
-
             // Cambiamos a la vista principal
             SessionManager.switchScene("/org/example/discerial/Tabula_view.fxml");
         } else {

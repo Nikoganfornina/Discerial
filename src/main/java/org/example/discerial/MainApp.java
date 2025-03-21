@@ -1,9 +1,5 @@
 package org.example.discerial;
 
-import javafx.animation.FadeTransition;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,8 +9,6 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
-import javafx.util.Duration;
-import org.example.discerial.Util.LoadingManager;
 import org.example.discerial.Util.SessionManager;
 
 import java.io.IOException;
@@ -22,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 public class MainApp extends Application {
+
     private static Stage primaryStage;
     private MediaPlayer backgroundMusicPlayer;
     private List<Media> canciones = new ArrayList<>();
@@ -60,7 +55,6 @@ public class MainApp extends Application {
             Scene mainScene = new Scene(root);
             primaryStage.setScene(mainScene);
 
-            LoadingManager.inicializar(primaryStage); // Inicializar después de cargar la escena
 
         } catch (IOException e) {
             System.err.println("Error cargando escena principal: " + e.getMessage());
