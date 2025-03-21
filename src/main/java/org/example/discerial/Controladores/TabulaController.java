@@ -7,13 +7,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Circle;
 import org.example.discerial.DAO.IusuariosImpl;
-import org.example.discerial.Util.SessionManager;
 import org.example.discerial.entities.Usuarios;
 
 import java.io.IOException;
@@ -35,7 +31,19 @@ public class TabulaController {
 
     @FXML
     public void initialize() {
+        MostrarNombreUsuario();
+    }
 
+    private void MostrarNombreUsuario() {
+        IusuariosImpl dao = new IusuariosImpl();
+        Usuarios user = dao.currentUser();
+        if (user != null && user.getNombre() != null && !user.getNombre().isEmpty()) {
+            String nombre = user.getNombre();
+            String nombreFormateado = nombre.substring(0, 1).toUpperCase() + nombre.substring(1);
+            usuarioNombre.setText(nombreFormateado);
+        } else {
+            usuarioNombre.setText("Sin usuario activo");
+        }
     }
 
 
@@ -55,8 +63,6 @@ public class TabulaController {
 
     public void BotoncerrarSesion() throws IOException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Cerrar Sesión");
-        alert.setContentText("Se guardará tu progreso.");
 
         ButtonType buttonTypeYes = new ButtonType("Sí", ButtonBar.ButtonData.OK_DONE);
         ButtonType buttonTypeNo = new ButtonType("No", ButtonBar.ButtonData.CANCEL_CLOSE);

@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -25,8 +26,8 @@ public class MainApp extends Application {
     public void start(Stage stage) throws Exception {
         primaryStage = stage;
         SessionManager.setMainStage(primaryStage);
+        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/Images/Dlogo.png")));
 
-        // 1. Mostrar splash screen
         mostrarSplashScreen();
     }
 

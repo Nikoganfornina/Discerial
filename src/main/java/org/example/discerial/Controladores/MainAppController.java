@@ -9,8 +9,6 @@ import static org.example.discerial.Util.SessionManager.switchScene;
 
 public class MainAppController {
 
-
-
     public void switchToInicioSesion() throws Exception {
         switchScene("/org/example/discerial/InicioSesion_View.fxml");
     }
@@ -19,24 +17,5 @@ public class MainAppController {
         switchScene("/org/example/discerial/CrudPreguntas.fxml");
     }
 
-
-
-    /**
-     * Verifica si ya existen categorías en la base de datos.
-     * Si no existen, crea las categorías: Filosofía, Historia, Literatura y Biología.
-     */
-    private void crearCategorias() {
-        // Abrir una sesión para consultar la cantidad de categorías existentes
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        session.beginTransaction();
-        Long count = (Long) session.createQuery("select count(c) from Categoria c").uniqueResult();
-        session.getTransaction().commit();
-        session.close();
-
-        if (count == 0) {
-            ICategoriaImpl categoriaDao = new ICategoriaImpl();
-           
-        }
-    }
 
 }
