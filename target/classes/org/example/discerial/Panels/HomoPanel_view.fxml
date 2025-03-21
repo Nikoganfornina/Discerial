@@ -8,44 +8,43 @@
 
     <Label fx:id="homoText" layoutX="160.0" layoutY="80.0" style="-fx-font-size: 50px; -fx-text-fill: #2E8540;" text="HOMO" />
 
-    <ComboBox fx:id="comboBoxImagenes" layoutX="87.0" layoutY="618.0" prefWidth="200.0" />
+    <ImageView id="imagenPerfilRedonda" fx:id="imagenSeleccionada" fitHeight="320.0" fitWidth="320.0" layoutX="95.0" layoutY="243.0" preserveRatio="true" />
 
-    <ImageView fx:id="imagenSeleccionada" fitHeight="150.0" fitWidth="150.0" layoutX="112.0" layoutY="309.0" preserveRatio="true" />
-
+    <VBox fx:id="contenedor" layoutX="474.0" layoutY="236.0" prefHeight="300.0" prefWidth="600.0" spacing="15">
 
     <VBox alignment="CENTER_LEFT" layoutX="474.0" layoutY="236.0" prefHeight="300.0" prefWidth="600.0" spacing="15">
         <HBox alignment="CENTER_LEFT" spacing="20">
             <Label id="SubstitulosStyle" prefWidth="200.0" style="-fx-font-size: 18px;" text="NickName:" />
-            <TextField  fx:id="usuarioNombre" id="textFieldSesion" prefWidth="250.0" text="Usuario_Register1978" />
+            <TextField id="textFieldSesion" fx:id="usuarioNombre" prefWidth="250.0" text="Usuario_Register1978" />
         </HBox>
         <HBox alignment="CENTER_LEFT" spacing="20">
             <Label id="SubstitulosStyle" prefWidth="200.0" style="-fx-font-size: 18px;" text="Correo:" />
-            <TextField fx:id="usuarioCorreo"  id="textFieldSesion" prefWidth="250.0" text="Usuario@registrado.com" />
+            <TextField id="textFieldSesion" fx:id="usuarioCorreo" prefWidth="250.0" text="Usuario@registrado.com" />
         </HBox>
         <HBox alignment="CENTER_LEFT" spacing="20">
             <Label id="SubstitulosStyle" prefWidth="200.0" style="-fx-font-size: 18px;" text="Preguntas Acertadas:" />
-            <TextField fx:id="usuarioPreguntasAcertadas" id="textFieldSesion" prefWidth="250.0" text="230" />
+            <TextField id="textFieldSesion" fx:id="usuarioPreguntasAcertadas" prefWidth="250.0" text="230" />
         </HBox>
         <HBox alignment="CENTER_LEFT" spacing="20">
             <Label id="SubstitulosStyle" prefWidth="200.0" style="-fx-font-size: 18px;" text="Preguntas Erróneas:" />
-            <TextField fx:id="usuarioPreguntasErroneas" id="textFieldSesion" prefWidth="250.0" text="30" />
+            <TextField id="textFieldSesion" fx:id="usuarioPreguntasErroneas" prefWidth="250.0" text="30" />
         </HBox>
         <HBox alignment="CENTER_LEFT" spacing="20">
             <Label id="SubstitulosStyle" prefWidth="200.0" style="-fx-font-size: 18px;" text="Categoría Favorita:" />
-            <TextField fx:id="usuarioCategoriaFavorita" id="textFieldSesion" prefWidth="250.0" text="Historia" />
+            <TextField id="textFieldSesion" fx:id="usuarioCategoriaFavorita" prefWidth="250.0" text="Historia" />
         </HBox>
         <HBox alignment="CENTER_LEFT" spacing="20">
             <Label id="SubstitulosStyle" prefWidth="200.0" style="-fx-font-size: 18px;" text="Horas en juego:" />
-            <Label fx:id="lblTiempoJugado" id="textFieldSesion" prefWidth="250.0" text="10" />
+            <Label id="textFieldSesion" fx:id="lblTiempoJugado" prefWidth="250.0" text="10" />
         </HBox>
+    </VBox>
     </VBox>
 
 
 
-        <Button id="botonPersonalizado" layoutX="569.0" layoutY="688.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="168.0" style="-fx-background-color: #4c5b3d; -fx-text-fill: white;" text="Editar">
-            <graphic>
-                <Pane id="PlumaIcon" prefHeight="50.0" prefWidth="50.0" />
-            </graphic>
-        </Button>
+    <Button fx:id="btnEditar" layoutX="696.0" layoutY="751.0" mnemonicParsing="false"
+            onAction="#editarPerfil" prefHeight="77.0" prefWidth="156.0"
+            style="-fx-background-color: #4c5b3d; -fx-text-fill: white;"
+            text="Editar"/>
 
 </AnchorPane>

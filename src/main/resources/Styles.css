@@ -177,3 +177,9 @@
      -fx-border-color: #000000; /* Color del borde */
      -fx-border-width: 2px; /* Ancho del borde */
 }
+
+#imagenPerfilRedonda {
+    -fx-background-radius: 160px; /* la mitad de 320 */
+    -fx-border-radius: 160px;
+    -fx-overflow: hidden; /* recorta lo que sobresalga */
+}
