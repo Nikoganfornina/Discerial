@@ -5,8 +5,6 @@
 
 <AnchorPane prefHeight="420.0" prefWidth="620.0" stylesheets="@../../../../SelectImagesStyle.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.discerial.Controladores.SelectImagesController">
 
-    <!-- Botón de cierre -->
-    <Button id="btnCerrar" layoutX="559.0" layoutY="14.0" onAction="#cerrarVentana" text="X" />
 
     <!-- Contenedor de imágenes -->
     <Pane id="contenedorImagenes" layoutX="39.0" layoutY="49.0" prefHeight="300" prefWidth="520">

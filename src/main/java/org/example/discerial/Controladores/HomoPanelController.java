@@ -6,6 +6,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.shape.Circle;
 import org.example.discerial.DAO.IusuariosImpl;
 import org.example.discerial.entities.Usuarios;
 
@@ -65,12 +66,18 @@ public class HomoPanelController {
                 String path = "/Images/IconosPerfil/" + usuarioActual.getImagen();
                 Image image = new Image(getClass().getResource(path).toExternalForm());
                 imagenSeleccionada.setImage(image);
+
+                // Crear un clip circular para la imagen
+                Circle clip = new Circle(160, 160, 160); // Establecer el centro y el radio del círculo
+                imagenSeleccionada.setClip(clip); // Aplicar el clip al ImageView
+
             } catch (Exception e) {
                 System.err.println("Error cargando imagen de perfil: " + usuarioActual.getImagen());
                 e.printStackTrace();
             }
         }
     }
+
 
     private void configurarCampos() {
         usuarioNombre.setEditable(false);
