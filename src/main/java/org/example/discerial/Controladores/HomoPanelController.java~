@@ -23,7 +23,7 @@ public class HomoPanelController {
     @FXML private Label lblTiempoJugado;
     @FXML private Button btnEditar;
     @FXML private Button btnGuardar;
-    @FXML private Button btnIconosPerfil;
+    @FXML private Button btnIconosPerfil;  // Este es el botón que quieres ocultar
     @FXML private AnchorPane contenedorImagenes;
 
     private IusuariosImpl usuariosDao = new IusuariosImpl();
@@ -39,7 +39,7 @@ public class HomoPanelController {
     private void configurarVisibilidadInicial() {
         TituloStyle.setVisible(false);
         btnGuardar.setVisible(false);
-        btnIconosPerfil.setVisible(false);
+        btnIconosPerfil.setVisible(true); // Inicialmente visible
         contenedorImagenes.setVisible(false);
     }
 
@@ -114,7 +114,7 @@ public class HomoPanelController {
         usuarioNombre.setEditable(habilitar);
         usuarioCorreo.setEditable(habilitar);
         TituloStyle.setVisible(habilitar);
-        btnIconosPerfil.setVisible(habilitar);
+        btnIconosPerfil.setVisible(habilitar); // El botón se muestra solo cuando se está en modo de edición
         contenedorImagenes.setVisible(false);
     }
 
@@ -134,25 +134,31 @@ public class HomoPanelController {
     @FXML
     private void visualizarImagen() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/discerial/Vistas/SelectImages.fxml"));
+            // Ocultar el botón cuando se pulse para cambiar la foto
+            btnIconosPerfil.setVisible(false);
+
+            // Modificar la ruta al archivo FXML correctamente
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/discerial/Panels/SelectImages.fxml"));
             AnchorPane panel = loader.load();
 
-            // Obtener el controlador del panel de selección
+            // Obtenemos el controlador del panel cargado
             SelectImagesController controller = loader.getController();
 
-            // Configurar el callback para cuando se seleccione una imagen
+            // Le decimos qué hacer cuando seleccionen una imagen
             controller.setOnImageSelected(nombreImagen -> {
-                usuarioActual.setImagen(nombreImagen);  // Actualiza la imagen del usuario
-                cargarImagenPerfil();  // Actualiza la imagen en la vista principal
-                contenedorImagenes.setVisible(false);  // Oculta el panel de selección de imágenes
+                usuarioActual.setImagen(nombreImagen);
+                cargarImagenPerfil();
+                contenedorImagenes.setVisible(false);
+
+                // Mostrar el botón nuevamente después de la selección de imagen
+                btnIconosPerfil.setVisible(true);
             });
 
-            // Mostrar el panel en el contenedor
             contenedorImagenes.getChildren().setAll(panel);
-            contenedorImagenes.setVisible(true);  // Hacer visible el contenedor de imágenes
+            contenedorImagenes.setVisible(true);
         } catch (IOException e) {
             e.printStackTrace();
+            // Manejo de error
         }
     }
-
 }
