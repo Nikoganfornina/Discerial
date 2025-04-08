@@ -6,6 +6,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.shape.Circle;
 import org.example.discerial.DAO.IusuariosImpl;
 import org.example.discerial.entities.Usuarios;
 
@@ -23,7 +24,7 @@ public class HomoPanelController {
     @FXML private Label lblTiempoJugado;
     @FXML private Button btnEditar;
     @FXML private Button btnGuardar;
-    @FXML private Button btnIconosPerfil;
+    @FXML private Button btnIconosPerfil;  // Este es el botón que quieres ocultar por defecto
     @FXML private AnchorPane contenedorImagenes;
 
     private IusuariosImpl usuariosDao = new IusuariosImpl();
@@ -39,7 +40,7 @@ public class HomoPanelController {
     private void configurarVisibilidadInicial() {
         TituloStyle.setVisible(false);
         btnGuardar.setVisible(false);
-        btnIconosPerfil.setVisible(false);
+        btnIconosPerfil.setVisible(false); // El botón comienza oculto
         contenedorImagenes.setVisible(false);
     }
 
@@ -65,12 +66,18 @@ public class HomoPanelController {
                 String path = "/Images/IconosPerfil/" + usuarioActual.getImagen();
                 Image image = new Image(getClass().getResource(path).toExternalForm());
                 imagenSeleccionada.setImage(image);
+
+                // Crear un clip circular para la imagen
+                Circle clip = new Circle(160, 160, 160); // Establecer el centro y el radio del círculo
+                imagenSeleccionada.setClip(clip); // Aplicar el clip al ImageView
+
             } catch (Exception e) {
                 System.err.println("Error cargando imagen de perfil: " + usuarioActual.getImagen());
                 e.printStackTrace();
             }
         }
     }
+
 
     private void configurarCampos() {
         usuarioNombre.setEditable(false);
@@ -84,6 +91,7 @@ public class HomoPanelController {
     private void entrarModoEdicion() {
         habilitarEdicion(true);
         configurarVisibilidadEdicion(true);
+        btnIconosPerfil.setVisible(true); // El botón se hace visible cuando entramos en modo edición
     }
 
     @FXML
@@ -93,6 +101,7 @@ public class HomoPanelController {
             usuariosDao.update(usuarioActual);
             habilitarEdicion(false);
             configurarVisibilidadEdicion(false);
+            btnIconosPerfil.setVisible(false); // El botón se oculta al guardar
             contenedorImagenes.setVisible(false);
         }
     }
@@ -114,7 +123,6 @@ public class HomoPanelController {
         usuarioNombre.setEditable(habilitar);
         usuarioCorreo.setEditable(habilitar);
         TituloStyle.setVisible(habilitar);
-        btnIconosPerfil.setVisible(habilitar);
         contenedorImagenes.setVisible(false);
     }
 
@@ -134,6 +142,9 @@ public class HomoPanelController {
     @FXML
     private void visualizarImagen() {
         try {
+            // Ocultar el botón cuando se pulse para cambiar la foto
+            btnIconosPerfil.setVisible(false);
+
             // Modificar la ruta al archivo FXML correctamente
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/discerial/Panels/SelectImages.fxml"));
             AnchorPane panel = loader.load();
@@ -146,6 +157,9 @@ public class HomoPanelController {
                 usuarioActual.setImagen(nombreImagen);
                 cargarImagenPerfil();
                 contenedorImagenes.setVisible(false);
+
+                // Mostrar el botón nuevamente después de la selección de imagen
+                btnIconosPerfil.setVisible(true);
             });
 
             contenedorImagenes.getChildren().setAll(panel);
