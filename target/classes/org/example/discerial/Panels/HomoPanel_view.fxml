@@ -40,11 +40,11 @@
     </VBox>
 
 
-
-
     <Button id="botonPersonalizado" fx:id="btnEditar" layoutX="622.0" layoutY="740.0" onAction="#entrarModoEdicion" prefHeight="80.0" prefWidth="193.0" text="Editar" visible="true" />
-    <Button id="botonPersonalizado" fx:id="btnGuardar" layoutX="622.0" layoutY="740.0" onAction="#guardarCambios" prefHeight="80.0" prefWidth="193.0" text="Guardar"  visible="false" />
+    <Button id="botonPersonalizado" fx:id="btnGuardar" layoutX="622.0" layoutY="740.0" onAction="#guardarCambios" prefHeight="80.0" prefWidth="193.0" text="Guardar" visible="false" />
 
-    <ComboBox fx:id="imageComboBox" layoutX="95.0" layoutY="594.0" prefWidth="320.0" visible="false" />
+    <AnchorPane fx:id="contenedorImagenes" layoutX="21.0" layoutY="550.0" prefHeight="400" prefWidth="600" visible="false" />
+    <Button id="botonPersonalizado" fx:id="btnIconosPerfil" layoutX="88.0" layoutY="740.0" onAction="#visualizarImagen" prefHeight="80.0" prefWidth="264.0" text="Cambiar Foto Perfil" visible="false" />
+
 
 </AnchorPane>

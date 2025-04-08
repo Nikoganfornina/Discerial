@@ -134,25 +134,25 @@ public class HomoPanelController {
     @FXML
     private void visualizarImagen() {
         try {
-            // Modificar la ruta al archivo FXML correctamente
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/discerial/Panels/SelectImages.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/discerial/Vistas/SelectImages.fxml"));
             AnchorPane panel = loader.load();
 
-            // Obtenemos el controlador del panel cargado
+            // Obtener el controlador del panel de selección
             SelectImagesController controller = loader.getController();
 
-            // Le decimos qué hacer cuando seleccionen una imagen
+            // Configurar el callback para cuando se seleccione una imagen
             controller.setOnImageSelected(nombreImagen -> {
-                usuarioActual.setImagen(nombreImagen);
-                cargarImagenPerfil();
-                contenedorImagenes.setVisible(false);
+                usuarioActual.setImagen(nombreImagen);  // Actualiza la imagen del usuario
+                cargarImagenPerfil();  // Actualiza la imagen en la vista principal
+                contenedorImagenes.setVisible(false);  // Oculta el panel de selección de imágenes
             });
 
+            // Mostrar el panel en el contenedor
             contenedorImagenes.getChildren().setAll(panel);
-            contenedorImagenes.setVisible(true);
+            contenedorImagenes.setVisible(true);  // Hacer visible el contenedor de imágenes
         } catch (IOException e) {
             e.printStackTrace();
-            // Manejo de error
         }
     }
+
 }

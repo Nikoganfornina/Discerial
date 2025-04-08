@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="420.0" prefWidth="620.0" stylesheets="@../../../../SelectImagesStyle.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.discerial.Controladores.SelectImagesController">
+
+    <!-- Botón de cierre -->
+    <Button id="btnCerrar" layoutX="559.0" layoutY="14.0" onAction="#cerrarVentana" text="X" />
+
+    <!-- Contenedor de imágenes -->
+    <Pane id="contenedorImagenes" layoutX="39.0" layoutY="49.0" prefHeight="300" prefWidth="520">
+        <!-- Fila 1 de imágenes -->
+        <Label fx:id="img1" layoutX="10" layoutY="10" />
+        <Label fx:id="img2" layoutX="120" layoutY="10" />
+        <Label fx:id="img3" layoutX="230" layoutY="10" />
+        <Label fx:id="img4" layoutX="340" layoutY="10" />
+        <Label fx:id="img5" layoutX="450" layoutY="10" />
+
+        <!-- Fila 2 de imágenes -->
+        <Label fx:id="img6" layoutX="10" layoutY="110" />
+        <Label fx:id="img7" layoutX="120" layoutY="110" />
+        <Label fx:id="img8" layoutX="230" layoutY="110" />
+        <Label fx:id="img9" layoutX="340" layoutY="110" />
+        <Label fx:id="img10" layoutX="450" layoutY="110" />
+
+        <!-- Fila 3 de imágenes -->
+        <Label fx:id="img11" layoutX="10" layoutY="210" />
+        <Label fx:id="img12" layoutX="120" layoutY="210" />
+        <Label fx:id="img13" layoutX="230" layoutY="210" />
+        <Label fx:id="img14" layoutX="340" layoutY="210" />
+        <Label fx:id="img15" layoutX="450" layoutY="210" />
+    </Pane>
+
+</AnchorPane>

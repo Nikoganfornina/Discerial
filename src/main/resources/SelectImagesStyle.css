@@ -1,0 +1,97 @@
+/* Fondo general */
+.anchor-pane {
+    -fx-background-color: rgba(107, 142, 35, 0.3); /* Fondo verde oliva translúcido */
+}
+
+/* Estilo para el botón de cerrar */
+#btnCerrar {
+    -fx-background-color: transparent;
+    -fx-text-fill: red;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-border-width: 0;
+    -fx-cursor: hand;
+}
+
+#btnCerrar:hover {
+    -fx-text-fill: darkred;
+}
+
+/* Estilo para los Labels (las imágenes) */
+Label {
+    -fx-background-radius: 50%; /* Bordes totalmente redondeados para hacer circular */
+    -fx-pref-width: 100px; /* Tamaño de las imágenes */
+    -fx-pref-height: 100px; /* Tamaño de las imágenes */
+    -fx-background-color: transparent; /* Fondo transparente, no gris */
+    -fx-alignment: center;
+    -fx-cursor: hand;
+    -fx-border-color: gray; /* Color del borde */
+    -fx-border-width: 2px; /* Grosor del borde */
+    -fx-background-size: cover; /* Para que la imagen cubra todo el contenedor */
+}
+
+Label:hover {
+    -fx-background-color: transparent; /* No cambiar el fondo al hacer hover */
+    -fx-border-color: green; /* Cambiar el borde a verde al hacer hover */
+}
+
+/* Estilos para cada Label con la imagen */
+#img1 {
+    -fx-background-image: url('file:/C:/Users/nikog/Desktop/CopiaDiscerial/Discerial/src/main/resources/Images/IconosPerfil/hombre1.jpg');
+}
+
+#img2 {
+    -fx-background-image: url('file:/C:/Users/nikog/Desktop/CopiaDiscerial/Discerial/src/main/resources/Images/IconosPerfil/hombre2.jpg');
+}
+
+#img3 {
+    -fx-background-image: url('file:/C:/Users/nikog/Desktop/CopiaDiscerial/Discerial/src/main/resources/Images/IconosPerfil/hombre3.jpg');
+}
+
+#img4 {
+    -fx-background-image: url('file:/C:/Users/nikog/Desktop/CopiaDiscerial/Discerial/src/main/resources/Images/IconosPerfil/hombre4.jpg');
+}
+
+#img5 {
+    -fx-background-image: url('file:/C:/Users/nikog/Desktop/CopiaDiscerial/Discerial/src/main/resources/Images/IconosPerfil/mujer1.jpg');
+}
+
+#img6 {
+    -fx-background-image: url('file:/C:/Users/nikog/Desktop/CopiaDiscerial/Discerial/src/main/resources/Images/IconosPerfil/mujer2.jpg');
+}
+
+#img7 {
+    -fx-background-image: url('file:/C:/Users/nikog/Desktop/CopiaDiscerial/Discerial/src/main/resources/Images/IconosPerfil/mujer3.jpg');
+}
+
+#img8 {
+    -fx-background-image: url('file:/C:/Users/nikog/Desktop/CopiaDiscerial/Discerial/src/main/resources/Images/IconosPerfil/mujer4.jpg');
+}
+
+#img9 {
+    -fx-background-image: url('file:/C:/Users/nikog/Desktop/CopiaDiscerial/Discerial/src/main/resources/Images/IconosPerfil/hombre5.jpg');
+}
+
+#img10 {
+    -fx-background-image: url('file:/C:/Users/nikog/Desktop/CopiaDiscerial/Discerial/src/main/resources/Images/IconosPerfil/hombre6.jpg');
+}
+
+#img11 {
+    -fx-background-image: url('file:/C:/Users/nikog/Desktop/CopiaDiscerial/Discerial/src/main/resources/Images/IconosPerfil/hombre7.jpg');
+}
+
+#img12 {
+    -fx-background-image: url('file:/C:/Users/nikog/Desktop/CopiaDiscerial/Discerial/src/main/resources/Images/IconosPerfil/hombre8.jpg');
+}
+
+#img13 {
+    -fx-background-image: url('file:/C:/Users/nikog/Desktop/CopiaDiscerial/Discerial/src/main/resources/Images/IconosPerfil/mujer5.jpg');
+}
+
+#img14 {
+    -fx-background-image: url('file:/C:/Users/nikog/Desktop/CopiaDiscerial/Discerial/src/main/resources/Images/IconosPerfil/mujer6.jpg');
+}
+
+#img15 {
+    -fx-background-image: url('file:/C:/Users/nikog/Desktop/CopiaDiscerial/Discerial/src/main/resources/Images/IconosPerfil/mujer7.jpg');
+}
