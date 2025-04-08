@@ -6,7 +6,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.example.discerial.DAO.IusuariosImpl;
 import org.example.discerial.entities.Usuarios;
-import java.io.File;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +26,6 @@ public class HomoPanelController {
 
     private IusuariosImpl usuariosDao = new IusuariosImpl();
     private Usuarios usuarioActual;
-    private final String IMAGE_PATH = "E:/REPOSITORIO/JAVA/Discerial/src/main/resources/Images/IconosPerfil/";
 
     @FXML
     public void initialize() {
@@ -44,7 +43,7 @@ public class HomoPanelController {
 
     private void cargarUsuarioActivo() {
         usuarioActual = usuariosDao.currentUser();
-        if(usuarioActual != null) {
+        if (usuarioActual != null) {
             actualizarCamposUsuario();
             cargarImagenPerfil();
         }
@@ -59,9 +58,15 @@ public class HomoPanelController {
     }
 
     private void cargarImagenPerfil() {
-        if(usuarioActual.getImagen() != null) {
-            Image image = new Image(new File(IMAGE_PATH + usuarioActual.getImagen()).toURI().toString());
-            imagenSeleccionada.setImage(image);
+        if (usuarioActual.getImagen() != null) {
+            try {
+                String path = "/Images/IconosPerfil/" + usuarioActual.getImagen();
+                Image image = new Image(getClass().getResource(path).toExternalForm());
+                imagenSeleccionada.setImage(image);
+            } catch (Exception e) {
+                System.err.println("Error cargando imagen de perfil: " + usuarioActual.getImagen());
+                e.printStackTrace();
+            }
         }
     }
 
@@ -75,7 +80,7 @@ public class HomoPanelController {
 
     private void cargarImagenes() {
         List<String> imagenes = new ArrayList<>();
-        for(int i = 1; i <= 8; i++) {
+        for (int i = 1; i <= 8; i++) {
             imagenes.add("hombre" + i + ".jpg");
             imagenes.add("mujer" + i + ".jpg");
         }
@@ -85,9 +90,15 @@ public class HomoPanelController {
 
     private void configurarListenerImagen() {
         imageComboBox.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
-            if(newVal != null) {
-                Image image = new Image(new File(IMAGE_PATH + newVal).toURI().toString());
-                imagenSeleccionada.setImage(image);
+            if (newVal != null) {
+                try {
+                    String path = "/Images/IconosPerfil/" + newVal;
+                    Image image = new Image(getClass().getResource(path).toExternalForm());
+                    imagenSeleccionada.setImage(image);
+                } catch (Exception e) {
+                    System.err.println("Error cargando imagen seleccionada: " + newVal);
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -101,7 +112,7 @@ public class HomoPanelController {
 
     @FXML
     private void guardarCambios() {
-        if(validarCampos()) {
+        if (validarCampos()) {
             actualizarDatosUsuario();
             usuariosDao.update(usuarioActual);
             habilitarEdicion(false);
@@ -110,7 +121,7 @@ public class HomoPanelController {
     }
 
     private boolean validarCampos() {
-        if(usuarioNombre.getText().isBlank() || usuarioCorreo.getText().isBlank()) {
+        if (usuarioNombre.getText().isBlank() || usuarioCorreo.getText().isBlank()) {
             mostrarAlerta("Campos requeridos", "Nickname y correo son obligatorios");
             return false;
         }
@@ -122,7 +133,7 @@ public class HomoPanelController {
         usuarioActual.setCorreo(usuarioCorreo.getText());
 
         String nuevaImagen = imageComboBox.getValue();
-        if(nuevaImagen != null) {
+        if (nuevaImagen != null) {
             usuarioActual.setImagen(nuevaImagen);
             cargarImagenPerfil();
         }
@@ -141,7 +152,7 @@ public class HomoPanelController {
     }
 
     private void seleccionarImagenActual() {
-        if(usuarioActual.getImagen() != null) {
+        if (usuarioActual.getImagen() != null) {
             imageComboBox.getSelectionModel().select(usuarioActual.getImagen());
         }
     }
