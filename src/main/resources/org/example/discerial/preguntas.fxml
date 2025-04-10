@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml" xmlns="http://javafx.com/javafx"
+            fx:controller="org.example.discerial.Controladores.VistaPreguntaController"
+            prefHeight="1000.0" prefWidth="1500.0" stylesheets="@../../../Styles.css">
+
+    <VBox spacing="20.0" alignment="TOP_CENTER" AnchorPane.topAnchor="20" AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20">
+        <Label fx:id="lblCategoria" text="Categoría: Historia" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+        <Label fx:id="lblPregunta" wrapText="true" style="-fx-font-size: 24px;" text="Aquí va el texto de la pregunta"/>
+
+        <ImageView fx:id="imgPregunta" fitHeight="200" fitWidth="300" preserveRatio="true" />
+
+        <VBox spacing="10">
+            <Label fx:id="lblRespuestaCorrecta" style="-fx-font-size: 16px;" text="Respuesta correcta: ..." />
+        </VBox>
+
+        <HBox spacing="20" alignment="CENTER">
+            <Button fx:id="btnAnterior" text="Anterior" onAction="#handleAnterior" style="-fx-background-color: #4c5b3d; -fx-text-fill: white;" />
+            <Button fx:id="btnSiguiente" text="Siguiente" onAction="#handleSiguiente" style="-fx-background-color: #4c5b3d; -fx-text-fill: white;" />
+        </HBox>
+
+
+    </VBox>
+
+    <Button fx:id="btnVolver"
+            layoutX="1286.0" layoutY="885.0"
+            onAction="#handleVolver"
+            prefHeight="78.0" prefWidth="174.0"
+            text="Volver" />
+
+</AnchorPane>

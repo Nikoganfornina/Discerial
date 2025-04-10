@@ -21,13 +21,54 @@
     -fx-border-color: transparent;
 }
 
+#btnVerIndividual {
+-fx-background-color: #4c5b3d;
+    -fx-text-fill: white;
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+
+    -fx-padding: 12px 25px;
+    -fx-background-radius: 50px;
+    -fx-border-radius: 50px;
+    -fx-border-color: transparent;
+}
+
 #botonPersonalizado:hover {
+    -fx-background-color: #2E8540;
+}
+
+#btnVerIndividual:hover {
     -fx-background-color: #2E8540;
 }
 
 #botonPersonalizado:pressed {
     -fx-background-color: #3AA655;
 }
+
+#btnVerIndividual:pressed {
+    -fx-background-color: #3AA655;
+}
+
+#btnVolver {
+    -fx-background-color: #4c5b3d;
+    -fx-text-fill: white;
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-padding: 12px 25px;
+    -fx-background-radius: 50px;
+    -fx-border-radius: 50px;
+    -fx-border-color: transparent;
+}
+
+#btnVolver:hover {
+    -fx-background-color: #2E8540;
+}
+
+#btnVolver:pressed {
+    -fx-background-color: #3AA655;
+}
+
+
 #imagenPerfil {
     -fx-background-image: url("Images/Logo.png");
     -fx-background-size: cover;
