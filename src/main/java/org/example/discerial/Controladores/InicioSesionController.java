@@ -31,22 +31,31 @@ public class InicioSesionController {
         switchScene("/org/example/discerial/Registro_View.fxml");
     }
 
+    // Método testable sin JavaFX
+    public boolean autenticarUsuario(String correo, String contrasena, IusuariosImpl dao) throws Exception {
+        Usuarios usuario = dao.login(correo, contrasena);
+        return usuario != null;
+    }
+
+
+
     @FXML
     public void iniciarSesion() throws Exception {
         IusuariosImpl dao = new IusuariosImpl();
         String correo = SesionCorreo.getText();
         String contrasena = SesionContrasena.getText();
 
-        // Llamamos al método login del DAO para validar las credenciales
-        Usuarios usuario = dao.login(correo, contrasena);
-
-        if (usuario != null) {
-            // Cambiamos a la vista principal
-            SessionManager.switchScene("/org/example/discerial/Tabula_view.fxml");
-        } else {
-            // Si las credenciales son incorrectas, mostramos un mensaje de error
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Credenciales inválidas. Por favor, inténtalo de nuevo.");
+        try {
+            if (autenticarUsuario(correo, contrasena, dao)) {
+                SessionManager.switchScene("/org/example/discerial/Tabula_view.fxml");
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Credenciales inválidas. Por favor, inténtalo de nuevo.");
+                alert.showAndWait();
+            }
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Error en la autenticación: " + e.getMessage());
             alert.showAndWait();
         }
     }
+
 }
