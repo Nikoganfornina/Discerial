@@ -2,7 +2,6 @@ package org.example.discerial.DAO;
 
 import org.example.discerial.Util.HibernateUtil;
 import org.example.discerial.entities.Categoria;
-import org.example.discerial.entities.Pregunta;
 import org.hibernate.Session;
 
 import java.util.List;
@@ -20,10 +19,19 @@ public class ICategoriaImpl implements ICategoria {
     }
 
     @Override
+    public List<Categoria> findByNombre(String nombre) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery(
+                            "FROM Categoria WHERE nombre = :nombre", Categoria.class)
+                    .setParameter("nombre", nombre)
+                    .list();
+        }
+    }
+
+    @Override
     public List<Categoria> findAll() {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        List<Categoria> categoriaList = session.createQuery("from Categoria", Categoria.class).list();
-        session.close();
-        return categoriaList;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery("FROM Categoria", Categoria.class).list();
+        }
     }
 }

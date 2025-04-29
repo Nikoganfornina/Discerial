@@ -14,7 +14,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 
+import org.example.discerial.DAO.ICategoriaImpl;
 import org.example.discerial.DAO.IusuariosImpl;
+import org.example.discerial.entities.Categoria;
 import org.example.discerial.entities.Usuarios;
 import org.example.discerial.Util.SessionManager;
 
@@ -32,6 +34,7 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+        seedCategorias();
         primaryStage = stage;
         SessionManager.setMainStage(primaryStage);
         primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/Images/Dlogo.png")));
@@ -145,6 +148,19 @@ public class MainApp extends Application {
                 primaryStage.close();  // Cerrar la ventana después de la confirmación
             }
         });
+    }
+
+    private void seedCategorias() {
+        ICategoriaImpl dao = new ICategoriaImpl();
+        List<String> nombres = List.of(
+                "Historia", "Geografía", "Literatura", "Filosofía", "Biología"
+        );
+
+        for (String nombre : nombres) {
+            if (dao.findByNombre(nombre).isEmpty()) {
+                dao.save(new Categoria(nombre));
+            }
+        }
     }
 
     public static void main(String[] args) {

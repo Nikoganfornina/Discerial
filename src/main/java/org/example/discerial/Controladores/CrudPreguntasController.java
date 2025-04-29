@@ -94,13 +94,14 @@ public class CrudPreguntasController {
     }
 
     private void loadCategorias() {
-        // Se instancia el DAO de Categoría
+        // Instancia el DAO de Categoría
         ICategoria categoriaDao = new ICategoriaImpl();
-        // Se recuperan todas las categorías desde la base de datos
+        // Recupera todas las categorías (Historia, Geografía, etc.)
         List<Categoria> categorias = categoriaDao.findAll();
-        // Se asignan al ComboBox
+        // Asigna la lista al ComboBox
         categoriaComboBox.setItems(FXCollections.observableArrayList(categorias));
     }
+
 
     private void loadTipos() {
         ObservableList<String> tipos = FXCollections.observableArrayList("multiple", "vf");
