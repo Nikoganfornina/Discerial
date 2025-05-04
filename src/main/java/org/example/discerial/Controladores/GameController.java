@@ -8,9 +8,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Duration;
+import org.example.discerial.DAO.IEstadoUsuarioImpl;
 import org.example.discerial.DAO.IPregunta;
 import org.example.discerial.DAO.IPreguntaImpl;
 import org.example.discerial.DAO.IusuariosImpl;
+import org.example.discerial.entities.EstadoUsuario;
 import org.example.discerial.entities.Pregunta;
 import org.example.discerial.entities.Usuarios;
 
@@ -114,19 +116,25 @@ public class GameController {
         showQuestion(currentIndex + 1);
     }
 
-    @FXML
-    private void handleOpcion(MouseEvent e) {
+    @FXML private void handleOpcion(MouseEvent e) {
         timer.stop();
-        Label clicked = (Label)e.getSource();
-        String correcta = preguntas.get(currentIndex).getRespuestaCorrecta();
-        if (clicked.getText().equals(correcta)) {
-            usuarioDao.incrementAcertadas(usuarioActual.getId());
-        } else {
-            usuarioDao.incrementErroneas(usuarioActual.getId());
+        Label clicked = (Label) e.getSource();
+        Pregunta p = preguntas.get(currentIndex);
+        boolean resultado = clicked.getText().equals(p.getRespuestaCorrecta());
+        if (!resultado) {
             clicked.setStyle("-fx-border-color: red; -fx-border-width: 3;");
         }
         highlightCorrect();
+
+        // ——— AÑADE ESTO ———
+        // Guarda en BD el estado de este intento
+        Usuarios usuario = new IusuariosImpl().currentUser();
+        if (usuario != null) {
+            EstadoUsuario eu = new EstadoUsuario(usuario, p, resultado);
+            new IEstadoUsuarioImpl().save(eu);
+        }
     }
+
 
     @FXML
     private void handleVolver() throws Exception {

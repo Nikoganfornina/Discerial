@@ -21,5 +21,7 @@
         <mapping class="org.example.discerial.entities.Usuarios"/>
         <mapping class="org.example.discerial.entities.Categoria"/>
         <mapping class="org.example.discerial.entities.Pregunta"/>
+        <mapping class="org.example.discerial.entities.EstadoUsuario"/>
+
     </session-factory>
 </hibernate-configuration>
