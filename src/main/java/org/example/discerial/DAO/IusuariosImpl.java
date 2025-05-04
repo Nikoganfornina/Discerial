@@ -265,4 +265,33 @@ public class IusuariosImpl implements Iusuarios {
         }
     }
 
+
+    /**
+     * Incrementa en 1 el contador de preguntas acertadas del usuario dado.
+     */
+    public void incrementAcertadas(int userId) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Transaction tx = session.beginTransaction();
+            session.createQuery("UPDATE Usuarios SET preguntasAcertadas = preguntasAcertadas + 1 WHERE id = :id")
+                    .setParameter("id", userId)
+                    .executeUpdate();
+            tx.commit();
+        }
+    }
+
+    /**
+     * Incrementa en 1 el contador de preguntas erróneas del usuario dado.
+     */
+    public void incrementErroneas(int userId) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Transaction tx = session.beginTransaction();
+            session.createQuery("UPDATE Usuarios SET preguntasErroneas = preguntasErroneas + 1 WHERE id = :id")
+                    .setParameter("id", userId)
+                    .executeUpdate();
+            tx.commit();
+        }
+    }
+
+
+
 }

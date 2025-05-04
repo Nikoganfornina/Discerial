@@ -22,6 +22,15 @@
                 <Label id="MenuSelectorLabel" text="Tabula" />
             </HBox>
 
+            <!-- NUEVO: Jugar -->
+            <HBox spacing="10">
+                <Pane id="PlayIcon" prefHeight="40.0" prefWidth="40.0" />
+                <Button fx:id="btnJugar" text="JUGAR"
+                        onAction="#handleJugar"
+                        styleClass="MenuSelectorLabel"/>
+            </HBox>
+            <!-- Nuntiato -->
+
             <HBox spacing="10">
                 <Pane id="NuntiatioIcon" prefHeight="40.0" prefWidth="40.0" />
                 <Label id="MenuSelectorLabel" text="Nuntiatio" />

@@ -1,5 +1,6 @@
 package org.example.discerial.Controladores;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,6 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import org.example.discerial.DAO.IusuariosImpl;
+import org.example.discerial.Util.SessionManager;
 import org.example.discerial.entities.Usuarios;
 
 import java.io.IOException;
@@ -45,6 +47,17 @@ public class TabulaController {
             usuarioNombre.setText("Sin usuario activo");
         }
     }
+
+    @FXML
+    private void handleJugar(ActionEvent event) {
+        try {
+            // Carga la vista de juego (game.fxml) usando tu helper switchScene
+            SessionManager.switchScene("/org/example/discerial/VistaGameController.fxml");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
     @FXML
