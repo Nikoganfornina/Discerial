@@ -8,5 +8,8 @@ import java.util.List;
 public interface ICategoria {
     Categoria save(Categoria categoria);
 
-    public List<Categoria> findAll();
+
+    List<Categoria> findByNombre(String nombre);
+
+    List<Categoria> findAll();
 }

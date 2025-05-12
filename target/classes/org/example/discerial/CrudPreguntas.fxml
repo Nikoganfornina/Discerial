@@ -66,6 +66,10 @@
         </VBox>
     </children>
 
+    <Button fx:id="btnVerIndividual" layoutX="1096.0" layoutY="885.0" onAction="#handleVerIndividual"
+            prefHeight="78.0" prefWidth="174.0" text="Ver Lista" id="btnVerIndividual"/>
+
+
     <Button id="botonPersonalizado" layoutX="1286.0" layoutY="885.0" onAction="#irMain" prefHeight="78.0" prefWidth="174.0" text="Preguntas" />
 
 </AnchorPane>

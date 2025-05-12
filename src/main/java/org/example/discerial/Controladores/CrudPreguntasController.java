@@ -6,7 +6,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import org.example.discerial.DAO.ICategoria;
 import org.example.discerial.DAO.ICategoriaImpl;
 import org.example.discerial.DAO.IPregunta;
@@ -14,6 +20,7 @@ import org.example.discerial.DAO.IPreguntaImpl;
 import org.example.discerial.entities.Pregunta;
 import org.example.discerial.entities.Categoria;
 
+import java.io.IOException;
 import java.util.List;
 
 import static org.example.discerial.Util.SessionManager.switchScene;
@@ -87,13 +94,14 @@ public class CrudPreguntasController {
     }
 
     private void loadCategorias() {
-        // Se instancia el DAO de Categoría
+        // Instancia el DAO de Categoría
         ICategoria categoriaDao = new ICategoriaImpl();
-        // Se recuperan todas las categorías desde la base de datos
+        // Recupera todas las categorías (Historia, Geografía, etc.)
         List<Categoria> categorias = categoriaDao.findAll();
-        // Se asignan al ComboBox
+        // Asigna la lista al ComboBox
         categoriaComboBox.setItems(FXCollections.observableArrayList(categorias));
     }
+
 
     private void loadTipos() {
         ObservableList<String> tipos = FXCollections.observableArrayList("multiple", "vf");
@@ -232,5 +240,15 @@ public class CrudPreguntasController {
     public void irMain() throws Exception {
         switchScene("/org/example/discerial/MainApp_View.fxml");
     }
+
+    @FXML
+    private void handleVerIndividual(ActionEvent event) throws Exception {
+        // Llamar a switchScene con la nueva vista
+        switchScene("/org/example/discerial/preguntas.fxml");
+    }
+
+
+
+
 
 }
