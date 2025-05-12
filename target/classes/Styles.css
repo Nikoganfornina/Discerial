@@ -224,3 +224,35 @@
     -fx-border-radius: 160px;
     -fx-overflow: hidden; /* recorta lo que sobresalga */
 }
+
+
+
+#imagenHistoriacategorias {
+    -fx-background-image: url("Images/CategoryImages/Historia.jpg");
+    -fx-background-size: cover;
+    -fx-background-position: center;
+}
+
+#imagenFilosofiacategorias {
+    -fx-background-image: url("Images/CategoryImages/Filosofia.jpg");
+    -fx-background-size: cover;
+    -fx-background-position: center;
+}
+
+#imagenBiologiacategorias {
+    -fx-background-image: url("Images/CategoryImages/Biologia.jpg");
+    -fx-background-size: cover;
+    -fx-background-position: center;
+}
+
+#imagenLiteraturacategorias {
+    -fx-background-image: url("Images/CategoryImages/Literatura.jpg");
+    -fx-background-size: cover;
+    -fx-background-position: center;
+}
+
+#imagenMixtacategorias {
+    -fx-background-image: url("Images/CategoryImages/Mix.jpg");
+    -fx-background-size: cover;
+    -fx-background-position: center;
+}

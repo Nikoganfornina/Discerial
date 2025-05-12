@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:id="root"
+            id="fondoInicioSesion"
+            fx:controller="org.example.discerial.Controladores.CategoriasJuegoController"
+            prefHeight="1000.0" prefWidth="1500.0"
+            stylesheets="@../../../Styles.css">
+
+    <VBox layoutX="100.0" layoutY="100.0" prefHeight="200.0" prefWidth="200.0">
+        <Label layoutX="0.0" layoutY="0.0" prefHeight="109.0" prefWidth="330.0" text="Categorías" />
+        <Label layoutX="0.0" layoutY="120.0" prefHeight="109.0" prefWidth="330.0"
+               text="Elige tu desafío: cuatro categorías únicas..." />
+    </VBox>
+
+    <VBox alignment="CENTER" layoutX="200.0" layoutY="300.0"
+          prefHeight="400.0" prefWidth="200.0" spacing="20.0">
+        <Pane fx:id="imagenHistoriacategorias" id="imagenHistoriacategorias"
+              prefHeight="150.0" prefWidth="150.0"
+              onMouseClicked="#onHistoriaClicked" />
+        <Label text="Historia" />
+        <Pane fx:id="imagenLiteraturacategorias" id="imagenLiteraturacategorias"
+              prefHeight="150.0" prefWidth="150.0"
+              onMouseClicked="#onLiteraturaClicked" />
+        <Label text="Literatura" />
+    </VBox>
+
+    <VBox alignment="CENTER" layoutX="600.0" layoutY="300.0"
+          prefHeight="400.0" prefWidth="200.0" spacing="20.0">
+        <Pane fx:id="imagenFilosofiacategorias" id="imagenFilosofiacategorias"
+              prefHeight="150.0" prefWidth="150.0"
+              onMouseClicked="#onFilosofiaClicked" />
+        <Label text="Filosofía" />
+        <Pane fx:id="imagenBiologiacategorias" id="imagenBiologiacategorias"
+              prefHeight="150.0" prefWidth="150.0"
+              onMouseClicked="#onBiologiaClicked" />
+        <Label text="Biología" />
+    </VBox>
+
+    <VBox alignment="CENTER" layoutX="1000.0" layoutY="300.0"
+          prefHeight="400.0" prefWidth="400.0" spacing="20.0">
+        <Pane fx:id="imagenMixtacategorias" id="imagenMixtacategorias"
+              prefHeight="200.0" prefWidth="400.0"
+              onMouseClicked="#onMixtaClicked" />
+        <Label text="Mixta" />
+    </VBox>
+
+</AnchorPane>

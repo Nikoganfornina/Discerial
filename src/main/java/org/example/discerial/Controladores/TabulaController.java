@@ -98,7 +98,9 @@ public class TabulaController {
     @FXML
     private void handleJugar() {
         try {
-            switchScene("/org/example/discerial/VistaGameController.fxml");
+            //switchScene("/org/example/discerial/VistaGameController.fxml");
+            switchScene("/org/example/discerial/CategoriasJuego_View.fxml");
+
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -3,7 +3,8 @@ package org.example.discerial.Controladores;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -12,6 +13,7 @@ import org.example.discerial.DAO.IEstadoUsuarioImpl;
 import org.example.discerial.DAO.IPregunta;
 import org.example.discerial.DAO.IPreguntaImpl;
 import org.example.discerial.DAO.IusuariosImpl;
+import org.example.discerial.Util.SessionManager;
 import org.example.discerial.entities.EstadoUsuario;
 import org.example.discerial.entities.Pregunta;
 import org.example.discerial.entities.Usuarios;
@@ -35,15 +37,14 @@ public class GameController {
     private IusuariosImpl usuarioDao = new IusuariosImpl();
     private Usuarios usuarioActual;
 
-    @FXML
-    public void initialize() {
-        // Carga usuario activo
+    /** Este método será llamado desde CategoriasJuegoController */
+    public void initData(int categoria_id) {
+        // 1) carga usuario
         usuarioActual = usuarioDao.currentUser();
-
-        // Carga preguntas
+        // 2) carga SOLO las preguntas de la categoría
         IPregunta dao = new IPreguntaImpl();
-        preguntas = dao.findAll();
-
+        preguntas = dao.findByCategoria(categoria_id);
+        // 3) inicializa temporizador y muestra la primera
         setupTimer();
         showQuestion(0);
     }
@@ -54,7 +55,6 @@ public class GameController {
             lblTimer.setText("Tiempo: " + timeRemaining + "s");
             if (timeRemaining <= 0) {
                 timer.stop();
-                // tiempo expirado → cuenta como errónea
                 usuarioDao.incrementErroneas(usuarioActual.getId());
                 highlightCorrect();
             }
@@ -73,17 +73,21 @@ public class GameController {
         if (index < 0 || index >= preguntas.size()) return;
         currentIndex = index;
         Pregunta p = preguntas.get(index);
+
         lblCategoria.setText(p.getCategoria().getNombre());
         lblPregunta.setText(p.getPregunta());
+
         if (p.getImagen() != null && !p.getImagen().isEmpty()) {
             imgPregunta.setImage(new Image(p.getImagen()));
         } else {
             imgPregunta.setImage(null);
         }
+
         lblOpcion1.setText(p.getRespuestaCorrecta());
         lblOpcion2.setText(p.getRespuesta2());
         lblOpcion3.setText(p.getRespuesta3());
         lblOpcion4.setText(p.getRespuesta4());
+
         clearStyles();
         resetTimer();
     }
@@ -104,14 +108,12 @@ public class GameController {
         }
     }
 
-    @FXML
-    private void handleAnterior(javafx.event.ActionEvent e) {
+    @FXML private void handleAnterior(javafx.event.ActionEvent e) {
         timer.stop();
         showQuestion(currentIndex - 1);
     }
 
-    @FXML
-    private void handleSiguiente(javafx.event.ActionEvent e) {
+    @FXML private void handleSiguiente(javafx.event.ActionEvent e) {
         timer.stop();
         showQuestion(currentIndex + 1);
     }
@@ -126,19 +128,15 @@ public class GameController {
         }
         highlightCorrect();
 
-        // ——— AÑADE ESTO ———
-        // Guarda en BD el estado de este intento
-        Usuarios usuario = new IusuariosImpl().currentUser();
+        // Guarda el intento
+        Usuarios usuario = usuarioDao.currentUser();
         if (usuario != null) {
             EstadoUsuario eu = new EstadoUsuario(usuario, p, resultado);
             new IEstadoUsuarioImpl().save(eu);
         }
     }
 
-
-    @FXML
-    private void handleVolver() throws Exception {
-        org.example.discerial.Util.SessionManager
-                .switchScene("/org/example/discerial/Tabula_view.fxml");
+    @FXML private void handleVolver() throws Exception {
+        SessionManager.switchScene("/org/example/discerial/Tabula_view.fxml");
     }
 }
