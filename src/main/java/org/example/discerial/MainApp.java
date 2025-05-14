@@ -14,6 +14,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 
+import org.example.discerial.Controladores.Preguntas.PreguntasBiologia;
 import org.example.discerial.DAO.ICategoriaImpl;
 import org.example.discerial.DAO.IusuariosImpl;
 import org.example.discerial.entities.Categoria;
@@ -27,6 +28,10 @@ import java.util.List;
 
 public class MainApp extends Application {
 
+    // CORREO  ELECTRONICO DISCERIAL (discerial@gmail.com)
+    // CONTRASENA (quecosa1*)
+
+
     private static Stage primaryStage;
     private MediaPlayer backgroundMusicPlayer;
     private List<Media> canciones = new ArrayList<>();
@@ -35,6 +40,10 @@ public class MainApp extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         seedCategorias();
+
+        PreguntasBiologia Pb = new PreguntasBiologia();
+        Pb.crearPreguntasBiologia();
+
         primaryStage = stage;
         SessionManager.setMainStage(primaryStage);
         primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/Images/Dlogo.png")));
@@ -49,6 +58,7 @@ public class MainApp extends Application {
         });
 
         mostrarSplashScreen();
+
     }
 
     private void mostrarSplashScreen() {

@@ -1,5 +1,7 @@
 package org.example.discerial.Controladores.Preguntas;
 
+import org.example.discerial.DAO.ICategoria;
+import org.example.discerial.DAO.ICategoriaImpl;
 import org.example.discerial.DAO.IPregunta;
 import org.example.discerial.DAO.IPreguntaImpl;
 import org.example.discerial.entities.Categoria;
@@ -9,73 +11,102 @@ import java.util.List;
 
 public class PreguntasBiologia {
 
-    public static void crearPreguntasBiologia() {
+    public void crearPreguntasBiologia() {
+
+        ICategoria categoriaDao = new ICategoriaImpl();
         IPregunta preguntaDao = new IPreguntaImpl();
 
-        // Verificamos si ya existen preguntas para la categoría "Biología"
-        List<Pregunta> preguntasBiologia = preguntaDao.findByCategoria(4); // Asegúrate de usar el ID correcto
-        if (!preguntasBiologia.isEmpty()) {
+        // 1) Obtener (o crear) la categoría "Filosofía"
+        List<Categoria> cats = categoriaDao.findByNombre("Biología");
+        Categoria Biología;
+        if (cats.isEmpty()) {
+            Biología = new Categoria("Biología");
+            categoriaDao.save(Biología);
+        } else {
+            Biología = cats.get(0);
+        }
+
+
+        // 2) Verificar si ya existen preguntas para esa categoría
+        List<Pregunta> existentes = preguntaDao.findByCategoria(Biología.getId());
+        if (!existentes.isEmpty()) {
             System.out.println("Ya existen preguntas para la categoría 'Biología'.");
             return;
         }
 
-        String[][] preguntas = {
-                {"¿Cuál es la molécula que almacena la información genética?", "ADN", "ARN", "Proteínas", "Carbohidratos", "ADN", "https://es.wikipedia.org/wiki/ADN", "multiple"},
-                {"¿Qué partícula subatómica tiene carga negativa?", "Electrón", "Protón", "Neutrón", "Quark", "Electrón", "https://es.wikipedia.org/wiki/Part%C3%ADcula_subat%C3%B3mica", "multiple"},
-                {"¿Quién es conocido como el padre de la teoría de la evolución?", "Charles Darwin", "Gregor Mendel", "Louis Pasteur", "Jean-Baptiste Lamarck", "Charles Darwin", "https://es.wikipedia.org/wiki/Charles_Darwin", "multiple"},
-                {"¿Qué molécula es la principal fuente de energía para las células?", "ATP", "ADN", "ARN", "Glucosa", "ATP", "https://es.wikipedia.org/wiki/Adenos%C3%ADn_trifosfato", "multiple"},
-                {"¿Cuál de las siguientes es una célula eucariota?", "Célula animal", "Célula bacteriana", "Célula procariota", "Virus", "Célula animal", "https://es.wikipedia.org/wiki/C%C3%A9lula_eucariota", "multiple"},
-                {"¿Cómo se llama el proceso mediante el cual las plantas producen su propio alimento?", "Fotosíntesis", "Respiración celular", "Fermentación", "Transpiración", "Fotosíntesis", "https://es.wikipedia.org/wiki/Fotos%C3%ADntesis", "multiple"},
-                {"¿Qué orgánulo celular es responsable de la producción de energía?", "Mitocondria", "Núcleo", "Retículo endoplasmático", "Cloroplasto", "Mitocondria", "https://es.wikipedia.org/wiki/Mitocondria", "multiple"},
-                {"¿Qué tipo de moléculas son los enzimas?", "Proteínas", "Ácidos nucleicos", "Carbohidratos", "Lípidos", "Proteínas", "https://es.wikipedia.org/wiki/Enzima", "multiple"},
-                {"¿Qué elemento químico es el principal componente de los ácidos nucleicos?", "Carbono", "Oxígeno", "Nitrógeno", "Fósforo", "Carbono", "https://es.wikipedia.org/wiki/Ácido_nucleico", "multiple"},
-                {"¿En qué parte de la célula se encuentra el núcleo?", "Citoplasma", "Membrana plasmática", "Núcleo", "Mitocondria", "Citoplasma", "https://es.wikipedia.org/wiki/N%C3%BAcleo_(biolog%C3%ADa)", "multiple"},
-                {"¿Qué tipo de célula carece de núcleo?", "Célula procariota", "Célula eucariota", "Célula animal", "Célula vegetal", "Célula procariota", "https://es.wikipedia.org/wiki/C%C3%A9lula_procariota", "multiple"},
-                {"¿Cuál es la función principal de los ribosomas?", "Sintetizar proteínas", "Producir energía", "Almacenar información genética", "Controlar el metabolismo celular", "Sintetizar proteínas", "https://es.wikipedia.org/wiki/Ribosoma", "multiple"},
-                {"¿Qué órgano en el cuerpo humano es responsable de bombear la sangre?", "Corazón", "Hígado", "Estómago", "Riñones", "Corazón", "https://es.wikipedia.org/wiki/Coraz%C3%B3n", "multiple"},
-                {"¿Cómo se llama el proceso en el que las células se dividen para formar células hijas?", "Mitosis", "Meiosis", "Fertilización", "Ciclosis", "Mitosis", "https://es.wikipedia.org/wiki/Mitosis", "multiple"},
-                {"¿Cuál es el componente principal de las paredes celulares de las plantas?", "Celulosa", "Quitina", "Colágeno", "Lignina", "Celulosa", "https://es.wikipedia.org/wiki/Celulosa", "multiple"},
-                {"¿Qué tipo de enlace se forma cuando los átomos comparten electrones?", "Enlace covalente", "Enlace iónico", "Enlace metálico", "Enlace de hidrógeno", "Enlace covalente", "https://es.wikipedia.org/wiki/Enlace_covalente", "multiple"},
-                {"¿Qué vitamina es conocida por su papel en la coagulación sanguínea?", "Vitamina K", "Vitamina C", "Vitamina D", "Vitamina A", "Vitamina K", "https://es.wikipedia.org/wiki/Vitamina_K", "multiple"},
-                {"¿Qué tipo de ácidos nucleicos están involucrados en la síntesis de proteínas?", "ARN mensajero", "ADN", "ARN ribosómico", "ARN de transferencia", "ARN mensajero", "https://es.wikipedia.org/wiki/ARN_mensajero", "multiple"},
-                {"¿En qué fase de la mitosis se alinean los cromosomas en el centro de la célula?", "Metafase", "Profase", "Anafase", "Telofase", "Metafase", "https://es.wikipedia.org/wiki/Mitosis", "multiple"},
-                {"¿Qué parte de la célula es responsable del control y coordinación de las actividades celulares?", "Núcleo", "Mitocondria", "Retículo endoplasmático", "Citoesqueleto", "Núcleo", "https://es.wikipedia.org/wiki/N%C3%BAcleo_(biolog%C3%ADa)", "multiple"},
-                {"¿Qué compuesto es esencial para la fotosíntesis y está presente en los cloroplastos?", "Clorofila", "Caroteno", "Ficoeritrina", "Ficocianina", "Clorofila", "https://es.wikipedia.org/wiki/Clorofila", "multiple"},
-                {"¿Cuál de los siguientes es un tipo de tejido animal?", "Tejido epitelial", "Tejido muscular", "Tejido conectivo", "Todos los anteriores", "Todos los anteriores", "https://es.wikipedia.org/wiki/Tejido_animal", "multiple"},
-                {"¿Qué tipo de célula tiene una pared celular hecha de quitina?", "Células fúngicas", "Células animales", "Células bacterianas", "Células vegetales", "Células fúngicas", "https://es.wikipedia.org/wiki/Fungi", "multiple"},
-                {"¿Qué función tiene la clorofila en las plantas?", "Absorber luz para la fotosíntesis", "Almacenar energía", "Proteger contra enfermedades", "Producir proteínas", "Absorber luz para la fotosíntesis", "https://es.wikipedia.org/wiki/Clorofila", "multiple"},
-                {"¿Qué tipo de sangre se puede donar a cualquier persona?", "O-", "AB+", "A+", "B-", "O-", "https://es.wikipedia.org/wiki/Grupo_sangu%C3%ADneo", "multiple"},
-                {"¿Cuál es la fórmula química del agua?", "H2O", "CO2", "O2", "H2O2", "H2O", "https://es.wikipedia.org/wiki/Agua", "multiple"},
-                {"¿Qué elemento químico es el principal componente de las proteínas?", "Carbono", "Nitrógeno", "Hidrógeno", "Azufre", "Nitrógeno", "https://es.wikipedia.org/wiki/Prote%C3%ADna", "multiple"},
-                {"¿Qué gas es liberado por las plantas durante la fotosíntesis?", "Oxígeno", "Dióxido de carbono", "Nitrógeno", "Metano", "Oxígeno", "https://es.wikipedia.org/wiki/Fotos%C3%ADntesis", "multiple"},
-                {"¿Qué proceso celular produce células sexuales en los organismos?", "Meiosis", "Mitosis", "Fertilización", "Ciclosis", "Meiosis", "https://es.wikipedia.org/wiki/Meiosis", "multiple"},
-                {"¿Qué es el ADN?", "Ácido desoxirribonucleico", "Ácido ribonucleico", "Ácido aminoacídico", "Ácido nucleico", "Ácido desoxirribonucleico", "https://es.wikipedia.org/wiki/ADN", "multiple"},
-                {"¿Qué sustancia en el cuerpo humano es responsable de transportar oxígeno?", "Hemoglobina", "Glucosa", "Colágeno", "Queratina", "Hemoglobina", "https://es.wikipedia.org/wiki/Hemoglobina", "multiple"},
-                {"¿Cuál es el proceso por el cual las células se dividen para producir dos células hijas genéticamente idénticas?", "Mitosis", "Meiosis", "Fertilización", "Interfase", "Mitosis", "https://es.wikipedia.org/wiki/Mitosis", "multiple"},
-                {"¿Qué estructura celular es responsable de la fotosíntesis en las plantas?", "Cloroplasto", "Mitocondria", "Núcleo", "Ribosoma", "Cloroplasto", "https://es.wikipedia.org/wiki/Cloroplasto", "multiple"},
-                {"¿Cuál es la principal fuente de energía para las plantas?", "Luz solar", "Glucosa", "Agua", "Nitrógeno", "Luz solar", "https://es.wikipedia.org/wiki/Fotos%C3%ADntesis", "multiple"},
-                {"¿Qué tipo de ácido se encuentra en el jugo gástrico?", "Ácido clorhídrico", "Ácido sulfúrico", "Ácido acético", "Ácido cítrico", "Ácido clorhídrico", "https://es.wikipedia.org/wiki/Ácido_clorhídrico", "multiple"},
-                {"¿Cuál es el nombre de la teoría que describe el origen de la vida?", "Teoría celular", "Teoría de la evolución", "Teoría de la biogénesis", "Teoría de la abiogénesis", "Teoría de la biogénesis", "https://es.wikipedia.org/wiki/Teoría_de_la_biogénesis", "multiple"},
-                {"¿Qué tipo de vínculo químico mantiene unidos a los átomos en una molécula de agua?", "Enlace covalente", "Enlace iónico", "Enlace metálico", "Enlace de hidrógeno", "Enlace covalente", "https://es.wikipedia.org/wiki/Enlace_covalente", "multiple"},
-                {"¿Cuál de los siguientes nutrientes es esencial para el crecimiento celular?", "Proteínas", "Carbohidratos", "Vitaminas", "Minerales", "Proteínas", "https://es.wikipedia.org/wiki/Proteína", "multiple"},
-                {"¿Qué tipo de glóbulos se encargan de la defensa contra infecciones?", "Glóbulos blancos", "Glóbulos rojos", "Plaquetas", "Eritrocitos", "Glóbulos blancos", "https://es.wikipedia.org/wiki/Glóbulo_blanco", "multiple"},
-                {"¿Qué molécula es la fuente primaria de energía en los músculos?", "ATP", "Glucógeno", "Ácido láctico", "Creatina", "ATP", "https://es.wikipedia.org/wiki/Adenos%C3%ADn_trifosfato", "multiple"}
+        // 3) Datos de prueba: {Pregunta, imagenURL, resp2, resp3, resp4, respCorrecta, tipo}
+        String[][] datos = {
+                //1
+                {"¿Cuál es la unidad básica de la vida?",
+                        "https://img.freepik.com/premium-photo/microscopic-image-human-alien-cells-inside-human-body-creation-life-mesmerize-movement-cells-representation-virus-medical-general-image-use-movie-games-books_751108-2359.jpg?w=1380",
+                        " El átomo","El tejido","El órgano","La célula","multiple"},
+                //2
+                {"¿Qué orgánulo celular es responsable de producir energía en forma de ATP?",
+                        "https://m1.paperblog.com/i/203/2033212/importancia-mitocondria-sintesis-atp-fosforil-T-p8UdHU.png",
+                        "Lisosoma","Núcleo","Ribosoma","Mitocondria","multiple"},
+                //3
+                {"¿Qué tipo de molécula es el ADN?",
+                        "https://pngimg.com/uploads/dna/dna_PNG52.png",
+                        "Carbohidrato","Proteína","Lípido","Ácido  Nucleico","multiple"},
+                //4
+                {"¿Cuál de los siguientes reinos incluye a los hongos?",
+                        "https://filesedc.com/uploads/333/img/2022/02/1200/varios-hongos-crecidos-encima-de-una-zona-con-musgo-en-un-bosque-6218968445b70.jpg",
+                        "Plantae","Animalia","Protista","Fungi","multiple"},
+                //5
+                {"¿Qué proceso permite a las plantas transformar la luz solar en energía química?",
+                        "https://th.bing.com/th/id/OIP.c_hhNTKhk1aPMvj8XXQnTgHaD_?w=500&h=270&rs=1&pid=ImgDetMain",
+                        "Respiración celular","Transpiración","Fermentación","Fotosíntesis","multiple"},
+                //6
+                {"¿Cómo se llama la estructura que conecta músculos y huesos?",
+                        "https://th.bing.com/th/id/OIP.Gp11dFtaQu9eLVQxJenhtAAAAA?rs=1&pid=ImgDetMain",
+                        "Cartílago","Ligamento","Fascia","Tendón","multiple"},
+                //7
+                {"¿Cuál es el cromosoma sexual que determina el sexo masculino en los humanos?",
+                        "https://th.bing.com/th/id/OIP.y5YxE-SoAyjc9Qnwlxse6QHaFG?rs=1&pid=ImgDetMain",
+                        "X","Z","W","Y","multiple"},
+                //8
+                {"¿Qué parte del sistema nervioso controla las funciones involuntarias como la respiración o el ritmo cardíaco?",
+                        "https://th.bing.com/th/id/R.bdc46e4cd893b6d7a25b9737416295a6?rik=0qlY7jMzmaLpXA&riu=http%3a%2f%2fc.files.bbci.co.uk%2f13D58%2fproduction%2f_98804218_cerebro.jpg&ehk=A7p1XWHHT7cf6sBnEc1czdPSOFcK7%2boPBLFm28kZJjQ%3d&risl=&pid=ImgRaw&r=0",
+                        "Cerebelo","Tálamo","Corteza cerebral","Bulbo raquídeo","multiple"},
+                //9
+                {"¿Qué tipo de célula produce anticuerpos?",
+                        "https://th.bing.com/th/id/R.bdc46e4cd893b6d7a25b9737416295a6?rik=0qlY7jMzmaLpXA&riu=http%3a%2f%2fc.files.bbci.co.uk%2f13D58%2fproduction%2f_98804218_cerebro.jpg&ehk=A7p1XWHHT7cf6sBnEc1czdPSOFcK7%2boPBLFm28kZJjQ%3d&risl=&pid=ImgRaw&r=0",
+                        "Eritrocito","Neurona","Plaqueta","Célula B","multiple"},
+                //10
+                {"¿Qué nombre recibe la división celular que produce células sexuales?",
+                        "https://th.bing.com/th/id/R.350eefed33c1d3c666edfa085f1fe465?rik=Ob7wlKndn%2bZ0PQ&pid=ImgRaw&r=0",
+                        "Mitosis","Fisión","Gemación","Meiosis","multiple"},
+
+
+
         };
 
-        // Insertamos las preguntas en la base de datos
-        for (String[] datos : preguntas) {
-            Pregunta pregunta = new Pregunta();
-            pregunta.setCategoria(new Categoria(4, "Biología"));
-            pregunta.setPregunta(datos[0]);
-            pregunta.setRespuestaCorrecta(datos[5]);
-            pregunta.setRespuesta2(datos[1]);
-            pregunta.setRespuesta3(datos[2]);
-            pregunta.setRespuesta4(datos[3]);
-            pregunta.setTipo(datos[7]);
-            pregunta.setImagen(datos[6]); // URL de la pregunta
-            preguntaDao.save(pregunta);
+        // 4) Insertar cada pregunta
+        for (String[] d : datos) {
+            String texto       = d[0];
+            String imagenURL   = d[1];
+            String opcion2     = d[2];
+            String opcion3     = d[3];
+            String opcion4     = d[4];
+            String correcta    = d[5];
+            String tipo        = d[6];
+
+            Pregunta p = new Pregunta(
+                    Biología,
+                    texto,
+                    correcta,
+                    opcion2,
+                    opcion3,
+                    opcion4,
+                    imagenURL,
+                    tipo
+            );
+            preguntaDao.save(p);
         }
 
-        System.out.println("Preguntas de biología añadidas con éxito.");
+        System.out.println("Preguntas de Biologia añadidas con éxito.");
+
+
     }
 }
+
