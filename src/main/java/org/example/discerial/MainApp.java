@@ -14,6 +14,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 
+import org.example.discerial.Controladores.Preguntas.PreguntasFilosofia;
 import org.example.discerial.DAO.ICategoriaImpl;
 import org.example.discerial.DAO.IusuariosImpl;
 import org.example.discerial.entities.Categoria;
@@ -35,6 +36,10 @@ public class MainApp extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         seedCategorias();
+
+        // 2) A continuación si quieres sembrar preguntas de filosofía:
+        PreguntasFilosofia.crearPreguntasFilosofia();
+
         primaryStage = stage;
         SessionManager.setMainStage(primaryStage);
         primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/Images/Dlogo.png")));
