@@ -53,10 +53,9 @@
         </HBox>
 
         <HBox spacing="10.0" >
-
         <Button onAction="#volverTabula" prefHeight="49.0" prefWidth="194.0" styleClass="boton-verde-camo" text="Volver" />
 
-        </HBox>
+        <HBox/>
 
         <!-- Botón Volver -->
     </VBox>

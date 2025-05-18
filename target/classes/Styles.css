@@ -334,14 +334,19 @@
     -fx-font-weight: bold;
     -fx-text-fill: black;      /* Negro */
     -fx-alignment: CENTER_LEFT; /* Alineado a la izquierda */
-    -fx-text-alignment: LEFT;   /* Texto a la izquierda */
+    -fx-text-alignment: LEFT;
+         -fx-translate-x: 120; /* Mueve 80px a la derecha */
+            -fx-translate-y: 20; /* Mueve un poco hacia abajo */
 }
 
 .subtitulo-categorias {
     -fx-font-size: 22px;       /* Un poco más grande */
     -fx-text-fill: black;      /* Negro */
     -fx-alignment: CENTER_LEFT; /* Alineado a la izquierda */
-    -fx-text-alignment: LEFT;   /* Texto a la izquierda */
+    -fx-text-alignment: LEFT;
+              -fx-translate-x: 120;
+
+/* Texto a la izquierda */
 }
 
 .categoria-label {
@@ -353,26 +358,77 @@
     -fx-padding: 10px 30px;
 }
 
+/* Estilos por defecto */
 #labelHistoria {
     -fx-background-color: #f1c40f;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 10 20;
+    -fx-background-radius: 20;
+    -fx-cursor: hand;
+    -fx-transition: all 0.2s ease-in-out;
 }
 
 #labelFilosofia {
     -fx-background-color: #27ae60;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 10 20;
+    -fx-background-radius: 20;
+    -fx-cursor: hand;
+    -fx-transition: all 0.2s ease-in-out;
 }
 
 #labelLiteratura {
     -fx-background-color: #e74c3c;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 10 20;
+    -fx-background-radius: 20;
+    -fx-cursor: hand;
+    -fx-transition: all 0.2s ease-in-out;
 }
 
 #labelBiologia {
     -fx-background-color: #3498db;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 10 20;
+    -fx-background-radius: 20;
+    -fx-cursor: hand;
+    -fx-transition: all 0.2s ease-in-out;
 }
 
 #labelMixta {
     -fx-background-color: linear-gradient(to right, #8e44ad, #3498db);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 10 20;
+    -fx-background-radius: 20;
+    -fx-cursor: hand;
+    -fx-transition: all 0.2s ease-in-out;
 }
 
+/* HOVER general para todos */
+#labelHistoria:hover,
+#labelFilosofia:hover,
+#labelLiteratura:hover,
+#labelBiologia:hover,
+#labelMixta:hover {
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 12, 0.3, 0, 3);
+}
+
+/* PRESSED general */
+#labelHistoria:pressed,
+#labelFilosofia:pressed,
+#labelLiteratura:pressed,
+#labelBiologia:pressed,
+#labelMixta:pressed {
+    -fx-scale-x: 0.95;
+    -fx-scale-y: 0.95;
+}
 
 
 #imagenHistoriacategorias {
@@ -401,13 +457,13 @@
     -fx-background-position: center;
 }
 
-/* Botón verde camuflaje */
 .boton-verde-camo {
     -fx-background-color: linear-gradient(to right, #3e5e2e, #4d7d36);
     -fx-text-fill: white;
     -fx-font-size: 16px;
     -fx-font-weight: bold;
     -fx-background-radius: 30px;
-    -fx-padding: 10px 25px;
-}
+             -fx-translate-x: 60; /* Mueve 80px a la derecha */
 
+
+}
