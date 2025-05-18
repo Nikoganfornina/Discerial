@@ -15,20 +15,11 @@ import static org.example.discerial.Util.SessionManager.switchScene;
 
 public class CategoriasJuegoController {
 
-    @FXML
-    private ImageView imagenHistoriacategorias;
-
-    @FXML
-    private ImageView imagenFilosofiacategorias;
-
-    @FXML
-    private ImageView imagenBiologiacategorias;
-
-    @FXML
-    private ImageView imagenLiteraturacategorias;
-
-    @FXML
-    private ImageView imagenMixtacategorias;
+    @FXML private Pane imagenHistoriacategorias;
+    @FXML private Pane imagenLiteraturacategorias;
+    @FXML private Pane imagenFilosofiacategorias;
+    @FXML private Pane imagenBiologiacategorias;
+    @FXML private Pane imagenMixtacategorias;
 
 
     @FXML

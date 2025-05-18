@@ -45,7 +45,7 @@ public class MainApp extends Application {
         // Registrar el evento de cierre de la ventana
         primaryStage.setOnCloseRequest(event -> {
             event.consume();  // Evita que la ventana se cierre inmediatamente
-            mostrarConfirmacionCierre();  // Mostrar la confirmación antes de cerrar
+            mostrarConfirmacionCierre();  // Mostrar la confirmación antes de cerrare
         });
 
         mostrarSplashScreen();
