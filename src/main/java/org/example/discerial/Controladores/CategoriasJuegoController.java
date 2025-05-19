@@ -106,25 +106,23 @@ public class CategoriasJuegoController {
         clip.setArcHeight(arc);
         imageView.setClip(clip);
     }
-
     private void openGameWithCategory(int categoria_id) {
         try {
             FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/org/example/discerial/VistaGameController.fxml")
+                    getClass().getResource("/org/example/discerial/LoadingPanelView.fxml")
             );
             Parent root = loader.load();
 
-            GameController gc = loader.getController();
-            gc.initData(categoria_id);
+
 
             Stage stage = (Stage) imagenHistoriacategorias.getScene().getWindow();
             stage.getScene().setRoot(root);
-            stage.setTitle("Categoria: " + categoria_id);
+            stage.setTitle("Cargando...");
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
-
     @FXML private void onHistoriaClicked()     { openGameWithCategory(1); }
     @FXML private void onLiteraturaClicked()   { openGameWithCategory(2); }
     @FXML private void onFilosofiaClicked()    { openGameWithCategory(3); }

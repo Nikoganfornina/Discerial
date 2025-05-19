@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.discerial.Controladores.LoadingPanelController"
+            prefHeight="600" prefWidth="900"
+            styleClass="loading-background">
+
+    <!-- Imagen grande -->
+    <ImageView fx:id="imageView" layoutX="50" layoutY="50" fitWidth="800" fitHeight="350" preserveRatio="true" smooth="true" />
+
+    <!-- Texto arriba grande -->
+    <Label text="¿Sabías que...?" styleClass="sabias-que-label" layoutX="50" layoutY="420" />
+
+    <!-- Texto explicativo -->
+    <Label fx:id="funFactLabel" wrapText="true" layoutX="50" layoutY="460" prefWidth="800" styleClass="fun-fact-label"/>
+
+    <!-- Barra de progreso -->
+    <ProgressBar fx:id="progressBar" layoutX="50" layoutY="540" prefWidth="800" prefHeight="25" />
+
+</AnchorPane>

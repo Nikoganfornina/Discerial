@@ -467,3 +467,25 @@
 
 
 }
+
+.loading-background {
+    -fx-background-color: #1c1c1c;
+}
+
+#imageView {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.7), 15, 0.4, 0, 0);
+    -fx-clip: rect(0 800 350 0); /* para recortar? Mejor usa un clip en Java */
+    /* JavaFX no soporta border-radius en ImageView directamente, lo hacemos con clip en código */
+}
+
+.sabias-que-label {
+    -fx-text-fill: white;
+    -fx-font-size: 30px;
+    -fx-font-weight: bold;
+}
+
+.fun-fact-label {
+    -fx-text-fill: #ddd;
+    -fx-font-size: 20px;
+}
+
