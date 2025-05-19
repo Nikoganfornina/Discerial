@@ -116,6 +116,12 @@ public class TabulaController {
             e.printStackTrace();
         }
     }
+    @FXML
+    private void FxmlTabula() throws IOException {
+        switchScene("/org/example/discerial/Tabula_view.fxml");
+    }
+
+
 
     public void BotoncerrarSesion() throws IOException {
         var dao = new IusuariosImpl();

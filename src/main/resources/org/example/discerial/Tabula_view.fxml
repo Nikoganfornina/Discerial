@@ -17,18 +17,14 @@
         </Pane>
 
         <VBox alignment="CENTER_LEFT" layoutX="54.0" layoutY="290.0" prefHeight="261.0" prefWidth="310.0" spacing="40">
+
+            <!-- Tabula -->
+
             <HBox spacing="10">
                 <Pane id="TabulaIcon" prefHeight="40.0" prefWidth="40.0" />
-                <Label id="MenuSelectorLabel" text="Tabula" />
+                <Label id="MenuSelectorLabel" text="Tabula" onMouseClicked="#FxmlTabula" />
             </HBox>
 
-            <!-- NUEVO: Jugar -->
-            <HBox spacing="10">
-                <Pane id="PlayIcon" prefHeight="40.0" prefWidth="40.0" />
-                <Button fx:id="btnJugar" text="JUGAR"
-                        onAction="#handleJugar"
-                        styleClass="MenuSelectorLabel"/>
-            </HBox>
             <!-- Nuntiato -->
 
             <HBox spacing="10">
@@ -66,10 +62,35 @@
     <Pane fx:id="contenedorFXML" layoutX="400.0" prefHeight="1000.0" prefWidth="1100.0">
         <children>
             <!-- Contenedor para el BarChart -->
-            <VBox fx:id="chartContainer"
-                  layoutX="50.0" layoutY="50.0"
-                  prefWidth="1000.0" prefHeight="600.0"
-                  spacing="10.0"/>
+            <VBox fx:id="chartContainer" layoutX="50.0" layoutY="50.0" prefHeight="600.0" prefWidth="1000.0" spacing="10.0" />
+
+
+            <HBox spacing="50.0" layoutX="100.0" layoutY="700.0" alignment="CENTER">
+
+                <!-- 🟢 Preguntas Acertadas -->
+                <VBox fx:id="vboxAciertos" alignment="CENTER" spacing="10.0" prefWidth="250.0" prefHeight="250.0" styleClass="aciertos-box">
+                    <Label text="Preguntas acertadas" styleClass="aciertos-titulo" />
+                    <Label fx:id="lblAciertosNumero" text="1" styleClass="aciertos-numero" />
+                    <Label fx:id="lblComparativa" text="Llevas un 0% más que tu último juego" styleClass="aciertos-porcentaje" wrapText="true" />
+                </VBox>
+
+                <!-- 🟤 Repaso de Fallos -->
+                <VBox fx:id="vboxFallos" alignment="TOP_LEFT" spacing="10.0" prefWidth="250.0" prefHeight="250.0" styleClass="fallos-box">
+                    <Label text="Repaso de fallos" styleClass="fallos-titulo" />
+                    <!-- Aquí irán botones dinámicamente -->
+                </VBox>
+
+                <!-- ⚪ Botón de Jugar -->
+                <Button fx:id="btnJugar"
+                        text="COMENZAR TEST"
+                        onAction="#handleJugar"
+                        prefWidth="250.0"
+                        prefHeight="250.0"
+                        styleClass="boton-jugar" />
+
+            </HBox>
+
+
         </children>
     </Pane>
 

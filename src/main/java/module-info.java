@@ -6,8 +6,8 @@ module org.example.discerial {
     requires jakarta.persistence;
     requires transitive jakarta.validation;
     requires java.naming;
-    requires java.desktop;
     requires javafx.media;
+    requires javafx.graphics;
 
     opens org.example.discerial to javafx.fxml;
     exports org.example.discerial;
