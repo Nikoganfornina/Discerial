@@ -127,8 +127,10 @@ public class CategoriasJuegoController {
     }
 
     @FXML private void onHistoriaClicked()     { openGameWithCategory(1); }
-    @FXML private void onLiteraturaClicked()   { openGameWithCategory(2); }
-    @FXML private void onFilosofiaClicked()    { openGameWithCategory(3); }
+    @FXML private void onFilosofiaClicked()    { openGameWithCategory(2); }
+    @FXML private void onLiteraturaClicked()   { openGameWithCategory(3); }
     @FXML private void onBiologiaClicked()     { openGameWithCategory(4); }
-    @FXML private void onMixtaClicked()        { openGameWithCategory(5); }
+    @FXML private void onMixtaClicked()         { openGameWithCategory(5); }
+
+
 }

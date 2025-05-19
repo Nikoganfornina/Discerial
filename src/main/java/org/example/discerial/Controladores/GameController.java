@@ -10,7 +10,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Duration;
 import org.example.discerial.DAO.IEstadoUsuarioImpl;
-import org.example.discerial.DAO.IPregunta;
 import org.example.discerial.DAO.IPreguntaImpl;
 import org.example.discerial.DAO.IusuariosImpl;
 import org.example.discerial.Util.SessionManager;
@@ -18,33 +17,28 @@ import org.example.discerial.entities.EstadoUsuario;
 import org.example.discerial.entities.Pregunta;
 import org.example.discerial.entities.Usuarios;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GameController {
 
-    @FXML private Label lblCategoria;
-    @FXML private Label lblPregunta;
+    @FXML private Label lblCategoria, lblPregunta, lblTimer;
     @FXML private ImageView imgPregunta;
     @FXML private Label lblOpcion1, lblOpcion2, lblOpcion3, lblOpcion4;
     @FXML private Button btnAnterior, btnSiguiente, btnVolver;
-    @FXML private Label lblTimer;
 
     private List<Pregunta> preguntas;
     private int currentIndex = 0;
     private Timeline timer;
     private int timeRemaining = 20;
 
-    private IusuariosImpl usuarioDao = new IusuariosImpl();
+    private final IusuariosImpl usuarioDao = new IusuariosImpl();
     private Usuarios usuarioActual;
 
-    /** Este método será llamado desde CategoriasJuegoController */
     public void initData(int categoria_id) {
-        // 1) carga usuario
         usuarioActual = usuarioDao.currentUser();
-        // 2) carga SOLO las preguntas de la categoría
-        IPregunta dao = new IPreguntaImpl();
-        preguntas = dao.findByCategoria(categoria_id);
-        // 3) inicializa temporizador y muestra la primera
+        preguntas = new IPreguntaImpl().findByCategoria(categoria_id);
         setupTimer();
         showQuestion(0);
     }
@@ -55,7 +49,8 @@ public class GameController {
             lblTimer.setText("Tiempo: " + timeRemaining + "s");
             if (timeRemaining <= 0) {
                 timer.stop();
-                usuarioDao.incrementErroneas(usuarioActual.getId());
+                // equivalente a fallo por tiempo
+                saveAttempt(false);
                 highlightCorrect();
             }
         }));
@@ -76,63 +71,97 @@ public class GameController {
 
         lblCategoria.setText(p.getCategoria().getNombre());
         lblPregunta.setText(p.getPregunta());
-
-        if (p.getImagen() != null && !p.getImagen().isEmpty()) {
+        if (p.getImagen() != null && !p.getImagen().isBlank())
             imgPregunta.setImage(new Image(p.getImagen()));
-        } else {
+        else
             imgPregunta.setImage(null);
-        }
 
-        lblOpcion1.setText(p.getRespuestaCorrecta());
-        lblOpcion2.setText(p.getRespuesta2());
-        lblOpcion3.setText(p.getRespuesta3());
-        lblOpcion4.setText(p.getRespuesta4());
+        // 1) Lista de pares texto / si es correcta
+        class Opcion { String text; boolean correct;
+            Opcion(String t, boolean c){text=t;correct=c;} }
+        List<Opcion> opciones = List.of(
+                        new Opcion(p.getRespuestaCorrecta(), true),
+                        new Opcion(p.getRespuesta2(), false),
+                        new Opcion(p.getRespuesta3(), false),
+                        new Opcion(p.getRespuesta4(), false)
+                ).stream()
+                .filter(o -> o.text != null && !o.text.isBlank())
+                .collect(Collectors.toList());
+
+        // 2) Barajar
+        Collections.shuffle(opciones);
+
+        // 3) Asignar a Labels
+        Label[] labels = {lblOpcion1, lblOpcion2, lblOpcion3, lblOpcion4};
+        for (int i = 0; i < labels.length; i++) {
+            Label lbl = labels[i];
+            if (i < opciones.size()) {
+                Opcion op = opciones.get(i);
+                lbl.setText(op.text);
+                lbl.setUserData(op.correct);
+                lbl.setVisible(true);
+                lbl.setStyle("-fx-padding:10; -fx-border-width:2; -fx-border-color:transparent;");
+            } else {
+                lbl.setVisible(false);
+                lbl.setText("");
+                lbl.setUserData(false);
+            }
+        }
 
         clearStyles();
         resetTimer();
     }
 
     private void clearStyles() {
-        lblOpcion1.setStyle("");
-        lblOpcion2.setStyle("");
-        lblOpcion3.setStyle("");
-        lblOpcion4.setStyle("");
+        for (Label lbl : List.of(lblOpcion1, lblOpcion2, lblOpcion3, lblOpcion4))
+            lbl.setStyle("-fx-padding:10; -fx-border-width:2; -fx-border-color:transparent;");
     }
 
     private void highlightCorrect() {
-        String correcta = preguntas.get(currentIndex).getRespuestaCorrecta();
         for (Label lbl : List.of(lblOpcion1, lblOpcion2, lblOpcion3, lblOpcion4)) {
-            if (lbl.getText().equals(correcta)) {
-                lbl.setStyle("-fx-border-color: green; -fx-border-width: 3;");
+            if (Boolean.TRUE.equals(lbl.getUserData())) {
+                lbl.setStyle("-fx-padding:10; -fx-border-width:3; -fx-border-color:green;");
             }
         }
     }
 
-    @FXML private void handleAnterior(javafx.event.ActionEvent e) {
+    @FXML private void handleAnterior() {
         timer.stop();
-        showQuestion(currentIndex - 1);
+        if (currentIndex > 0) {
+            showQuestion(currentIndex - 1);
+            btnSiguiente.setDisable(false);
+            btnAnterior.setDisable(currentIndex - 1 == 0);
+        }
     }
 
-    @FXML private void handleSiguiente(javafx.event.ActionEvent e) {
+    @FXML private void handleSiguiente() {
         timer.stop();
-        showQuestion(currentIndex + 1);
+        if (currentIndex < preguntas.size() - 1) {
+            showQuestion(currentIndex + 1);
+            btnAnterior.setDisable(false);
+            btnSiguiente.setDisable(currentIndex + 1 == preguntas.size() - 1);
+        }
     }
 
     @FXML private void handleOpcion(MouseEvent e) {
         timer.stop();
         Label clicked = (Label) e.getSource();
-        Pregunta p = preguntas.get(currentIndex);
-        boolean resultado = clicked.getText().equals(p.getRespuestaCorrecta());
+        boolean resultado = Boolean.TRUE.equals(clicked.getUserData());
         if (!resultado) {
-            clicked.setStyle("-fx-border-color: red; -fx-border-width: 3;");
+            clicked.setStyle("-fx-padding:10; -fx-border-width:3; -fx-border-color:red;");
         }
         highlightCorrect();
+        saveAttempt(resultado);
+    }
 
-        // Guarda el intento
-        Usuarios usuario = usuarioDao.currentUser();
-        if (usuario != null) {
-            EstadoUsuario eu = new EstadoUsuario(usuario, p, resultado);
-            new IEstadoUsuarioImpl().save(eu);
+    private void saveAttempt(boolean acertada) {
+        // sube a BD tanto aciertos como fallos
+        Pregunta p = preguntas.get(currentIndex);
+        Usuarios u = usuarioDao.currentUser();
+        if (u != null) {
+            new IEstadoUsuarioImpl().save(new EstadoUsuario(u, p, acertada));
+            if (acertada) usuarioDao.incrementAcertadas(u.getId());
+            else          usuarioDao.incrementErroneas (u.getId());
         }
     }
 

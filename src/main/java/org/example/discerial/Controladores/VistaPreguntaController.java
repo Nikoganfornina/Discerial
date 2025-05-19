@@ -8,7 +8,9 @@ import javafx.scene.image.ImageView;
 import org.example.discerial.DAO.IPreguntaImpl;
 import org.example.discerial.entities.Pregunta;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.example.discerial.Util.SessionManager.switchScene;
 
@@ -62,27 +64,42 @@ public class VistaPreguntaController {
             imgPregunta.setVisible(false);
         }
 
-        // Opciones
-        String[] opciones = new String[] {
-                p.getRespuestaCorrecta(),
-                p.getRespuesta2(),
-                p.getRespuesta3(),
-                p.getRespuesta4()
-        };
-        Label[] labels = new Label[] {lblOpcion1, lblOpcion2, lblOpcion3, lblOpcion4};
+        // Preparamos la lista de opciones
+        class Opcion {
+            String text;
+            boolean correct;
+            Opcion(String text, boolean correct) { this.text = text; this.correct = correct; }
+        }
+        List<Opcion> opciones = List.of(
+                        new Opcion(p.getRespuestaCorrecta(), true),
+                        new Opcion(p.getRespuesta2(), false),
+                        new Opcion(p.getRespuesta3(), false),
+                        new Opcion(p.getRespuesta4(), false)
+                ).stream()
+                .filter(o -> o.text != null && !o.text.isBlank())
+                .collect(Collectors.toList());
 
-        String correcta = p.getRespuestaCorrecta();
+        Collections.shuffle(opciones);
+
+        Label[] labels = { lblOpcion1, lblOpcion2, lblOpcion3, lblOpcion4 };
+        // Asignamos texto, style y userData
         for (int i = 0; i < labels.length; i++) {
-            String txt = opciones[i];
-            labels[i].setText(txt != null ? txt : "");
-            // Resetear estilo
-            labels[i].setStyle("-fx-padding:10; -fx-border-width:2; -fx-border-color: transparent;");
-            // Si coincide con la respuesta correcta, borde verde
-            if (txt != null && txt.equals(correcta)) {
-                labels[i].setStyle("-fx-padding:10; -fx-border-width:2; -fx-border-color: green;");
+            Label lbl = labels[i];
+            if (i < opciones.size()) {
+                Opcion op = opciones.get(i);
+                lbl.setText(op.text);
+                lbl.setUserData(op.correct);          // ← aquí guardamos si es la correcta
+                lbl.setVisible(true);
+                lbl.setStyle("-fx-padding:10; -fx-border-width:2; -fx-border-color: transparent;");
+            } else {
+                lbl.setText("");
+                lbl.setUserData(false);
+                lbl.setVisible(false);
             }
         }
     }
+
+
 
     @FXML
     private void handleAnterior() {
