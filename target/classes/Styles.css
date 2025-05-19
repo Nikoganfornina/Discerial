@@ -495,3 +495,41 @@
     -fx-font-size: 20px;
 }
 
+.loading-background {
+    -fx-background-color: linear-gradient(to bottom, #1e3c72, #2a5298);
+}
+
+.main-container {
+    -fx-padding: 0 60 0 60;
+}
+
+.image-container {
+    -fx-border-color: transparent;
+}
+
+.main-image {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.7), 25, 0, 0, 7);
+    -fx-smooth: true;
+}
+
+/* Texto grande */
+.title-label {
+    -fx-font-size: 48px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+/* Curiosidad */
+.curiosity-label {
+    -fx-font-size: 32px;
+    -fx-text-fill: white;
+    -fx-text-alignment: center;
+}
+
+/* Barra de progreso grande */
+.progress-bar {
+    -fx-accent: #6ab04c;
+    -fx-control-inner-background: #34495e;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+}

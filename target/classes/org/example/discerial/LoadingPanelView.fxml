@@ -1,37 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.control.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
+<AnchorPane xmlns:fx="http://javafx.com/fxml"
             fx:controller="org.example.discerial.Controladores.LoadingPanelController"
-            prefHeight="600.0" prefWidth="900.0"
-            styleClass="loading-background">
+            prefWidth="1500.0" prefHeight="1000.0"
+            styleClass="fondopagina"
+            stylesheets="@../../../LoadingStyle.css">
 
-    <!-- Imagen destacada -->
-    <ImageView fx:id="imagenCuriosa"
-               layoutX="50.0" layoutY="50.0"
-               fitWidth="800.0" fitHeight="350.0"
-               preserveRatio="true" smooth="true" />
+    <VBox alignment="TOP_CENTER" spacing="40.0"
+          prefWidth="1500.0"
+          AnchorPane.topAnchor="50.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
 
-    <!-- Encabezado -->
-    <Label fx:id="sabiasQueLabel"
-           layoutX="50.0" layoutY="420.0"
-           text="¿Sabías que...?"
-           styleClass="sabias-que-label" />
+        <StackPane alignment="CENTER">
+            <ImageView fx:id="imagenCuriosa"
+                       fitWidth="1000.0" fitHeight="500.0"
+                       preserveRatio="true"
+                       smooth="true"/>
+        </StackPane>
 
-    <!-- Curiosidad -->
-    <Label fx:id="curiosidadLabel"
-           layoutX="50.0" layoutY="460.0"
-           prefWidth="800.0"
-           wrapText="true"
-           styleClass="fun-fact-label" />
+        <Label fx:id="sabiasQueLabel"
+               text="¿SABÍAS QUE...?"
+               styleClass="titulo-label"
+                textAlignment="LEFT"
+        />
 
-    <!-- Progreso de carga -->
+        <Label fx:id="curiosidadLabel"
+               wrapText="true"
+               maxWidth="1000.0"
+               textAlignment="LEFT"
+               styleClass="curiosidad-label"/>
+    </VBox>
+
     <ProgressBar fx:id="progressBar"
-                 layoutX="50.0" layoutY="540.0"
-                 prefWidth="800.0" prefHeight="25.0" />
+                 prefWidth="1000.0"
+                 prefHeight="40.0"
+                 AnchorPane.bottomAnchor="50.0"
+                 AnchorPane.leftAnchor="250.0"
+                 styleClass="progress-bar"/>
 </AnchorPane>

@@ -1,0 +1,23 @@
+.fondopagina {
+    -fx-background-image: url("Images/FondoPaginas.png");
+     -fx-background-size: cover;
+      -fx-background-position: center;
+
+}
+.titulo-label {
+    -fx-font-size: 60px;
+    -fx-font-weight: bold;
+    -fx-text-fill: black;
+    -fx-font-family: "Arial Black";
+}
+
+.curiosidad-label {
+    -fx-font-size: 36px;
+    -fx-text-fill: black;
+    -fx-font-family: "Segoe UI";
+}
+
+.progress-bar {
+    -fx-accent: #00e68a;
+    -fx-background-radius: 20px;
+}

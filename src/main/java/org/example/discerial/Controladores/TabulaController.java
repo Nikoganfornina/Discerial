@@ -17,7 +17,7 @@ import org.example.discerial.DAO.*;
 import org.example.discerial.Util.SessionManager;
 import org.example.discerial.entities.Categoria;
 import org.example.discerial.entities.Usuarios;
-
+import org.example.discerial.Util.MusicManager;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -39,6 +39,7 @@ public class TabulaController {
     public void initialize() {
         mostrarNombreUsuario();
         cargarGraficaAvance();
+
     }
 
     private void mostrarNombreUsuario() {
