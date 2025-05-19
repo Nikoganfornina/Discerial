@@ -3,24 +3,35 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-<?import javafx.geometry.*?>
+<?import javafx.geometry.Insets?>
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="org.example.discerial.Controladores.LoadingPanelController"
-            prefHeight="600" prefWidth="900"
+            prefHeight="600.0" prefWidth="900.0"
             styleClass="loading-background">
 
-    <!-- Imagen grande -->
-    <ImageView fx:id="imageView" layoutX="50" layoutY="50" fitWidth="800" fitHeight="350" preserveRatio="true" smooth="true" />
+    <!-- Imagen destacada -->
+    <ImageView fx:id="imagenCuriosa"
+               layoutX="50.0" layoutY="50.0"
+               fitWidth="800.0" fitHeight="350.0"
+               preserveRatio="true" smooth="true" />
 
-    <!-- Texto arriba grande -->
-    <Label text="¿Sabías que...?" styleClass="sabias-que-label" layoutX="50" layoutY="420" />
+    <!-- Encabezado -->
+    <Label fx:id="sabiasQueLabel"
+           layoutX="50.0" layoutY="420.0"
+           text="¿Sabías que...?"
+           styleClass="sabias-que-label" />
 
-    <!-- Texto explicativo -->
-    <Label fx:id="funFactLabel" wrapText="true" layoutX="50" layoutY="460" prefWidth="800" styleClass="fun-fact-label"/>
+    <!-- Curiosidad -->
+    <Label fx:id="curiosidadLabel"
+           layoutX="50.0" layoutY="460.0"
+           prefWidth="800.0"
+           wrapText="true"
+           styleClass="fun-fact-label" />
 
-    <!-- Barra de progreso -->
-    <ProgressBar fx:id="progressBar" layoutX="50" layoutY="540" prefWidth="800" prefHeight="25" />
-
+    <!-- Progreso de carga -->
+    <ProgressBar fx:id="progressBar"
+                 layoutX="50.0" layoutY="540.0"
+                 prefWidth="800.0" prefHeight="25.0" />
 </AnchorPane>

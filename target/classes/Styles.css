@@ -409,7 +409,13 @@
     -fx-transition: all 0.2s ease-in-out;
 }
 
-/* HOVER general para todos */
+#labelMixta:hover {
+    -fx-background-color: linear-gradient(to right, #4d7d36, #3e5e2e);
+    -fx-font-size: 24px;
+    }
+
+
+\/* HOVER general para todos */
 #labelHistoria:hover,
 #labelFilosofia:hover,
 #labelLiteratura:hover,

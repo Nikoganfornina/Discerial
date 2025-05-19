@@ -25,17 +25,18 @@ public class LoadingPanelController {
         this.categoria_id = categoria_id;
         mostrarImagenAleatoria();
         mostrarCuriosidadAleatoria();
-        startLoadingProgress();  // Aquí empieza la barra
+        startLoadingProgress();
     }
 
     private void mostrarImagenAleatoria() {
-        int index = (int) (Math.random() * 15 + 1); // del 1 al 15
+        int index = (int) (Math.random() * 15) + 1; // 1 a 15
         String ruta = "/Images/LoadingGame/loadingimage" + index + ".jpg";
+
         try {
             Image img = new Image(getClass().getResource(ruta).toExternalForm());
             imagenCuriosa.setImage(img);
         } catch (Exception e) {
-            System.err.println("No se pudo cargar imagen: " + ruta);
+            System.err.println("Error cargando imagen: " + ruta);
             e.printStackTrace();
         }
     }
@@ -55,12 +56,13 @@ public class LoadingPanelController {
                 "Los romanos usaban orina para lavarse los dientes.",
                 "Alejandro Magno fundó más de 70 ciudades.",
                 "Tesla dormía 2 horas al día.",
-                "El calendario juliano tenía 445 días un año.",
+                "El calendario juliano tuvo un año con 445 días.",
                 "Isaac Newton descubrió el cálculo antes que Leibniz."
         };
+
         String curiosidad = curiosidades[(int)(Math.random() * curiosidades.length)];
         curiosidadLabel.setText(curiosidad);
-        sabiasQueLabel.setText("¿Sabías que...");
+        sabiasQueLabel.setText("¿Sabías que...?");
     }
 
     private void startLoadingProgress() {
@@ -69,39 +71,37 @@ public class LoadingPanelController {
 
         final double[] progress = {0};
 
-        KeyFrame kf = new KeyFrame(Duration.millis(100), event -> {
-            double incremento = Math.random() * 0.04 + 0.01; // entre 1% y 5%
+        KeyFrame frame = new KeyFrame(Duration.millis(100), event -> {
+            double incremento = Math.random() * 0.05 + 0.01; // 1% - 6%
             progress[0] += incremento;
 
             if (progress[0] >= 1.0) {
-                progress[0] = 1.0;
                 progressBar.setProgress(1.0);
                 timeline.stop();
-                openGame(); // → aquí se abre el juego real
+                openGame();
             } else {
                 progressBar.setProgress(progress[0]);
             }
         });
 
-        timeline.getKeyFrames().add(kf);
+        timeline.getKeyFrames().add(frame);
         timeline.play();
     }
 
     private void openGame() {
         try {
-            FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/org/example/discerial/VistaGameController.fxml")
-            );
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/discerial/VistaGameController.fxml"));
             Parent root = loader.load();
 
-            GameController gc = loader.getController();
-            gc.initData(categoria_id);  // se lo pasamos igual
+            GameController controller = loader.getController();
+            controller.initData(categoria_id);
 
             Stage stage = (Stage) progressBar.getScene().getWindow();
             stage.getScene().setRoot(root);
             stage.setTitle("Categoría " + categoria_id);
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (Exception e) {
+            System.err.println("Error al cargar VistaGameController:");
+            e.printStackTrace();
         }
     }
 }

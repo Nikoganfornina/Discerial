@@ -106,6 +106,7 @@ public class CategoriasJuegoController {
         clip.setArcHeight(arc);
         imageView.setClip(clip);
     }
+
     private void openGameWithCategory(int categoria_id) {
         try {
             FXMLLoader loader = new FXMLLoader(
@@ -113,16 +114,18 @@ public class CategoriasJuegoController {
             );
             Parent root = loader.load();
 
-
+            // Aquí está el problema: NO ESTABAS LLAMANDO A INIT
+            LoadingPanelController controller = loader.getController();
+            controller.initData(categoria_id);  // 💥 Esto hace que empiece la barra
 
             Stage stage = (Stage) imagenHistoriacategorias.getScene().getWindow();
             stage.getScene().setRoot(root);
             stage.setTitle("Cargando...");
-
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
+
     @FXML private void onHistoriaClicked()     { openGameWithCategory(1); }
     @FXML private void onLiteraturaClicked()   { openGameWithCategory(2); }
     @FXML private void onFilosofiaClicked()    { openGameWithCategory(3); }
