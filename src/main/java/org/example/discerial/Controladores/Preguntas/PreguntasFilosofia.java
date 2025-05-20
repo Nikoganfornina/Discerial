@@ -13,11 +13,7 @@ public class PreguntasFilosofia {
         IPregunta preguntaDao = new IPreguntaImpl();
         int categoriaId = 2; // ID para Filosofía
 
-        // 1) Eliminar cualquier pregunta ya existente en Filosofía
-        List<Pregunta> existentes = preguntaDao.findByCategoria(categoriaId);
-        for (Pregunta p : existentes) {
-            preguntaDao.deleteById(p.getId());
-        }
+
 
         // 2) Definir el bloque de preguntas
         String[][] preguntas = {

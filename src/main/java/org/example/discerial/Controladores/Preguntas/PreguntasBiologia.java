@@ -13,11 +13,6 @@ public class PreguntasBiologia {
         IPregunta preguntaDao = new IPreguntaImpl();
         int categoriaId = 4; // ID para Biología
 
-        // 1) Eliminar cualquier pregunta existente en Biología
-        List<Pregunta> existentes = preguntaDao.findByCategoria(categoriaId);
-        for (Pregunta p : existentes) {
-            preguntaDao.deleteById(p.getId());
-        }
 
         // 2) Definir el bloque de preguntas
         String[][] preguntas = {

@@ -13,11 +13,7 @@ public class PreguntasLiteratura {
         IPregunta preguntaDao = new IPreguntaImpl();
         int categoriaId = 3; // ID para Literatura
 
-        // 1) Eliminar cualquier pregunta existente en Literatura
-        List<Pregunta> existentes = preguntaDao.findByCategoria(categoriaId);
-        for (Pregunta p : existentes) {
-            preguntaDao.deleteById(p.getId());
-        }
+
 
         // 2) Definir el bloque de preguntas con nueva estructura
         String[][] preguntas = {

@@ -13,11 +13,7 @@ public class PreguntasHistoria {
         IPregunta preguntaDao = new IPreguntaImpl();
         int categoriaId = 1; // ID para Historia
 
-        // 1) Eliminar cualquier pregunta existente en Historia
-        List<Pregunta> existentes = preguntaDao.findByCategoria(categoriaId);
-        for (Pregunta p : existentes) {
-            preguntaDao.deleteById(p.getId());
-        }
+
 
         // 2) Definir el bloque de preguntas con nueva estructura
         String[][] preguntas = {
