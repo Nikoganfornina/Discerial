@@ -41,19 +41,19 @@
           prefWidth="1100">
         <Label fx:id="lblOpcion1"
                onMouseClicked="#handleOpcion"
-               styleClass="opcion-custom"
+               style="-fx-padding: 10; -fx-border-width: 2; -fx-border-color: transparent; -fx-cursor: hand;"
                prefWidth="1100"/>
         <Label fx:id="lblOpcion2"
                onMouseClicked="#handleOpcion"
-               styleClass="opcion-custom"
+               style="-fx-padding: 10; -fx-border-width: 2; -fx-border-color: transparent; -fx-cursor: hand;"
                prefWidth="1100"/>
         <Label fx:id="lblOpcion3"
                onMouseClicked="#handleOpcion"
-               styleClass="opcion-custom"
+               style="-fx-padding: 10; -fx-border-width: 2; -fx-border-color: transparent; -fx-cursor: hand;"
                prefWidth="1100"/>
         <Label fx:id="lblOpcion4"
                onMouseClicked="#handleOpcion"
-               styleClass="opcion-custom"
+               style="-fx-padding: 10; -fx-border-width: 2; -fx-border-color: transparent; -fx-cursor: hand;"
                prefWidth="1100"/>
     </VBox>
 
@@ -64,11 +64,11 @@
           visible="false">
         <Button fx:id="btnAnterior" text="Anterior"
                 prefWidth="150" prefHeight="50"
-                styleClass="boton-custom"
+                styleClass="boton-navegacion"
                 onAction="#handleAnterior"/>
         <Button fx:id="btnSiguiente" text="Siguiente"
                 prefWidth="150" prefHeight="50"
-                styleClass="boton-custom"
+                styleClass="boton-navegacion"
                 onAction="#handleSiguiente"/>
     </HBox>
 

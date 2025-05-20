@@ -139,7 +139,7 @@ public class LoadingPanelController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/discerial/VistaGameController.fxml"));
             Parent root = loader.load();
 
-            VistaPreguntaController controller = loader.getController();
+            GameController controller = loader.getController();
             controller.initData(categoria_id);
 
             Stage stage = (Stage) progressBar.getScene().getWindow();
@@ -150,5 +150,4 @@ public class LoadingPanelController {
             e.printStackTrace();
         }
     }
-
 }

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefWidth="1500" prefHeight="1000"
+            xmlns="http://javafx.com/javafx/17.0.12"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.example.discerial.Controladores.ResultadoTestController"
+            stylesheets="@../../../Styles.css">
+
+    <!-- Mensaje de título -->
+    <Label fx:id="lblTitulo"
+           layoutX="500" layoutY="100"
+           prefWidth="500" prefHeight="80"
+           style="-fx-font-size: 36px; -fx-font-weight: bold; -fx-alignment: CENTER;" />
+
+    <!-- Contenedor de líneas de feedback -->
+    <VBox fx:id="vboxFeedback"
+          layoutX="400" layoutY="220"
+          prefWidth="700" spacing="20">
+        <!-- Aquí se añadirán dinámicamente varias Label -->
+    </VBox>
+
+    <!-- Botón Volver a categorías -->
+    <Button fx:id="btnVolver"
+            layoutX="650" layoutY="850"
+            prefWidth="200" prefHeight="60"
+            text="Volver"
+            styleClass="boton-verde-camo"
+            onAction="#handleVolver" />
+
+</AnchorPane>

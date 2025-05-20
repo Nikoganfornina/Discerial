@@ -254,29 +254,15 @@ public class VistaPreguntaController {
         Label clicked = (Label) e.getSource();
 
         boolean acertada = Boolean.TRUE.equals(clicked.getUserData());
-
-        // Primero limpia todas las clases para no acumular estilos
-        for (Label lbl : List.of(lblOpcion1, lblOpcion2, lblOpcion3, lblOpcion4)) {
-            lbl.getStyleClass().removeAll("correcta", "incorrecta");
+        if (!acertada) {
+            clicked.setStyle("-fx-padding:10; -fx-border-width:3; -fx-border-color:red;");
         }
-
-        if (acertada) {
-            clicked.getStyleClass().add("correcta");
-        } else {
-            clicked.getStyleClass().add("incorrecta");
-        }
-        // Marca la correcta también
-        for (Label lbl : List.of(lblOpcion1, lblOpcion2, lblOpcion3, lblOpcion4)) {
-            if (Boolean.TRUE.equals(lbl.getUserData()) && !lbl.equals(clicked)) {
-                lbl.getStyleClass().add("correcta");
-            }
-        }
+        highlightCorrect();
 
         saveAttempt(acertada);
         hboxNav.setVisible(true);
         deshabilitarOpciones(true);
     }
-
 
     private void saveAttempt(boolean acertada) {
         if (listaPreguntas.isEmpty() || indiceActual < 0 || indiceActual >= listaPreguntas.size()) return;
