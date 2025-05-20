@@ -44,6 +44,8 @@ public class HomoPanelController {
         contenedorImagenes.setVisible(false);
     }
 
+
+
     private void cargarUsuarioActivo() {
         usuarioActual = usuariosDao.currentUser();
         if (usuarioActual != null) {
@@ -55,8 +57,17 @@ public class HomoPanelController {
     private void actualizarCamposUsuario() {
         usuarioNombre.setText(usuarioActual.getNickname());
         usuarioCorreo.setText(usuarioActual.getCorreo());
-        usuarioPreguntasAcertadas.setText(String.valueOf(usuarioActual.getPreguntasAcertadas()));
-        usuarioPreguntasErroneas.setText(String.valueOf(usuarioActual.getPreguntasErroneas()));
+
+        int acertadas = usuariosDao.getPreguntasAcertadas(usuarioActual.getId());
+        int erroneas = usuariosDao.getPreguntasErroneas(usuarioActual.getId());
+
+        usuarioActual.setPreguntasAcertadas(acertadas);
+        usuarioActual.setPreguntasErroneas(erroneas);
+
+        usuarioPreguntasAcertadas.setText(String.valueOf(acertadas));
+        usuarioPreguntasErroneas.setText(String.valueOf(erroneas));
+
+
         lblTiempoJugado.setText(usuarioActual.getHorasJugadasFormato());
     }
 

@@ -1,0 +1,57 @@
+
+#fondoInicioSesion {
+    -fx-background-image: url("Images/FondoPaginas.png");
+     -fx-background-size: cover;
+      -fx-background-position: center;
+
+}
+.center-container {
+    -fx-alignment: center;
+    -fx-spacing: 40px;
+}
+
+/* Títulos "NUMERO DE FALLOS" y "NUMERO DE ACIERTOS" */
+.label-titulo-fallos,
+.label-titulo-aciertos {
+    -fx-font-size: 36px; /* Aumentado */
+    -fx-font-weight: bold;
+}
+
+/* Colores individuales */
+.label-titulo-fallos {
+    -fx-text-fill: #e74c3c;
+}
+
+.label-titulo-aciertos {
+    -fx-text-fill: #27ae60;
+}
+
+/* Números grandes */
+.numeros-grandes {
+    -fx-font-size: 120px; /* MUCHO más grande */
+    -fx-font-weight: bold;
+    -fx-text-fill: #4c5b3d; /* Verde que pediste */
+}
+
+/* Mensaje debajo */
+.mensaje {
+    -fx-font-size: 26px;
+    -fx-font-weight: normal;
+    -fx-text-fill: #34495e;
+}
+
+/* Botón principal */
+.button {
+    -fx-background-color: #4c5b3d;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 28px; /* Más grande */
+    -fx-padding: 16 40;  /* Más gordito */
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-border-color: transparent;
+}
+
+.button:hover {
+    -fx-background-color: #6a7a56;
+}

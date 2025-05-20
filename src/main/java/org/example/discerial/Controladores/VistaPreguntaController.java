@@ -2,7 +2,11 @@ package org.example.discerial.Controladores;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -14,6 +18,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.example.discerial.DAO.IEstadoUsuarioImpl;
 import org.example.discerial.DAO.IPreguntaImpl;
@@ -23,13 +28,14 @@ import org.example.discerial.entities.EstadoUsuario;
 import org.example.discerial.entities.Pregunta;
 import org.example.discerial.entities.Usuarios;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class VistaPreguntaController {
 
-    @FXML private AnchorPane rootPane; // AnchorPane raíz
+    @FXML private AnchorPane rootPane;
     @FXML private Label lblCategoria, lblPregunta, lblTimer;
     @FXML private ImageView imgPregunta;
     @FXML private Label lblOpcion1, lblOpcion2, lblOpcion3, lblOpcion4;
@@ -46,29 +52,28 @@ public class VistaPreguntaController {
     private final IusuariosImpl usuarioDao = new IusuariosImpl();
     private Usuarios usuarioActual;
 
-    // --- VARIABLES PARA VIDEO ---
+    // --- VIDEO ---
     private MediaPlayer goPlayer;
     private MediaView goMediaView;
 
-    // Instancia de MusicManager
     private final MusicManager musicManager = MusicManager.getInstance();
 
     @FXML
     public void initialize() {
         usuarioActual = usuarioDao.currentUser();
-
-        // Empieza la música ambiente al iniciar
         musicManager.playAmbientMusic();
-
-        mostrarCuentaAtras();
         setupTimer();
 
-        listaPreguntas = new IPreguntaImpl().findAll();
+        List<Pregunta> todasLasPreguntas = new IPreguntaImpl().findAll();
+        Collections.shuffle(todasLasPreguntas);
+        listaPreguntas = todasLasPreguntas.stream().limit(10).collect(Collectors.toList());
+
         if (!listaPreguntas.isEmpty()) {
             indiceActual = 0;
             mostrarPregunta();
         }
-        hboxNav.setVisible(false); // Navegación oculta hasta que responda o tiempo acabe
+        hboxNav.setVisible(false);
+        mostrarCuentaAtras();
     }
 
     public void mostrarCuentaAtras() {
@@ -77,43 +82,40 @@ public class VistaPreguntaController {
             goPlayer = new MediaPlayer(media);
             goMediaView = new MediaView(goPlayer);
 
-            // Ajustar tamaño para que ocupe todo el AnchorPane
             goMediaView.setFitWidth(rootPane.getWidth());
             goMediaView.setFitHeight(rootPane.getHeight());
             goMediaView.setPreserveRatio(false);
 
-            // Añadir MediaView al AnchorPane root
-            rootPane.getChildren().add(goMediaView);
+            if (!rootPane.getChildren().contains(goMediaView)) {
+                rootPane.getChildren().add(goMediaView);
+            }
             goMediaView.toFront();
 
-            // Actualizar tamaño dinámicamente si cambia el tamaño del AnchorPane
             rootPane.widthProperty().addListener((obs, oldVal, newVal) -> goMediaView.setFitWidth(newVal.doubleValue()));
             rootPane.heightProperty().addListener((obs, oldVal, newVal) -> goMediaView.setFitHeight(newVal.doubleValue()));
 
-            // Parar música ambiente durante la cuenta atrás
             musicManager.stopAll();
 
             goPlayer.setOnEndOfMedia(() -> {
                 goPlayer.stop();
                 goPlayer.dispose();
                 rootPane.getChildren().remove(goMediaView);
-                // Al terminar el video, inicia la música de acción
                 musicManager.playActionMusic();
                 empezarJuegoDespuesVideo();
             });
 
             goPlayer.setOnError(() -> {
-                System.err.println("Error al reproducir Go.mp4: " + goPlayer.getError());
+                System.err.println("Error en reproducción de Go.mp4: " + goPlayer.getError());
                 rootPane.getChildren().remove(goMediaView);
                 musicManager.playActionMusic();
                 empezarJuegoDespuesVideo();
             });
 
-            goPlayer.setRate(1.5); // velocidad 1.5x
+            goPlayer.setRate(1.5);
             goPlayer.play();
 
         } catch (Exception e) {
-            System.err.println("Error al cargar video Go.mp4: " + e.getMessage());
+            System.err.println("Error cargando video Go.mp4: " + e.getMessage());
             musicManager.playActionMusic();
             empezarJuegoDespuesVideo();
         }
@@ -124,7 +126,9 @@ public class VistaPreguntaController {
     }
 
     public void initData(int categoria_id) {
-        listaPreguntas = new IPreguntaImpl().findByCategoria(categoria_id);
+        List<Pregunta> preguntasCategoria = new IPreguntaImpl().findByCategoria(categoria_id);
+        Collections.shuffle(preguntasCategoria);
+        listaPreguntas = preguntasCategoria.stream().limit(10).collect(Collectors.toList());
         indiceActual = 0;
         mostrarPregunta();
     }
@@ -208,7 +212,8 @@ public class VistaPreguntaController {
         resetTimer();
 
         btnAnterior.setDisable(indiceActual == 0);
-        btnSiguiente.setDisable(indiceActual == listaPreguntas.size() - 1);
+        // El botón siguiente siempre activo porque puede ir a resultados
+        btnSiguiente.setDisable(false);
     }
 
     private void clearStyles() {
@@ -242,9 +247,30 @@ public class VistaPreguntaController {
     @FXML
     private void handleSiguiente() {
         timer.stop();
-        if (indiceActual < listaPreguntas.size() - 1) {
+
+        // Cuando estamos en la última pregunta, en lugar de bloquear el botón,
+        // vamos a la vista de resultados.
+        if (indiceActual == listaPreguntas.size() - 1) {
+            irAVistaResultados();
+        } else {
             indiceActual++;
             mostrarPregunta();
+        }
+    }
+
+    private void irAVistaResultados() {
+        try {
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/discerial/ResultadoTestView.fxml"));
+            Parent root = loader.load();
+
+            org.example.discerial.Controladores.Preguntas.ResultadoTestViewController controller = loader.getController();
+            controller.initData(listaPreguntas); // Pasamos la lista de preguntas para resultados
+
+            Stage stage = (Stage) rootPane.getScene().getWindow();
+            stage.setScene(new Scene(root));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -255,7 +281,6 @@ public class VistaPreguntaController {
 
         boolean acertada = Boolean.TRUE.equals(clicked.getUserData());
 
-        // Primero limpia todas las clases para no acumular estilos
         for (Label lbl : List.of(lblOpcion1, lblOpcion2, lblOpcion3, lblOpcion4)) {
             lbl.getStyleClass().removeAll("correcta", "incorrecta");
         }
@@ -265,7 +290,7 @@ public class VistaPreguntaController {
         } else {
             clicked.getStyleClass().add("incorrecta");
         }
-        // Marca la correcta también
+
         for (Label lbl : List.of(lblOpcion1, lblOpcion2, lblOpcion3, lblOpcion4)) {
             if (Boolean.TRUE.equals(lbl.getUserData()) && !lbl.equals(clicked)) {
                 lbl.getStyleClass().add("correcta");
@@ -277,7 +302,6 @@ public class VistaPreguntaController {
         deshabilitarOpciones(true);
     }
 
-
     private void saveAttempt(boolean acertada) {
         if (listaPreguntas.isEmpty() || indiceActual < 0 || indiceActual >= listaPreguntas.size()) return;
 
@@ -288,5 +312,9 @@ public class VistaPreguntaController {
             if (acertada) usuarioDao.incrementAcertadas(u.getId());
             else usuarioDao.incrementErroneas(u.getId());
         }
+    }
+
+    public void handleVolver(ActionEvent actionEvent) {
+        // Lógica para volver si es necesaria
     }
 }

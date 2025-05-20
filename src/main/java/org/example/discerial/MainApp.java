@@ -23,6 +23,11 @@ import org.example.discerial.entities.Usuarios;
 import java.io.IOException;
 import java.util.List;
 
+import static org.example.discerial.Controladores.Preguntas.PreguntasBiologia.crearPreguntasBiologia;
+import static org.example.discerial.Controladores.Preguntas.PreguntasFilosofia.crearPreguntasFilosofia;
+import static org.example.discerial.Controladores.Preguntas.PreguntasHistoria.crearPreguntasHistoria;
+import static org.example.discerial.Controladores.Preguntas.PreguntasLiteratura.crearPreguntasLiteratura;
+
 public class MainApp extends Application {
 
     private static Stage primaryStage;
@@ -33,6 +38,13 @@ public class MainApp extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         seedCategorias();
+
+        crearPreguntasBiologia();
+        crearPreguntasFilosofia();
+        crearPreguntasLiteratura();
+        crearPreguntasHistoria();
+
+
         primaryStage = stage;
         SessionManager.setMainStage(primaryStage);
         primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/Images/Dlogo.png")));
@@ -45,6 +57,7 @@ public class MainApp extends Application {
         });
 
         mostrarSplashScreen();
+
     }
 
     private void mostrarSplashScreen() {

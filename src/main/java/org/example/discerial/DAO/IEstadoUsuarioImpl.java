@@ -26,6 +26,16 @@ public class IEstadoUsuarioImpl implements IEstadoUsuario {
         }
     }
 
+    public List<EstadoUsuario> findByUsuario(int userId) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery(
+                            "FROM EstadoUsuario eu WHERE eu.usuario.id = :uid", EstadoUsuario.class)
+                    .setParameter("uid", userId)
+                    .getResultList();
+        }
+    }
+
+
     @Override
     public Map<String,int[]> getEstadisticasPorCategoria(int userId) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
