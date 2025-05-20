@@ -16,6 +16,8 @@ import javafx.scene.control.ButtonType;
 
 import org.example.discerial.Controladores.Preguntas.PreguntasBiologia;
 import org.example.discerial.Controladores.Preguntas.PreguntasFilosofia;
+import org.example.discerial.Controladores.Preguntas.PreguntasHistoria;
+import org.example.discerial.Controladores.Preguntas.PreguntasLiteratura;
 import org.example.discerial.DAO.ICategoriaImpl;
 import org.example.discerial.DAO.IusuariosImpl;
 import org.example.discerial.entities.Categoria;
@@ -39,6 +41,8 @@ public class MainApp extends Application {
         seedCategorias();
         PreguntasBiologia.crearPreguntasBiologia();
         PreguntasFilosofia.crearPreguntasFilosofia();
+        PreguntasHistoria.crearPreguntasHistoria();
+        PreguntasLiteratura.crearPreguntasLiteratura();
 
         primaryStage = stage;
         SessionManager.setMainStage(primaryStage);
