@@ -131,5 +131,26 @@
                 </executions>
             </plugin>
         </plugins>
+
+
+
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*.xml</include> <!-- Añade esta línea -->
+                    <include>**/*.properties</include>
+                    <include>**/*.fxml</include>
+                    <include>**/*.css</include>
+                    <include>**/*.jpg</include>
+                    <include>**/*.png</include>
+                    <include>**/*.mp3</include>
+                    <include>**/*.mp4</include>
+                </includes>
+            </resource>
+        </resources>
+
     </build>
+
+
 </project>
