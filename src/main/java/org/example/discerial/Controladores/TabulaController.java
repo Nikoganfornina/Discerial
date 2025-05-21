@@ -1,27 +1,29 @@
 package org.example.discerial.Controladores;
 
+import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.geometry.Side;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.chart.*;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.TextAlignment;
+import javafx.util.Duration;
 import org.example.discerial.DAO.*;
 import org.example.discerial.Util.MusicManager;
 import org.example.discerial.entities.Categoria;
 import org.example.discerial.entities.Usuarios;
 import java.io.IOException;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static org.example.discerial.Util.SessionManager.switchScene;
 
@@ -51,7 +53,6 @@ public class TabulaController {
         }
     }
 
-
     private void cargarGraficaAvance() {
         // 1) Consulta al DAO de EstadoUsuario las estadísticas por categoría
         IEstadoUsuario estadoDao = new IEstadoUsuarioImpl();
@@ -69,21 +70,34 @@ public class TabulaController {
         CategoryAxis xAxis = new CategoryAxis();
         xAxis.setLabel("Categoría");
         xAxis.setTickLabelRotation(45);
-        xAxis.setTickLabelFont(Font.font("Arial", FontWeight.BOLD, 12));
+        xAxis.setTickLabelFont(Font.font("Arial", FontWeight.BOLD, 16)); // Texto más grande
 
         NumberAxis yAxis = new NumberAxis();
         yAxis.setLabel("Cantidad");
         yAxis.setTickUnit(5);
         yAxis.setMinorTickVisible(false);
+        yAxis.setTickLabelFont(Font.font("Arial", FontWeight.BOLD, 16)); // Texto más grande
 
-        // 4) Crear gráfico con estilos
+        // 4) Crear gráfico con fondo totalmente transparente
         BarChart<String, Number> chart = new BarChart<>(xAxis, yAxis);
         chart.setTitle("Progreso de Aprendizaje");
-        chart.setStyle("-fx-background-color: #F8F9FA; -fx-font-family: 'Arial';");
-        chart.setCategoryGap(20);
-        chart.setBarGap(5);
         chart.setLegendSide(Side.RIGHT);
         chart.setAnimated(true);
+        chart.setCategoryGap(20);
+        chart.setBarGap(5);
+
+        // Aplicar estilos directamente al gráfico y fondo interior
+        chart.setStyle("-fx-background-color: transparent;");
+        Node plotBackground = chart.lookup(".chart-plot-background");
+        if (plotBackground != null) {
+            plotBackground.setStyle("-fx-background-color: transparent;");
+        }
+
+        // Aumentar tamaño del título
+        Label title = new Label("Progreso de Aprendizaje");
+        title.setFont(Font.font("Arial", FontWeight.EXTRA_BOLD, 24));
+        title.setPadding(new Insets(10, 0, 20, 0));
+        title.setTextAlignment(TextAlignment.CENTER);
 
         // 5) Configurar series
         XYChart.Series<String, Number> serieAciertos = new XYChart.Series<>();
@@ -100,36 +114,88 @@ public class TabulaController {
 
         chart.getData().addAll(serieAciertos, serieFallos);
 
-        // 7) Personalizar colores y tooltips después de renderizar
-        Platform.runLater(() -> {
-            // Colores diferenciados
-            String estiloAciertos = "-fx-bar-fill: #2E8540;";
-            String estiloFallos = "-fx-bar-fill: #CC0000;";
+        // 7) Usar PauseTransition para esperar renderizado antes de personalizar colores, redondear barras y leyenda
+        PauseTransition pause = new PauseTransition(Duration.millis(250));
+        pause.setOnFinished(event -> {
+            String colorAciertos = "#2E8540";
+            String colorFallos = "#CC0000";
 
+            // Colorear y redondear barras, y añadir tooltips
             for (XYChart.Data<String, Number> data : serieAciertos.getData()) {
-                data.getNode().setStyle(estiloAciertos);
-                configurarTooltip(data, "Aciertos");
+                Node node = data.getNode();
+                if (node != null) {
+                    node.setStyle(
+                            "-fx-bar-fill: " + colorAciertos + ";" +
+                                    "-fx-background-radius: 10 10 0 0;" +  // redondeo arriba solo
+                                    "-fx-border-radius: 10 10 0 0;"
+                    );
+                    configurarTooltip(data, "Aciertos");
+                }
             }
 
             for (XYChart.Data<String, Number> data : serieFallos.getData()) {
-                data.getNode().setStyle(estiloFallos);
-                configurarTooltip(data, "Fallos");
+                Node node = data.getNode();
+                if (node != null) {
+                    node.setStyle(
+                            "-fx-bar-fill: " + colorFallos + ";" +
+                                    "-fx-background-radius: 10 10 0 0;" +
+                                    "-fx-border-radius: 10 10 0 0;"
+                    );
+                    configurarTooltip(data, "Fallos");
+                }
             }
 
-            // Estilo leyenda
-            Node leyenda = chart.lookup(".chart-legend");
-            if (leyenda != null) {
-                leyenda.setStyle("-fx-background-color: #E9ECEF; -fx-padding: 10;");
+            // Leyenda personalizada con colores correctos y redondeados
+            Set<Node> legendItems = chart.lookupAll(".chart-legend-item");
+            for (Node item : legendItems) {
+                if (item instanceof HBox hbox && hbox.getChildren().size() >= 2) {
+                    Node symbol = hbox.getChildren().get(0);
+                    Label label = (Label) hbox.getChildren().get(1);
+
+                    if (label.getText().contains("Aciertos")) {
+                        symbol.setStyle(
+                                "-fx-background-color: " + colorAciertos + ";" +
+                                        "-fx-background-radius: 10;" +
+                                        "-fx-min-width: 15;" +
+                                        "-fx-min-height: 15;" +
+                                        "-fx-max-width: 15;" +
+                                        "-fx-max-height: 15;"
+                        );
+                    } else if (label.getText().contains("Fallos")) {
+                        symbol.setStyle(
+                                "-fx-background-color: " + colorFallos + ";" +
+                                        "-fx-background-radius: 10;" +
+                                        "-fx-min-width: 15;" +
+                                        "-fx-min-height: 15;" +
+                                        "-fx-max-width: 15;" +
+                                        "-fx-max-height: 15;"
+                        );
+                    }
+                }
             }
+
+            // Fondo transparente de la leyenda y padding
+            Node legend = chart.lookup(".chart-legend");
+            if (legend != null) {
+                legend.setStyle("-fx-background-color: transparent; -fx-padding: 10;");
+            }
+
+            // Líneas guía visibles
+            chart.setHorizontalGridLinesVisible(true);
+            chart.setVerticalGridLinesVisible(true);
         });
+        pause.play();
 
-        // 8) Configurar responsividad
+        // 8) Responsividad
         chart.prefWidthProperty().bind(chartContainer.widthProperty());
         chart.prefHeightProperty().bind(chartContainer.heightProperty().subtract(20));
 
-        // 9) Añadir al contenedor
-        chartContainer.getChildren().setAll(chart);
+        // 9) Añadir al contenedor con título separado
+        VBox contenedor = new VBox(title, chart);
+        contenedor.setSpacing(10);
+        chartContainer.getChildren().setAll(contenedor);
     }
+
 
     private void configurarTooltip(XYChart.Data<String, Number> data, String tipo) {
         Tooltip tooltip = new Tooltip(
