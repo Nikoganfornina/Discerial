@@ -1,61 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.geometry.Insets?>
+
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/17.0.12"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="org.example.discerial.Controladores.VistaPreguntaController"
-            prefWidth="1500" prefHeight="1000"
-            stylesheets="@../../../Styles.css">
+<AnchorPane id="fondoInicioSesion" fx:id="rootPane" prefHeight="1000" prefWidth="1500" stylesheets="@../../../gameStyle.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.discerial.Controladores.Preguntas.CrudvistaPreguntasController">
 
-    <!-- Categoría arriba a la izquierda -->
-    <Label fx:id="lblCategoria"
-           layoutX="20" layoutY="20"
-           style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+    <!-- Categoría -->
+    <Label fx:id="lblCategoria" layoutX="20" layoutY="20" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
 
+    <!-- Imagen centrada con bordes redondeados -->
+    <ImageView fx:id="imgPregunta" fitHeight="292.0" fitWidth="700" layoutX="400" layoutY="150" preserveRatio="true" />
 
-    <!-- Contenedor principal centrado -->
-    <VBox spacing="20" alignment="CENTER"
-          AnchorPane.topAnchor="20" AnchorPane.leftAnchor="20"
-          AnchorPane.rightAnchor="20" AnchorPane.bottomAnchor="20">
+    <!-- Enunciado -->
+    <Label fx:id="lblPregunta" layoutX="200" layoutY="443.0" prefHeight="112.0" prefWidth="1100" style="-fx-font-size: 24px; -fx-alignment: CENTER;" wrapText="true" />
 
+    <!-- Opciones (sin eventos) -->
 
-        <!-- Texto de la pregunta -->
-        <Label fx:id="lblPregunta" wrapText="true"
-               style="-fx-font-size: 24px;"/>
-
-        <!-- Imagen centrada -->
-        <HBox alignment="CENTER">
-            <ImageView fx:id="imgPregunta" fitHeight="200" fitWidth="300" preserveRatio="true"/>
-        </HBox>
-
-        <!-- Opciones de respuesta -->
-        <VBox spacing="10" alignment="CENTER">
-            <Label fx:id="lblOpcion1" style="-fx-padding: 10; -fx-border-width: 2;"/>
-            <Label fx:id="lblOpcion2" style="-fx-padding: 10; -fx-border-width: 2;"/>
-            <Label fx:id="lblOpcion3" style="-fx-padding: 10; -fx-border-width: 2;"/>
-            <Label fx:id="lblOpcion4" style="-fx-padding: 10; -fx-border-width: 2;"/>
-        </VBox>
-
-        <!-- Navegación -->
-        <HBox spacing="20" alignment="CENTER">
-            <Button fx:id="btnAnterior" text="Anterior"
-                    prefWidth="150" prefHeight="50"
-                    onAction="#handleAnterior"/>
-            <Button fx:id="btnSiguiente" text="Siguiente"
-                    prefWidth="150" prefHeight="50"
-                    onAction="#handleSiguiente"/>
-        </HBox>
-
-
+    <VBox alignment="CENTER" layoutX="200" layoutY="530.0" prefHeight="386.0" prefWidth="1100" spacing="20">
+        <Label fx:id="lblOpcion1" prefHeight="64.0" prefWidth="1100" styleClass="opcion-custom" />
+        <Label fx:id="lblOpcion2" prefWidth="1100" styleClass="opcion-custom" />
+        <Label fx:id="lblOpcion3" prefWidth="1100" styleClass="opcion-custom" />
+        <Label fx:id="lblOpcion4" prefWidth="1100" styleClass="opcion-custom" />
     </VBox>
 
-    <!-- Botón Volver abajo a la derecha -->
-    <Button fx:id="btnVolver" text="Volver"
-            layoutX="1286.0" layoutY="885.0"
-            prefHeight="78.0" prefWidth="174.0"
-            onAction="#handleVolver"/>
+    <!-- Navegación -->
+    <HBox fx:id="hboxNav" alignment="CENTER" layoutX="600" layoutY="909.0" prefHeight="41.0" prefWidth="340.0" spacing="40">
+        <Button fx:id="btnAnterior" onAction="#handleAnterior" prefHeight="50" prefWidth="150" styleClass="boton-custom" text="Anterior" />
+        <Button fx:id="btnSiguiente" onAction="#handleSiguiente" prefHeight="50" prefWidth="150" styleClass="boton-custom" text="Siguiente" />
+    </HBox>
 
 </AnchorPane>

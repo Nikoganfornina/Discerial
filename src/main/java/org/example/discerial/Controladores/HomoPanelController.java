@@ -11,6 +11,7 @@ import org.example.discerial.DAO.IusuariosImpl;
 import org.example.discerial.entities.Usuarios;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 public class HomoPanelController {
 
@@ -55,29 +56,47 @@ public class HomoPanelController {
     private void actualizarCamposUsuario() {
         usuarioNombre.setText(usuarioActual.getNickname());
         usuarioCorreo.setText(usuarioActual.getCorreo());
-        usuarioPreguntasAcertadas.setText(String.valueOf(usuarioActual.getPreguntasAcertadas()));
-        usuarioPreguntasErroneas.setText(String.valueOf(usuarioActual.getPreguntasErroneas()));
+
+        int acertadas = usuariosDao.getPreguntasAcertadas(usuarioActual.getId());
+        int erroneas = usuariosDao.getPreguntasErroneas(usuarioActual.getId());
+
+        usuarioActual.setPreguntasAcertadas(acertadas);
+        usuarioActual.setPreguntasErroneas(erroneas);
+
+        usuarioPreguntasAcertadas.setText(String.valueOf(acertadas));
+        usuarioPreguntasErroneas.setText(String.valueOf(erroneas));
+
+
         lblTiempoJugado.setText(usuarioActual.getHorasJugadasFormato());
     }
 
     private void cargarImagenPerfil() {
         if (usuarioActual.getImagen() != null) {
             try {
-                String path = "/Images/IconosPerfil/" + usuarioActual.getImagen();
-                Image image = new Image(getClass().getResource(path).toExternalForm());
-                imagenSeleccionada.setImage(image);
+                // Usa getResourceAsStream con rutas absolutas
+                InputStream inputStream = getClass().getResourceAsStream(
+                        "/Images/IconosPerfil/" + usuarioActual.getImagen()
+                );
 
-                // Crear un clip circular para la imagen
-                Circle clip = new Circle(160, 160, 160); // Establecer el centro y el radio del círculo
-                imagenSeleccionada.setClip(clip); // Aplicar el clip al ImageView
+                if (inputStream != null) {
+                    Image image = new Image(inputStream);
+                    imagenSeleccionada.setImage(image);
 
+                    // Configuración del clip circular
+                    Circle clip = new Circle(
+                            imagenSeleccionada.getFitWidth()/2,
+                            imagenSeleccionada.getFitHeight()/2,
+                            imagenSeleccionada.getFitWidth()/2
+                    );
+                    imagenSeleccionada.setClip(clip);
+                } else {
+                    System.err.println("No se encontró la imagen: " + usuarioActual.getImagen());
+                }
             } catch (Exception e) {
-                System.err.println("Error cargando imagen de perfil: " + usuarioActual.getImagen());
-                e.printStackTrace();
+                System.err.println("Error cargando imagen: " + e.getMessage());
             }
         }
     }
-
 
     private void configurarCampos() {
         usuarioNombre.setEditable(false);
@@ -91,7 +110,9 @@ public class HomoPanelController {
     private void entrarModoEdicion() {
         habilitarEdicion(true);
         configurarVisibilidadEdicion(true);
-        btnIconosPerfil.setVisible(true); // El botón se hace visible cuando entramos en modo edición
+        btnIconosPerfil.setVisible(true);
+        btnEditar.setVisible(false);  // Ocultar botón Editar inmediatamente
+// El botón se hace visible cuando entramos en modo edición
     }
 
     @FXML
@@ -101,8 +122,9 @@ public class HomoPanelController {
             usuariosDao.update(usuarioActual);
             habilitarEdicion(false);
             configurarVisibilidadEdicion(false);
-            btnIconosPerfil.setVisible(false); // El botón se oculta al guardar
+            btnIconosPerfil.setVisible(false);
             contenedorImagenes.setVisible(false);
+            btnEditar.setVisible(true);  // Mostrar botón Editar después de guardar
         }
     }
 
@@ -129,6 +151,7 @@ public class HomoPanelController {
     private void configurarVisibilidadEdicion(boolean enEdicion) {
         btnEditar.setVisible(!enEdicion);
         btnGuardar.setVisible(enEdicion);
+        TituloStyle.setVisible(enEdicion);
     }
 
     private void mostrarAlerta(String titulo, String mensaje) {
@@ -142,31 +165,22 @@ public class HomoPanelController {
     @FXML
     private void visualizarImagen() {
         try {
-            // Ocultar el botón cuando se pulse para cambiar la foto
-            btnIconosPerfil.setVisible(false);
-
-            // Modificar la ruta al archivo FXML correctamente
+            btnIconosPerfil.setVisible(false);  // Ocultar al abrir selector
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/discerial/Panels/SelectImages.fxml"));
             AnchorPane panel = loader.load();
 
-            // Obtenemos el controlador del panel cargado
             SelectImagesController controller = loader.getController();
-
-            // Le decimos qué hacer cuando seleccionen una imagen
             controller.setOnImageSelected(nombreImagen -> {
                 usuarioActual.setImagen(nombreImagen);
                 cargarImagenPerfil();
                 contenedorImagenes.setVisible(false);
-
-                // Mostrar el botón nuevamente después de la selección de imagen
-                btnIconosPerfil.setVisible(true);
+                btnIconosPerfil.setVisible(true);  // Restaurar visibilidad
             });
 
             contenedorImagenes.getChildren().setAll(panel);
             contenedorImagenes.setVisible(true);
         } catch (IOException e) {
             e.printStackTrace();
-            // Manejo de error
         }
     }
 }

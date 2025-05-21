@@ -13,60 +13,206 @@ public class PreguntasFilosofia {
         IPregunta preguntaDao = new IPreguntaImpl();
 
         // Verificamos si ya existen preguntas para la categoría "Filosofía"
-        List<Pregunta> preguntasFilosofia = preguntaDao.findByCategoria(1); // Asegúrate de usar el ID correcto
+        List<Pregunta> preguntasFilosofia = preguntaDao.findByCategoria(3); // Asegúrate de usar el ID correcto
         if (!preguntasFilosofia.isEmpty()) {
             System.out.println("Ya existen preguntas para la categoría 'Filosofía'.");
             return;
         }
 
-        // Crear preguntas de filosofía (total de 50 preguntas)
         String[][] preguntas = {
-                {"¿Quién es considerado el padre de la filosofía occidental?", "https://es.wikipedia.org/wiki/S%C3%B3crates", "Sócrates", "Platón", "Aristóteles", "Diógenes", "Sócrates", "multiple"},
-                {"¿Qué filósofo es conocido por su teoría del 'Eternalismo'?", "https://es.wikipedia.org/wiki/Mart%C3%ADn_Heidegger", "Heidegger", "Nietzsche", "Hegel", "Descartes", "Heidegger", "multiple"},
-                {"¿Qué filósofo decía 'Pienso, luego existo'?", "https://es.wikipedia.org/wiki/Ren%C3%A9_Descartes", "René Descartes", "Santo Tomás de Aquino", "Jean-Paul Sartre", "Emmanuel Kant", "René Descartes", "multiple"},
-                {"¿Cuál es el principio fundamental del empirismo?", "https://es.wikipedia.org/wiki/Empirismo", "La experiencia es la fuente de todo conocimiento.", "La razón es la única fuente de conocimiento.", "El conocimiento proviene de la intuición.", "El conocimiento es innato.", "La experiencia es la fuente de todo conocimiento.", "multiple"},
-                {"La ética kantiana afirma que la moralidad está basada en la razón y la autonomía.", "https://es.wikipedia.org/wiki/%C3%89tica_de_Kant", "Verdadero", "Falso", "Verdadero", "Falso", "Verdadero", "true"},
-                {"¿Quién desarrolló la teoría del contrato social?", "https://es.wikipedia.org/wiki/Jean-Jacques_Rousseau", "Jean-Jacques Rousseau", "John Locke", "Karl Marx", "Thomas Hobbes", "Jean-Jacques Rousseau", "multiple"},
-                {"¿Qué filósofo propuso la teoría de la voluntad de poder?", "https://es.wikipedia.org/wiki/Friedrich_Nietzsche", "Nietzsche", "Schopenhauer", "Fichte", "Kant", "Nietzsche", "multiple"},
-                {"¿Qué pensador es conocido por su concepto de 'el superhombre'?", "https://es.wikipedia.org/wiki/Superhombre", "Nietzsche", "Sartre", "Hegel", "Foucault", "Nietzsche", "multiple"},
-                {"¿Cuál es la obra más famosa de Platón?", "https://es.wikipedia.org/wiki/La_rep%C3%BAblica_(di%C3%A1logo)", "La República", "Fedón", "La Apología de Sócrates", "Timeo", "La República", "multiple"},
-                {"¿Qué filósofo es conocido por su teoría del 'sujeto trascendental'?", "https://es.wikipedia.org/wiki/Immanuel_Kant", "Immanuel Kant", "René Descartes", "John Locke", "David Hume", "Immanuel Kant", "multiple"},
-                {"¿Quién fue el maestro de Aristóteles?", "https://es.wikipedia.org/wiki/Plat%C3%B3n", "Platón", "Sócrates", "Heráclito", "Pitágoras", "Platón", "multiple"},
-                {"Según Descartes, ¿qué es lo único que no se puede dudar?", "https://es.wikipedia.org/wiki/Ren%C3%A9_Descartes", "La existencia del yo", "La realidad material", "Las matemáticas", "El mundo externo", "La existencia del yo", "multiple"},
-                {"¿Qué filósofo desarrolló el concepto de 'la voluntad de vivir'?", "https://es.wikipedia.org/wiki/Arthur_Schopenhauer", "Arthur Schopenhauer", "Friedrich Nietzsche", "Karl Marx", "Jean-Paul Sartre", "Arthur Schopenhauer", "multiple"},
-                {"¿Qué pensador es conocido por sus contribuciones al concepto de 'existencialismo'?", "https://es.wikipedia.org/wiki/Existencialismo", "Jean-Paul Sartre", "Simone de Beauvoir", "Karl Marx", "Martin Heidegger", "Jean-Paul Sartre", "multiple"},
-                {"¿Qué filósofo dijo: 'El hombre está condenado a ser libre'?", "https://es.wikipedia.org/wiki/Jean-Paul_Sartre", "Jean-Paul Sartre", "Simone de Beauvoir", "Friedrich Nietzsche", "Heidegger", "Jean-Paul Sartre", "multiple"},
-                {"¿Quién es el autor de la obra 'Así habló Zaratustra'?", "https://es.wikipedia.org/wiki/Así_habló_Zaratustra", "Friedrich Nietzsche", "Heidegger", "Karl Marx", "Jean-Paul Sartre", "Friedrich Nietzsche", "multiple"},
-                {"¿Cuál es el concepto central en la filosofía de la Escuela de Frankfurt?", "https://es.wikipedia.org/wiki/Escuela_de_Frankfurt", "Teoría crítica", "Empirismo lógico", "Fenomenología", "Cognición social", "Teoría crítica", "multiple"},
-                {"¿Qué filósofo se centró en la teoría del 'conocimiento a priori'?", "https://es.wikipedia.org/wiki/Immanuel_Kant", "Immanuel Kant", "René Descartes", "David Hume", "Ludwig Wittgenstein", "Immanuel Kant", "multiple"},
-                {"¿Quién fue el creador del principio de la 'razón suficiente'?", "https://es.wikipedia.org/wiki/Gottfried_Wilhelm_Leibniz", "Leibniz", "Hegel", "Fichte", "Kant", "Leibniz", "multiple"},
-                {"Según Platón, ¿cuál es la forma más perfecta de gobierno?", "https://es.wikipedia.org/wiki/La_república_(diálogo)", "La aristocracia de los filósofos", "La democracia", "La oligarquía", "La tiranía", "La aristocracia de los filósofos", "multiple"},
-                {"¿Qué filósofo dijo 'La vida sin reflexión no merece la pena ser vivida'?", "https://es.wikipedia.org/wiki/S%C3%B3crates", "Sócrates", "Platón", "Aristóteles", "Séneca", "Sócrates", "multiple"},
-                {"¿Quién fue el principal filósofo del empirismo británico?", "https://es.wikipedia.org/wiki/John_Locke", "John Locke", "David Hume", "George Berkeley", "Thomas Hobbes", "John Locke", "multiple"},
-                {"¿Qué filósofo se ocupó del estudio de la fenomenología?", "https://es.wikipedia.org/wiki/Edmund_Husserl", "Edmund Husserl", "Martin Heidegger", "Immanuel Kant", "Jean-Paul Sartre", "Edmund Husserl", "multiple"},
-                {"¿Cuál es la teoría central de la fenomenología?", "https://es.wikipedia.org/wiki/Fenomenología", "El estudio de la experiencia tal como se presenta en la conciencia", "La interpretación del sentido de la vida", "El estudio de la moralidad humana", "La teoría de la evolución", "El estudio de la experiencia tal como se presenta en la conciencia", "multiple"},
-                {"¿Qué filósofo es conocido por su concepto de 'la voluntad de poder'?", "https://es.wikipedia.org/wiki/Friedrich_Nietzsche", "Friedrich Nietzsche", "Hegel", "Aristóteles", "Platón", "Friedrich Nietzsche", "multiple"},
-                {"¿Qué filósofo fue el creador de la idea de 'la razón instrumental'?", "https://es.wikipedia.org/wiki/Max_Weber", "Max Weber", "Friedrich Nietzsche", "Emmanuel Kant", "Martin Heidegger", "Max Weber", "multiple"},
-                {"¿Qué filósofo fue crítico de la sociedad industrial y defendió la teoría de la alienación?", "https://es.wikipedia.org/wiki/Karl_Marx", "Karl Marx", "Friedrich Engels", "Jean-Paul Sartre", "Emmanuel Kant", "Karl Marx", "multiple"},
-                {"¿Quién propuso la teoría del 'método científico'?", "https://es.wikipedia.org/wiki/Francis_Bacon", "Francis Bacon", "Descartes", "Galileo Galilei", "Isaac Newton", "Francis Bacon", "multiple"},
-                {"¿Cuál es la obra más conocida de René Descartes?", "https://es.wikipedia.org/wiki/Discurso_del_metodo", "Discurso del método", "Meditaciones Metafísicas", "Principios de la Filosofía", "La ética demostrada según el orden geométrico", "Discurso del método", "multiple"},
-                {"¿Qué filósofo considera que la realidad es un conjunto de esencias a priori?", "https://es.wikipedia.org/wiki/Immanuel_Kant", "Immanuel Kant", "David Hume", "René Descartes", "Martin Heidegger", "Immanuel Kant", "multiple"},
-                {"¿Qué filósofo es conocido por su teoría de los 'mundos posibles'?", "https://es.wikipedia.org/wiki/Gottfried_Wilhelm_Leibniz", "Gottfried Wilhelm Leibniz", "Immanuel Kant", "Friedrich Nietzsche", "Arthur Schopenhauer", "Gottfried Wilhelm Leibniz", "multiple"},
-                {"¿Qué pensador desarrolló la teoría de la justicia basada en la 'estructura básica' de la sociedad?", "https://es.wikipedia.org/wiki/John_Rawls", "John Rawls", "Karl Marx", "Jean-Jacques Rousseau", "Immanuel Kant", "John Rawls", "multiple"},
-                // Añadir más preguntas hasta completar 50
+                {
+                        "¿Quién es considerado el padre de la filosofía occidental?",
+                        "Platón",
+                        "Sócrates",
+                        "Aristóteles",
+                        "Sócrates",
+                        "https://upload.wikimedia.org/wikipedia/commons/6/6f/Socrates_Louvre.jpg",
+                        "multiple"
+                },
+                {
+                        "¿Cuál es la obra más famosa de René Descartes?",
+                        "Crítica de la razón pura",
+                        "Meditaciones metafísicas",
+                        "Discurso del método",
+                        "Discurso del método",
+                        "https://upload.wikimedia.org/wikipedia/commons/7/7a/René_Descartes_1649.jpg",
+                        "multiple"
+                },
+                {
+                        "¿Qué filósofo formuló la teoría de las Ideas o Formas?",
+                        "Epicuro",
+                        "Platón",
+                        "Aristóteles",
+                        "Platón",
+                        "https://upload.wikimedia.org/wikipedia/commons/5/55/Plato_Silanion_Musei_Capitolini_MC1377.jpg",
+                        "multiple"
+                },
+                {
+                        "¿Cuál es el concepto central en la ética de Aristóteles?",
+                        "El deber",
+                        "La virtud",
+                        "La felicidad (eudaimonía)",
+                        "La felicidad (eudaimonía)",
+                        "https://upload.wikimedia.org/wikipedia/commons/1/1c/Aristotle_Altemps_Inv8575.jpg",
+                        "multiple"
+                },
+                {
+                        "¿Qué corriente filosófica sostiene que la realidad está compuesta únicamente por materia?",
+                        "Idealismo",
+                        "Materialismo",
+                        "Dualismo",
+                        "Materialismo",
+                        "https://upload.wikimedia.org/wikipedia/commons/7/7a/Democritus_Louvre.jpg",
+                        "multiple"
+                },
+                {
+                        "¿Quién escribió 'Así habló Zaratustra'?",
+                        "Friedrich Nietzsche",
+                        "Immanuel Kant",
+                        "Jean-Paul Sartre",
+                        "Friedrich Nietzsche",
+                        "https://upload.wikimedia.org/wikipedia/commons/2/29/Nietzsche187a-crop.jpg",
+                        "multiple"
+                },
+                {
+                        "¿Qué filósofo es conocido por la frase 'Pienso, luego existo'?",
+                        "René Descartes",
+                        "David Hume",
+                        "John Locke",
+                        "René Descartes",
+                        "https://upload.wikimedia.org/wikipedia/commons/7/7a/René_Descartes_1649.jpg",
+                        "multiple"
+                },
+                {
+                        "¿Cuál es la obra principal de Immanuel Kant?",
+                        "Meditaciones",
+                        "Crítica de la razón pura",
+                        "La República",
+                        "Crítica de la razón pura",
+                        "https://upload.wikimedia.org/wikipedia/commons/0/09/Kant_gemaelde_3.jpg",
+                        "multiple"
+                },
+                {
+                        "¿Qué filósofo desarrolló el concepto de 'voluntad de poder'?",
+                        "Arthur Schopenhauer",
+                        "Friedrich Nietzsche",
+                        "Karl Marx",
+                        "Friedrich Nietzsche",
+                        "https://upload.wikimedia.org/wikipedia/commons/2/29/Nietzsche187a-crop.jpg",
+                        "multiple"
+                },
+                {
+                        "¿Quién es el autor del 'Contrato Social'?",
+                        "Jean-Jacques Rousseau",
+                        "John Locke",
+                        "Thomas Hobbes",
+                        "Jean-Jacques Rousseau",
+                        "https://upload.wikimedia.org/wikipedia/commons/3/32/Jean-Jacques_Rousseau_1753.jpg",
+                        "multiple"
+                },
+                {
+                        "¿Qué filósofo es conocido por su teoría del existencialismo?",
+                        "Martin Heidegger",
+                        "Jean-Paul Sartre",
+                        "Michel Foucault",
+                        "Jean-Paul Sartre",
+                        "https://upload.wikimedia.org/wikipedia/commons/0/0d/Jean-Paul_Sartre_1967.jpg",
+                        "multiple"
+                },
+                {
+                        "¿Cuál es el objetivo principal de la ética según Kant?",
+                        "La búsqueda de la felicidad",
+                        "El cumplimiento del deber",
+                        "La autorrealización",
+                        "El cumplimiento del deber",
+                        "https://upload.wikimedia.org/wikipedia/commons/0/09/Kant_gemaelde_3.jpg",
+                        "multiple"
+                },
+                {
+                        "¿Qué filósofo propuso la teoría del 'estado de naturaleza' como un estado de guerra de todos contra todos?",
+                        "Thomas Hobbes",
+                        "John Locke",
+                        "Jean-Jacques Rousseau",
+                        "Thomas Hobbes",
+                        "https://upload.wikimedia.org/wikipedia/commons/6/68/Thomas_Hobbes_by_Francis_Barnard_1650.jpg",
+                        "multiple"
+                },
+                {
+                        "¿Quién escribió 'La República'?",
+                        "Platón",
+                        "Aristóteles",
+                        "Sócrates",
+                        "Platón",
+                        "https://upload.wikimedia.org/wikipedia/commons/5/55/Plato_Silanion_Musei_Capitolini_MC1377.jpg",
+                        "multiple"
+                },
+                {
+                        "¿Cuál es la idea central del empirismo?",
+                        "El conocimiento proviene de la experiencia",
+                        "El conocimiento es innato",
+                        "El conocimiento es una ilusión",
+                        "El conocimiento proviene de la experiencia",
+                        "https://upload.wikimedia.org/wikipedia/commons/a/a0/John_Locke_%281633-1704%29_by_Sir_Godfrey_Kneller%2C_Bt.jpg",
+                        "multiple"
+                },
+                {
+                        "¿Qué filósofo es conocido por la dialéctica y el idealismo absoluto?",
+                        "Georg Wilhelm Friedrich Hegel",
+                        "Karl Marx",
+                        "Friedrich Nietzsche",
+                        "Georg Wilhelm Friedrich Hegel",
+                        "https://upload.wikimedia.org/wikipedia/commons/3/3e/Georg_Wilhelm_Friedrich_Hegel.jpg",
+                        "multiple"
+                },
+                {
+                        "¿Qué corriente filosófica sostiene que la existencia precede a la esencia?",
+                        "Existencialismo",
+                        "Racionalismo",
+                        "Esencialismo",
+                        "Existencialismo",
+                        "https://upload.wikimedia.org/wikipedia/commons/0/0d/Jean-Paul_Sartre_1967.jpg",
+                        "multiple"
+                },
+                {
+                        "¿Cuál es el concepto de 'superhombre' desarrollado por Nietzsche?",
+                        "Un ser divino",
+                        "Un ser moralmente superior",
+                        "Un individuo que trasciende las normas sociales y crea sus propios valores",
+                        "Un individuo que trasciende las normas sociales y crea sus propios valores",
+                        "https://upload.wikimedia.org/wikipedia/commons/2/29/Nietzsche187a-crop.jpg",
+                        "multiple"
+                },
+                {
+                        "¿Quién es considerado el fundador del positivismo?",
+                        "Auguste Comte",
+                        "Émile Durkheim",
+                        "Max Weber",
+                        "Auguste Comte",
+                        "https://upload.wikimedia.org/wikipedia/commons/f/fb/Auguste_Comte_Alte_Galerie_001.jpg",
+                        "multiple"
+                },
+                {
+                        "¿Qué filósofo francés es conocido por su trabajo en la fenomenología y el estructuralismo?",
+                        "Michel Foucault",
+                        "Jean-Paul Sartre",
+                        "Edmund Husserl",
+                        "Michel Foucault",
+                        "https://upload.wikimedia.org/wikipedia/commons/f/f7/Michel_Foucault_1975.jpg",
+                        "multiple"
+                }
         };
 
         // Insertamos las preguntas en la base de datos
         for (String[] datos : preguntas) {
             Pregunta pregunta = new Pregunta();
-            pregunta.setCategoria(new Categoria(1 ,"Filosofía"));
+            pregunta.setCategoria(new Categoria(3 ,"Filosofía"));
             pregunta.setPregunta(datos[0]);
-            pregunta.setImagen(datos[1]);  // Agregar URL de referencia
-            pregunta.setRespuestaCorrecta(datos[5]);
-            pregunta.setRespuesta2(datos[2]);
-            pregunta.setRespuesta3(datos[3]);
-            pregunta.setRespuesta4(datos[4]);
-            pregunta.setTipo(datos[6]);  // Agregar tipo de pregunta
+            pregunta.setRespuesta2(datos[1]);
+            pregunta.setRespuesta3(datos[2]);
+            pregunta.setRespuesta4(datos[3]);
+            pregunta.setRespuestaCorrecta(datos[4]); // ← posición 4
+            pregunta.setImagen(datos[5]);             // ← posición 5
+            pregunta.setTipo(datos[6]);               // ← posición 6
             preguntaDao.save(pregunta);
         }
 

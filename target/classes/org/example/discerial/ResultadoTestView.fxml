@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.example.discerial.Controladores.Preguntas.ResultadoTestViewController"
+            stylesheets="@../../../resultadoStyle.css"
+            id="fondoInicioSesion"
+            prefWidth="1500" prefHeight="1000">
+
+    <!-- Título centrado arriba -->
+    <top>
+        <VBox alignment="CENTER" spacing="10">
+            <Label text="Resultados !"
+                   style="-fx-font-size: 48px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+            <Separator prefWidth="600"/>
+        </VBox>
+    </top>
+
+    <!-- Contenido central -->
+    <center>
+        <VBox alignment="TOP_CENTER" spacing="40" styleClass="center-container">
+            <HBox spacing="100" alignment="CENTER">
+                <!-- Fallos a la izquierda -->
+                <VBox alignment="CENTER" spacing="10" prefWidth="400">
+                    <Label text="NUMERO DE FALLOS" styleClass="label-titulo-fallos"/>
+                    <Label fx:id="lblFallos" text="0" styleClass="numeros-grandes"/>
+                </VBox>
+
+                <!-- Aciertos a la derecha -->
+                <VBox alignment="CENTER" spacing="10" prefWidth="400">
+                    <Label text="NUMERO DE ACIERTOS" styleClass="label-titulo-aciertos"/>
+                    <Label fx:id="lblAciertos" text="0" styleClass="numeros-grandes"/>
+                </VBox>
+            </HBox>
+
+            <!-- Mensaje debajo de ambos -->
+            <Label fx:id="lblMensaje" wrapText="true" textAlignment="CENTER"
+                   styleClass="mensaje" prefWidth="800"/>
+
+            <!-- Botón volver al menú -->
+            <Button fx:id="btnVolverMenu" onAction="#handleVolverMenu" text="Volver al Menú" styleClass="button"/>
+        </VBox>
+    </center>
+</BorderPane>

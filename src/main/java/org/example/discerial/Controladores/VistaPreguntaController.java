@@ -1,56 +1,172 @@
 package org.example.discerial.Controladores;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
+import javafx.stage.Stage;
+import javafx.util.Duration;
+import org.example.discerial.DAO.IEstadoUsuarioImpl;
 import org.example.discerial.DAO.IPreguntaImpl;
+import org.example.discerial.DAO.IusuariosImpl;
+import org.example.discerial.Util.MusicManager;
+import org.example.discerial.entities.EstadoUsuario;
 import org.example.discerial.entities.Pregunta;
+import org.example.discerial.entities.Usuarios;
 
+import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
-
-import static org.example.discerial.Util.SessionManager.switchScene;
+import java.util.stream.Collectors;
 
 public class VistaPreguntaController {
 
-    @FXML private Label lblCategoria;
-    @FXML private Label lblPregunta;
+    @FXML private AnchorPane rootPane;
+    @FXML private Label lblCategoria, lblPregunta, lblTimer;
     @FXML private ImageView imgPregunta;
-    @FXML private Label lblOpcion1;
-    @FXML private Label lblOpcion2;
-    @FXML private Label lblOpcion3;
-    @FXML private Label lblOpcion4;
-    @FXML private Button btnAnterior;
-    @FXML private Button btnSiguiente;
-    @FXML private Button btnVolver;
+    @FXML private Label lblOpcion1, lblOpcion2, lblOpcion3, lblOpcion4;
+    @FXML private VBox vboxOpciones;
+    @FXML private HBox hboxNav;
+    @FXML private Button btnAnterior, btnSiguiente;
 
     private List<Pregunta> listaPreguntas;
     private int indiceActual = 0;
 
+    private Timeline timer;
+    private int timeRemaining = 20;
+
+    private final IusuariosImpl usuarioDao = new IusuariosImpl();
+    private Usuarios usuarioActual;
+
+    // --- VIDEO ---
+    private MediaPlayer goPlayer;
+    private MediaView goMediaView;
+
+    private final MusicManager musicManager = MusicManager.getInstance();
+
     @FXML
     public void initialize() {
-        // 1) Cargar todas las preguntas desde la BD
-        listaPreguntas = new IPreguntaImpl().findAll();
+        usuarioActual = usuarioDao.currentUser();
+        musicManager.playAmbientMusic();
+        setupTimer();
 
-        // 2) Mostrar la primera
+        List<Pregunta> todasLasPreguntas = new IPreguntaImpl().findAll();
+        Collections.shuffle(todasLasPreguntas);
+        listaPreguntas = todasLasPreguntas.stream().limit(10).collect(Collectors.toList());
+
+        if (!listaPreguntas.isEmpty()) {
+            indiceActual = 0;
+            mostrarPregunta();
+        }
+        hboxNav.setVisible(false);
+        mostrarCuentaAtras();
+    }
+
+    public void mostrarCuentaAtras() {
+        try {
+            Media media = new Media(getClass().getResource("/Go.mp4").toExternalForm());
+            goPlayer = new MediaPlayer(media);
+            goMediaView = new MediaView(goPlayer);
+
+            goMediaView.setFitWidth(rootPane.getWidth());
+            goMediaView.setFitHeight(rootPane.getHeight());
+            goMediaView.setPreserveRatio(false);
+
+            if (!rootPane.getChildren().contains(goMediaView)) {
+                rootPane.getChildren().add(goMediaView);
+            }
+            goMediaView.toFront();
+
+            rootPane.widthProperty().addListener((obs, oldVal, newVal) -> goMediaView.setFitWidth(newVal.doubleValue()));
+            rootPane.heightProperty().addListener((obs, oldVal, newVal) -> goMediaView.setFitHeight(newVal.doubleValue()));
+
+            musicManager.stopAll();
+
+            goPlayer.setOnEndOfMedia(() -> {
+                goPlayer.stop();
+                goPlayer.dispose();
+                rootPane.getChildren().remove(goMediaView);
+                musicManager.playActionMusic();
+                empezarJuegoDespuesVideo();
+            });
+
+            goPlayer.setOnError(() -> {
+                System.err.println("Error en reproducción de Go.mp4: " + goPlayer.getError());
+                rootPane.getChildren().remove(goMediaView);
+                musicManager.playActionMusic();
+                empezarJuegoDespuesVideo();
+            });
+
+            goPlayer.setRate(1.5);
+            goPlayer.play();
+
+        } catch (Exception e) {
+            System.err.println("Error cargando video Go.mp4: " + e.getMessage());
+            musicManager.playActionMusic();
+            empezarJuegoDespuesVideo();
+        }
+    }
+
+    private void empezarJuegoDespuesVideo() {
         mostrarPregunta();
+    }
 
-        // 3) Configurar habilitación de botones
-        btnAnterior.setDisable(true);
-        btnSiguiente.setDisable(listaPreguntas.size() <= 1);
+    public void initData(int categoria_id) {
+        List<Pregunta> preguntasCategoria = new IPreguntaImpl().findByCategoria(categoria_id);
+        Collections.shuffle(preguntasCategoria);
+        listaPreguntas = preguntasCategoria.stream().limit(10).collect(Collectors.toList());
+        indiceActual = 0;
+        mostrarPregunta();
+    }
+
+    private void setupTimer() {
+        timer = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
+            timeRemaining--;
+            lblTimer.setText("Tiempo: " + timeRemaining + "s");
+            if (timeRemaining <= 0) {
+                timer.stop();
+                saveAttempt(false);
+                highlightCorrect();
+                hboxNav.setVisible(true);
+                deshabilitarOpciones(true);
+            }
+        }));
+        timer.setCycleCount(Timeline.INDEFINITE);
+    }
+
+    private void resetTimer() {
+        timer.stop();
+        timeRemaining = 20;
+        lblTimer.setText("Tiempo: " + timeRemaining + "s");
+        timer.playFromStart();
     }
 
     private void mostrarPregunta() {
-        if (listaPreguntas.isEmpty()) return;
+        if (listaPreguntas.isEmpty() || indiceActual < 0 || indiceActual >= listaPreguntas.size()) return;
+
+        hboxNav.setVisible(false);
+        deshabilitarOpciones(false);
+        clearStyles();
 
         Pregunta p = listaPreguntas.get(indiceActual);
 
-        // Categoría y enunciado
         lblCategoria.setText("Categoría: " + p.getCategoria().getNombre());
         lblPregunta.setText(p.getPregunta());
 
-        // Imagen (si existe URL válida)
         if (p.getImagen() != null && !p.getImagen().isBlank()) {
             try {
                 imgPregunta.setImage(new Image(p.getImagen()));
@@ -62,55 +178,143 @@ public class VistaPreguntaController {
             imgPregunta.setVisible(false);
         }
 
-        // Opciones
-        String[] opciones = new String[] {
-                p.getRespuestaCorrecta(),
-                p.getRespuesta2(),
-                p.getRespuesta3(),
-                p.getRespuesta4()
-        };
-        Label[] labels = new Label[] {lblOpcion1, lblOpcion2, lblOpcion3, lblOpcion4};
+        class Opcion {
+            String text;
+            boolean correct;
+            Opcion(String text, boolean correct) { this.text = text; this.correct = correct; }
+        }
 
-        String correcta = p.getRespuestaCorrecta();
+        List<Opcion> opciones = List.of(
+                new Opcion(p.getRespuestaCorrecta(), true),
+                new Opcion(p.getRespuesta2(), false),
+                new Opcion(p.getRespuesta3(), false),
+                new Opcion(p.getRespuesta4(), false)
+        ).stream().filter(o -> o.text != null && !o.text.isBlank()).collect(Collectors.toList());
+
+        Collections.shuffle(opciones);
+
+        Label[] labels = {lblOpcion1, lblOpcion2, lblOpcion3, lblOpcion4};
         for (int i = 0; i < labels.length; i++) {
-            String txt = opciones[i];
-            labels[i].setText(txt != null ? txt : "");
-            // Resetear estilo
-            labels[i].setStyle("-fx-padding:10; -fx-border-width:2; -fx-border-color: transparent;");
-            // Si coincide con la respuesta correcta, borde verde
-            if (txt != null && txt.equals(correcta)) {
-                labels[i].setStyle("-fx-padding:10; -fx-border-width:2; -fx-border-color: green;");
+            Label lbl = labels[i];
+            if (i < opciones.size()) {
+                Opcion op = opciones.get(i);
+                lbl.setText(op.text);
+                lbl.setUserData(op.correct);
+                lbl.setVisible(true);
+                lbl.setStyle("-fx-padding:10; -fx-border-width:2; -fx-border-color:transparent;");
+            } else {
+                lbl.setVisible(false);
+                lbl.setText("");
+                lbl.setUserData(false);
             }
+        }
+
+        resetTimer();
+
+        btnAnterior.setDisable(indiceActual == 0);
+        // El botón siguiente siempre activo porque puede ir a resultados
+        btnSiguiente.setDisable(false);
+    }
+
+    private void clearStyles() {
+        for (Label lbl : List.of(lblOpcion1, lblOpcion2, lblOpcion3, lblOpcion4))
+            lbl.setStyle("-fx-padding:10; -fx-border-width:2; -fx-border-color:transparent;");
+    }
+
+    private void highlightCorrect() {
+        for (Label lbl : List.of(lblOpcion1, lblOpcion2, lblOpcion3, lblOpcion4)) {
+            if (Boolean.TRUE.equals(lbl.getUserData())) {
+                lbl.setStyle("-fx-padding:10; -fx-border-width:3; -fx-border-color:green;");
+            }
+        }
+    }
+
+    private void deshabilitarOpciones(boolean deshabilitar) {
+        for (Label lbl : List.of(lblOpcion1, lblOpcion2, lblOpcion3, lblOpcion4)) {
+            lbl.setDisable(deshabilitar);
         }
     }
 
     @FXML
     private void handleAnterior() {
+        timer.stop();
         if (indiceActual > 0) {
             indiceActual--;
             mostrarPregunta();
-            btnSiguiente.setDisable(false);
-            if (indiceActual == 0) {
-                btnAnterior.setDisable(true);
-            }
         }
     }
 
     @FXML
     private void handleSiguiente() {
-        if (indiceActual < listaPreguntas.size() - 1) {
+        timer.stop();
+
+        // Cuando estamos en la última pregunta, en lugar de bloquear el botón,
+        // vamos a la vista de resultados.
+        if (indiceActual == listaPreguntas.size() - 1) {
+            irAVistaResultados();
+        } else {
             indiceActual++;
             mostrarPregunta();
-            btnAnterior.setDisable(false);
-            if (indiceActual == listaPreguntas.size() - 1) {
-                btnSiguiente.setDisable(true);
-            }
+        }
+    }
+
+    private void irAVistaResultados() {
+        try {
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/discerial/ResultadoTestView.fxml"));
+            Parent root = loader.load();
+
+            org.example.discerial.Controladores.Preguntas.ResultadoTestViewController controller = loader.getController();
+            controller.initData(listaPreguntas); // Pasamos la lista de preguntas para resultados
+
+            Stage stage = (Stage) rootPane.getScene().getWindow();
+            stage.setScene(new Scene(root));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
     @FXML
-    private void handleVolver() throws Exception {
-        // Vuelve a la vista CRUD sin cambiar tamaño
-        switchScene("/org/example/discerial/CrudPreguntas.fxml");
+    private void handleOpcion(MouseEvent e) {
+        timer.stop();
+        Label clicked = (Label) e.getSource();
+
+        boolean acertada = Boolean.TRUE.equals(clicked.getUserData());
+
+        for (Label lbl : List.of(lblOpcion1, lblOpcion2, lblOpcion3, lblOpcion4)) {
+            lbl.getStyleClass().removeAll("correcta", "incorrecta");
+        }
+
+        if (acertada) {
+            clicked.getStyleClass().add("correcta");
+        } else {
+            clicked.getStyleClass().add("incorrecta");
+        }
+
+        for (Label lbl : List.of(lblOpcion1, lblOpcion2, lblOpcion3, lblOpcion4)) {
+            if (Boolean.TRUE.equals(lbl.getUserData()) && !lbl.equals(clicked)) {
+                lbl.getStyleClass().add("correcta");
+            }
+        }
+
+        saveAttempt(acertada);
+        hboxNav.setVisible(true);
+        deshabilitarOpciones(true);
+    }
+
+    private void saveAttempt(boolean acertada) {
+        if (listaPreguntas.isEmpty() || indiceActual < 0 || indiceActual >= listaPreguntas.size()) return;
+
+        Pregunta p = listaPreguntas.get(indiceActual);
+        Usuarios u = usuarioDao.currentUser();
+        if (u != null) {
+            new IEstadoUsuarioImpl().save(new EstadoUsuario(u, p, acertada));
+            if (acertada) usuarioDao.incrementAcertadas(u.getId());
+            else usuarioDao.incrementErroneas(u.getId());
+        }
+    }
+
+    public void handleVolver(ActionEvent actionEvent) {
+        // Lógica para volver si es necesaria
     }
 }

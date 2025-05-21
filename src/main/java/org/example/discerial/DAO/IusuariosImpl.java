@@ -172,7 +172,7 @@ public class IusuariosImpl implements Iusuarios {
             }
             session.close();
             return usuarios;
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
@@ -293,7 +293,21 @@ public class IusuariosImpl implements Iusuarios {
     }
 
 
+    public int getPreguntasAcertadas(int userId) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery("SELECT preguntasAcertadas FROM Usuarios WHERE id = :id", Integer.class)
+                    .setParameter("id", userId)
+                    .uniqueResult();
+        }
+    }
+
+    public int getPreguntasErroneas(int userId) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery("SELECT preguntasErroneas FROM Usuarios WHERE id = :id", Integer.class)
+                    .setParameter("id", userId)
+                    .uniqueResult();
+        }
 
 
-
+    }
 }

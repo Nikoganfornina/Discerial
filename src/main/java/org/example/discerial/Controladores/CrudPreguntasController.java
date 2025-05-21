@@ -247,6 +247,25 @@ public class CrudPreguntasController {
         switchScene("/org/example/discerial/preguntas.fxml");
     }
 
+    @FXML
+    private void handleAnterior(ActionEvent event) {
+        // tu código
+    }
+
+    @FXML
+    private void handleSiguiente(ActionEvent event) {
+        // tu código
+    }
+    @FXML
+    private void handleVolver(ActionEvent event) {
+        try {
+            switchScene("/org/example/discerial/MainApp_View.fxml");
+        } catch (Exception e) {
+            showAlert("Error", "No se pudo cargar la pantalla de preguntas.");
+            e.printStackTrace();
+        }
+    }
+
 
 
 

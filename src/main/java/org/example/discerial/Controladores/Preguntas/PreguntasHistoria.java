@@ -13,55 +13,198 @@ public class PreguntasHistoria {
         IPregunta preguntaDao = new IPreguntaImpl();
 
         // Verificamos si ya existen preguntas para la categoría "Historia"
-        List<Pregunta> preguntasHistoria = preguntaDao.findByCategoria(2); // Asegúrate de usar el ID correcto
+        List<Pregunta> preguntasHistoria = preguntaDao.findByCategoria(1); // Asegúrate de usar el ID correcto
         if (!preguntasHistoria.isEmpty()) {
             System.out.println("Ya existen preguntas para la categoría 'Historia'.");
             return;
         }
-
         String[][] preguntas = {
-                {"¿Quién fue el primer presidente de Estados Unidos?", "George Washington", "Abraham Lincoln", "Thomas Jefferson", "John Adams", "George Washington"},
-                {"¿En qué año terminó la Segunda Guerra Mundial?", "1945", "1944", "1946", "1939", "1945"},
-                {"¿Qué imperio construyó la Gran Muralla China?", "Imperio chino", "Imperio mongol", "Imperio romano", "Imperio persa", "Imperio chino"},
-                {"¿Cuál fue el evento que dio inicio a la Primera Guerra Mundial?", "Asesinato del archiduque Francisco Fernando", "Invasión de Polonia", "La firma del Tratado de Versalles", "El hundimiento del Lusitania", "Asesinato del archiduque Francisco Fernando"},
-                {"¿Qué imperio cayó en 476 d.C.?", "Imperio Romano de Occidente", "Imperio Romano de Oriente", "Imperio Bizantino", "Imperio Otomano", "Imperio Romano de Occidente"},
-                {"¿Qué famoso líder revolucionario cubano estuvo al mando durante la Revolución Cubana?", "Fidel Castro", "Ernesto 'Che' Guevara", "Carlos Manuel de Céspedes", "José Martí", "Fidel Castro"},
-                {"¿Quién fue el último zar de Rusia?", "Nicolás II", "Pedro el Grande", "Alejandro III", "Iván el Terrible", "Nicolás II"},
-                {"¿En qué guerra se utilizó por primera vez la aviación de combate?", "Primera Guerra Mundial", "Segunda Guerra Mundial", "Guerra de Corea", "Guerra de Vietnam", "Primera Guerra Mundial"},
-                {"¿Quién fue el líder de la independencia de India?", "Mahatma Gandhi", "Jawaharlal Nehru", "Sardar Patel", "Subhas Chandra Bose", "Mahatma Gandhi"},
-                {"¿En qué año cayó el Muro de Berlín?", "1989", "1987", "1990", "1985", "1989"},
-                {"¿Cuál fue la causa principal de la Revolución Francesa?", "Desigualdad social y económica", "La invasión napoleónica", "El fracaso del sistema feudal", "La influencia de las ideas ilustradas", "Desigualdad social y económica"},
-                {"¿Qué evento histórico desencadenó la Guerra Civil Americana?", "La batalla de Fort Sumter", "La elección de Abraham Lincoln", "El ataque a Pearl Harbor", "La abdicación de Luis XVI", "La batalla de Fort Sumter"},
-                {"¿Quién fue el líder de los nazis durante la Segunda Guerra Mundial?", "Adolf Hitler", "Hermann Göring", "Joseph Goebbels", "Heinrich Himmler", "Adolf Hitler"},
-                {"¿En qué año se firmó la Declaración de Independencia de los Estados Unidos?", "1776", "1775", "1781", "1787", "1776"},
-                {"¿Qué batalla marcó el final de las Guerras Napoleónicas?", "Batalla de Waterloo", "Batalla de Leipzig", "Batalla de Austerlitz", "Batalla de Trafalgar", "Batalla de Waterloo"},
-                {"¿Qué tratado puso fin a la Primera Guerra Mundial?", "Tratado de Versalles", "Tratado de París", "Tratado de Tordesillas", "Tratado de Utrecht", "Tratado de Versalles"},
-                {"¿En qué año se produjo el ataque a Pearl Harbor?", "1941", "1939", "1942", "1940", "1941"},
-                {"¿Quién fue el líder militar que derrotó a Napoleón en la batalla de Leipzig?", "Príncipe de Schwarzenberg", "Duque de Wellington", "Mariscal Ney", "Guillaume de Nassau", "Príncipe de Schwarzenberg"},
-                {"¿Qué país fue el primero en declarar la guerra a Alemania en la Segunda Guerra Mundial?", "Polonia", "Reino Unido", "Francia", "Canadá", "Polonia"},
-                {"¿Quién fue el líder de la Revolución Mexicana?", "Emiliano Zapata", "Pancho Villa", "Venustiano Carranza", "Francisco I. Madero", "Emiliano Zapata"},
-                {"¿En qué año se disolvió la Unión Soviética?", "1991", "1989", "1990", "1985", "1991"},
-                {"¿Qué país fue invadido por Alemania en 1939, lo que dio inicio a la Segunda Guerra Mundial?", "Polonia", "Francia", "Bélgica", "Checoslovaquia", "Polonia"},
-                {"¿Qué monarca inglés se separó de la Iglesia Católica en el siglo XVI?", "Enrique VIII", "Carlos I", "Eduardo VI", "Isabel I", "Enrique VIII"},
-                {"¿En qué año fue asesinado John F. Kennedy?", "1963", "1965", "1962", "1964", "1963"},
-                {"¿Quién fue el líder de los aliados durante la Segunda Guerra Mundial?", "Winston Churchill", "Franklin D. Roosevelt", "Charles de Gaulle", "Dwight D. Eisenhower", "Winston Churchill"},
-                {"¿Qué país estaba bajo el control de la Alemania nazi durante la invasión de 1940?", "Francia", "Polonia", "Bélgica", "Holanda", "Francia"},
-                {"¿Qué tratado puso fin a la Guerra Fría?", "Tratado de Helsinki", "Tratado INF", "Tratado de no proliferación nuclear", "Tratado de París", "Tratado INF"},
-                {"¿En qué país comenzó la Revolución Industrial?", "Inglaterra", "Francia", "Alemania", "Estados Unidos", "Inglaterra"},
-                {"¿Cuál fue el primer imperio que dominó casi todo el mundo conocido en la Edad Antigua?", "Imperio Romano", "Imperio Persa", "Imperio Macedonio", "Imperio Egipcio", "Imperio Romano"},
-                {"¿Quién fue el creador del Imperio Mongol?", "Gengis Kan", "Kublai Kan", "Batu Kan", "Tamerlán", "Gengis Kan"},
-                {"¿Qué emperador romano adoptó el cristianismo como religión oficial del imperio?", "Constantino I", "Nerva", "Trajano", "Teodosio", "Constantino I"},
-                {"¿Qué evento histórico tuvo lugar el 14 de julio de 1789?", "La toma de la Bastilla", "La firma de la Declaración de los Derechos del Hombre", "La ejecución de Luis XVI", "La proclamación de la República", "La toma de la Bastilla"},
-                {"¿Qué evento histórico marcó el fin de la Edad Media?", "La caída de Constantinopla", "La firma de la Carta Magna", "La invasión mongola", "La peste negra", "La caída de Constantinopla"},
-                {"¿Quién fue el principal líder del Movimiento de los Derechos Civiles en Estados Unidos?", "Martin Luther King Jr.", "Malcolm X", "Rosa Parks", "Frederick Douglass", "Martin Luther King Jr."},
-                {"¿Qué imperio existió en la península ibérica durante la Edad Media?", "El Imperio Visigodo", "El Imperio Romano", "El Imperio Islámico", "El Imperio Franco", "El Imperio Islámico"},
-                {"¿Qué país fue el primero en ser colonizado por los españoles en América?", "República Dominicana", "México", "Cuba", "Puerto Rico", "República Dominicana"}
+                {
+                        "¿En qué año comenzó la Primera Guerra Mundial?",
+                        "1912",
+                        "1914",
+                        "1918",
+                        "1914",
+                        "https://upload.wikimedia.org/wikipedia/commons/6/6b/WWI_Soldiers_1914-1918.jpg",
+                        "multiple"
+                },
+                {
+                        "¿Quién fue el primer presidente de los Estados Unidos?",
+                        "Thomas Jefferson",
+                        "George Washington",
+                        "Abraham Lincoln",
+                        "George Washington",
+                        "https://upload.wikimedia.org/wikipedia/commons/6/6f/George_Washington_by_Gilbert_Stuart_1797.jpg",
+                        "multiple"
+                },
+                {
+                        "¿Qué imperio construyó la Gran Muralla China?",
+                        "Imperio Mongol",
+                        "Imperio Qin",
+                        "Imperio Romano",
+                        "Imperio Qin",
+                        "https://upload.wikimedia.org/wikipedia/commons/1/1b/GreatWall_2004_Summer_4.jpg",
+                        "multiple"
+                },
+                {
+                        "¿Cuál fue la causa principal de la Revolución Francesa?",
+                        "Descontento social y económico",
+                        "Invasión extranjera",
+                        "Cambio climático",
+                        "Descontento social y económico",
+                        "https://upload.wikimedia.org/wikipedia/commons/f/f9/Prise_de_la_Bastille.jpg",
+                        "multiple"
+                },
+                {
+                        "¿Quién fue el líder de la independencia de la India?",
+                        "Jawaharlal Nehru",
+                        "Mahatma Gandhi",
+                        "Bhagat Singh",
+                        "Mahatma Gandhi",
+                        "https://upload.wikimedia.org/wikipedia/commons/d/d1/Mahatma_Gandhi_1942.jpg",
+                        "multiple"
+                },
+                {
+                        "¿Qué evento marcó el fin de la Edad Media?",
+                        "La caída de Constantinopla",
+                        "El descubrimiento de América",
+                        "La Revolución Industrial",
+                        "La caída de Constantinopla",
+                        "https://upload.wikimedia.org/wikipedia/commons/6/6e/Fall_of_Constantinople.jpg",
+                        "multiple"
+                },
+                {
+                        "¿Quién fue el dictador alemán durante la Segunda Guerra Mundial?",
+                        "Adolf Hitler",
+                        "Benito Mussolini",
+                        "Joseph Stalin",
+                        "Adolf Hitler",
+                        "https://upload.wikimedia.org/wikipedia/commons/8/88/Bundesarchiv_Bild_183-R57262%2C_Adolf_Hitler.jpg",
+                        "multiple"
+                },
+                {
+                        "¿En qué año se firmó la Declaración de Independencia de los Estados Unidos?",
+                        "1776",
+                        "1783",
+                        "1791",
+                        "1776",
+                        "https://upload.wikimedia.org/wikipedia/commons/4/4a/Declaration_of_Independence_%281819%29_by_John_Trumbull.jpg",
+                        "multiple"
+                },
+                {
+                        "¿Qué civilización construyó las pirámides de Egipto?",
+                        "Los mesopotámicos",
+                        "Los egipcios",
+                        "Los mayas",
+                        "Los egipcios",
+                        "https://upload.wikimedia.org/wikipedia/commons/e/e3/Kheops-Pyramid.jpg",
+                        "multiple"
+                },
+                {
+                        "¿Qué fue la Revolución Industrial?",
+                        "Un movimiento artístico",
+                        "Un cambio en la agricultura",
+                        "La transición a la producción mecanizada",
+                        "La transición a la producción mecanizada",
+                        "https://upload.wikimedia.org/wikipedia/commons/3/3d/Spinning_jenny.jpg",
+                        "multiple"
+                },
+                {
+                        "¿Quién fue el primer emperador romano?",
+                        "Julio César",
+                        "Augusto",
+                        "Nerón",
+                        "Augusto",
+                        "https://upload.wikimedia.org/wikipedia/commons/8/8b/Augustus_of_Prima_Porta.jpg",
+                        "multiple"
+                },
+                {
+                        "¿Qué evento inició la Segunda Guerra Mundial?",
+                        "La invasión de Polonia por Alemania",
+                        "El ataque a Pearl Harbor",
+                        "La caída de Francia",
+                        "La invasión de Polonia por Alemania",
+                        "https://upload.wikimedia.org/wikipedia/commons/4/4b/WWII_invasion_of_Poland_1939.png",
+                        "multiple"
+                },
+                {
+                        "¿Cuál fue el principal resultado de la Guerra Fría?",
+                        "La unificación de Alemania",
+                        "La competencia entre EEUU y URSS",
+                        "El fin de la esclavitud",
+                        "La competencia entre EEUU y URSS",
+                        "https://upload.wikimedia.org/wikipedia/commons/7/7a/Cold_War_map_1953-1989.png",
+                        "multiple"
+                },
+                {
+                        "¿Qué emperador ordenó la construcción del Coliseo romano?",
+                        "Nerón",
+                        "Vespasiano",
+                        "Trajano",
+                        "Vespasiano",
+                        "https://upload.wikimedia.org/wikipedia/commons/d/d9/Colosseum_in_Rome%2C_Italy_-_April_2007.jpg",
+                        "multiple"
+                },
+                {
+                        "¿En qué año cayó el Imperio Romano de Occidente?",
+                        "476 d.C.",
+                        "1492",
+                        "1066",
+                        "476 d.C.",
+                        "https://upload.wikimedia.org/wikipedia/commons/e/e3/Western_Roman_Empire_476_AD.png",
+                        "multiple"
+                },
+                {
+                        "¿Quién fue el autor de la teoría de la relatividad?",
+                        "Isaac Newton",
+                        "Albert Einstein",
+                        "Galileo Galilei",
+                        "Albert Einstein",
+                        "https://upload.wikimedia.org/wikipedia/commons/d/d3/Albert_Einstein_Head.jpg",
+                        "multiple"
+                },
+                {
+                        "¿Qué movimiento social luchó contra el apartheid en Sudáfrica?",
+                        "El Congreso Nacional Africano",
+                        "Los Boers",
+                        "El Frente Nacional",
+                        "El Congreso Nacional Africano",
+                        "https://upload.wikimedia.org/wikipedia/commons/e/e2/Nelson_Mandela-2008.jpg",
+                        "multiple"
+                },
+                {
+                        "¿Cuál fue la función principal de la Liga de Naciones?",
+                        "Organizar guerras",
+                        "Mantener la paz mundial",
+                        "Promover la colonización",
+                        "Mantener la paz mundial",
+                        "https://upload.wikimedia.org/wikipedia/commons/2/20/League_of_Nations_emblem.png",
+                        "multiple"
+                },
+                {
+                        "¿Quién fue el faraón durante la construcción de la Gran Pirámide de Giza?",
+                        "Tutankamón",
+                        "Keops",
+                        "Ramsés II",
+                        "Keops",
+                        "https://upload.wikimedia.org/wikipedia/commons/e/e3/Kheops-Pyramid.jpg",
+                        "multiple"
+                },
+                {
+                        "¿Qué imperio fue gobernado por Gengis Kan?",
+                        "Imperio Mongol",
+                        "Imperio Persa",
+                        "Imperio Bizantino",
+                        "Imperio Mongol",
+                        "https://upload.wikimedia.org/wikipedia/commons/6/6e/Genghis_Khan_painting.jpg",
+                        "multiple"
+                }
         };
 
         // Insertamos las preguntas en la base de datos
         for (String[] datos : preguntas) {
             Pregunta pregunta = new Pregunta();
-            pregunta.setCategoria(new Categoria(2 ,"Historia"));
+            pregunta.setCategoria(new Categoria(1 ,"Historia"));
             pregunta.setPregunta(datos[0]);
             pregunta.setRespuestaCorrecta(datos[5]);
             pregunta.setRespuesta2(datos[1]);
