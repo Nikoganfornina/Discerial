@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.example.discerial.DAO.IEstadoUsuarioImpl;
 import org.example.discerial.DAO.IusuariosImpl;
+import org.example.discerial.Util.MusicManager;
 import org.example.discerial.entities.EstadoUsuario;
 import org.example.discerial.entities.Pregunta;
 import org.example.discerial.entities.Usuarios;
@@ -73,8 +74,13 @@ public class ResultadoTestViewController {
     }
 
     @FXML
+
     private void handleVolverMenu() {
         try {
+            // Detiene música de juego y reproduce la del menú
+            MusicManager.getInstance().playAmbientMusic();
+
+            // Cargar vista del menú
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/discerial/Tabula_view.fxml"));
             Parent root = loader.load();
             Stage stage = (Stage) btnVolverMenu.getScene().getWindow();

@@ -13,16 +13,20 @@ public class MusicManager {
     private MediaPlayer effectPlayer;
     private final Random random = new Random();
 
-    private MusicManager() {}
+    public MusicManager() {}
 
     public static synchronized MusicManager getInstance() {
         if (instance == null) instance = new MusicManager();
         return instance;
     }
 
-    public void playSoundEffect(String soundFile) {
+    public  void playRandomSoundEffect() {
+
         stopEffect();
         try {
+            int randomIndex = random.nextInt(3) + 1; // 1, 2 o 3
+            String soundFile = "/Sounds/sound" + randomIndex + ".mp3";
+
             URL resource = getClass().getResource(soundFile);
             if (resource == null) throw new Exception("Sonido no encontrado: " + soundFile);
 
