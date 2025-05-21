@@ -29,12 +29,12 @@
 
             <HBox spacing="10">
                 <Pane id="NuntiatioIcon" prefHeight="40.0" prefWidth="40.0" />
-                <Label id="MenuSelectorLabel" text="Nuntiatio" />
+                <Label id="MenuSelectorLabel" text="Nuntiatio" onMouseClicked="#FxmlNuntiato" />
             </HBox>
 
             <HBox spacing="10">
                 <Pane id="AdaptationesIcon" prefHeight="40.0" prefWidth="40.0" />
-                <Label id="MenuSelectorLabel" text="Adaptationes" />
+                <Label id="MenuSelectorLabel" text="Adaptationes" onMouseClicked="#FxmlAdaptationes" />
             </HBox>
 
             <HBox spacing="10">
@@ -51,7 +51,7 @@
 
             <HBox spacing="10">
                 <Pane id="AuxiliumIcon" prefHeight="40.0" prefWidth="40.0" />
-                <Label id="MenuSelectorLabel" text="Auxilium" />
+                <Label id="MenuSelectorLabel" text="Auxilium" onMouseClicked="#FxmlAuxilium" />
             </HBox>
         </VBox>
 

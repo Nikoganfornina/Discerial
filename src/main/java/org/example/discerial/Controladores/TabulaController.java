@@ -173,7 +173,42 @@ public class TabulaController {
 
         switchScene("/org/example/discerial/Tabula_view.fxml");
     }
+    @FXML
+    private void FxmlNuntiato() throws IOException {
+        musicManager.playRandomSoundEffect();
 
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Nuntiato");
+        alert.setHeaderText("Actualmente no disponible");
+        alert.showAndWait();
+        // switchScene("/org/example/discerial/Nuntiato_view.fxml");
+    }
+    @FXML
+    private void FxmlAdaptationes() throws IOException {
+        musicManager.playRandomSoundEffect();
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Adaptationes");
+        alert.setHeaderText("Actualmente no disponible");
+        alert.showAndWait();
+
+        //switchScene("/org/example/discerial/Adaptationes_view.fxml");
+
+    }
+
+    @FXML
+    private void FxmlAuxilium() throws IOException {
+
+        musicManager.playRandomSoundEffect();
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Auxilium");
+        alert.setHeaderText("Actualmente no disponible");
+        alert.showAndWait();
+
+        //switchScene("/org/example/discerial/Auxilium_view.fxml");
+
+    }
 
 
     public void BotoncerrarSesion() throws IOException {
