@@ -2,6 +2,7 @@ package org.example.discerial.Controladores;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -43,6 +44,8 @@ public class VistaPreguntaController {
     @FXML private VBox vboxOpciones;
     @FXML private HBox hboxNav;
     @FXML private Button btnAnterior, btnSiguiente;
+    @FXML private Label lblCountTest;
+
 
     private List<Pregunta> listaPreguntas;
     private int indiceActual = 0;
@@ -121,6 +124,11 @@ public class VistaPreguntaController {
             empezarJuegoDespuesVideo();
         }
     }
+    private void actualizarContadorPregunta() {
+        int total = listaPreguntas.size();
+        int actual = indiceActual + 1; // +1 porque los índices empiezan en 0
+        lblCountTest.setText(actual + "/" + total);
+    }
 
     private void empezarJuegoDespuesVideo() {
         mostrarPregunta();
@@ -170,30 +178,27 @@ public class VistaPreguntaController {
 
         if (p.getImagen() != null && !p.getImagen().isBlank()) {
             try {
-                Image imagen = new Image(p.getImagen());
+                // Carga con tamaño definido y sin mantener proporciones
+                Image imagen = new Image(p.getImagen(), 700, 500, false, true);
 
                 imgPregunta.setImage(imagen);
 
-                // Tamaño máximo del ImageView
-                imgPregunta.setFitWidth(700);
-                imgPregunta.setFitHeight(500);
-                imgPregunta.setPreserveRatio(true);
+                // Fuerza tamaño fijo
+                imgPregunta.setFitWidth(650);
+                imgPregunta.setFitHeight(400);
+                imgPregunta.setPreserveRatio(false);
                 imgPregunta.setSmooth(true);
                 imgPregunta.setCache(true);
 
-                imgPregunta.setTranslateX(0);
-                imgPregunta.setTranslateY(0);
-
-                // Limpia estilos para evitar sombras o bordes no deseados
                 imgPregunta.setStyle("");
 
-                // Clip dinámico para redondear esquinas
-                imgPregunta.layoutBoundsProperty().addListener((obs, oldBounds, newBounds) -> {
+                // Aplicar clip redondeado de forma segura después del render
+                Platform.runLater(() -> {
                     javafx.scene.shape.Rectangle clip = new javafx.scene.shape.Rectangle(
-                            newBounds.getWidth(), newBounds.getHeight()
+                            imgPregunta.getFitWidth(), imgPregunta.getFitHeight()
                     );
-                    clip.setArcWidth(30);
-                    clip.setArcHeight(30);
+                    clip.setArcWidth(40);
+                    clip.setArcHeight(40);
                     imgPregunta.setClip(clip);
                 });
 
@@ -205,6 +210,7 @@ public class VistaPreguntaController {
             imgPregunta.setVisible(false);
         }
 
+        // Generar opciones aleatorias
         class Opcion {
             String text;
             boolean correct;
@@ -240,7 +246,10 @@ public class VistaPreguntaController {
 
         btnAnterior.setDisable(indiceActual == 0);
         btnSiguiente.setDisable(false);
+
+        actualizarContadorPregunta();
     }
+
 
 
     private void clearStyles() {
