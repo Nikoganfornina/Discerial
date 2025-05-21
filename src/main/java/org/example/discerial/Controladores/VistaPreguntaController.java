@@ -18,6 +18,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.example.discerial.DAO.IEstadoUsuarioImpl;
@@ -169,7 +170,33 @@ public class VistaPreguntaController {
 
         if (p.getImagen() != null && !p.getImagen().isBlank()) {
             try {
-                imgPregunta.setImage(new Image(p.getImagen()));
+                Image imagen = new Image(p.getImagen());
+
+                imgPregunta.setImage(imagen);
+
+                // Tamaño máximo del ImageView
+                imgPregunta.setFitWidth(700);
+                imgPregunta.setFitHeight(500);
+                imgPregunta.setPreserveRatio(true);
+                imgPregunta.setSmooth(true);
+                imgPregunta.setCache(true);
+
+                imgPregunta.setTranslateX(0);
+                imgPregunta.setTranslateY(0);
+
+                // Limpia estilos para evitar sombras o bordes no deseados
+                imgPregunta.setStyle("");
+
+                // Clip dinámico para redondear esquinas
+                imgPregunta.layoutBoundsProperty().addListener((obs, oldBounds, newBounds) -> {
+                    javafx.scene.shape.Rectangle clip = new javafx.scene.shape.Rectangle(
+                            newBounds.getWidth(), newBounds.getHeight()
+                    );
+                    clip.setArcWidth(30);
+                    clip.setArcHeight(30);
+                    imgPregunta.setClip(clip);
+                });
+
                 imgPregunta.setVisible(true);
             } catch (Exception e) {
                 imgPregunta.setVisible(false);
@@ -212,9 +239,9 @@ public class VistaPreguntaController {
         resetTimer();
 
         btnAnterior.setDisable(indiceActual == 0);
-        // El botón siguiente siempre activo porque puede ir a resultados
         btnSiguiente.setDisable(false);
     }
+
 
     private void clearStyles() {
         for (Label lbl : List.of(lblOpcion1, lblOpcion2, lblOpcion3, lblOpcion4))

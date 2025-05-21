@@ -24,13 +24,13 @@
 
     <!-- Imagen centrada con bordes redondeados -->
     <ImageView fx:id="imgPregunta"
-               layoutX="400" layoutY="150"
+               layoutX="400" layoutY="50"
                fitWidth="700" fitHeight="350"
                preserveRatio="true"/>
 
     <!-- Enunciado -->
     <Label fx:id="lblPregunta"
-           layoutX="200" layoutY="520"
+           layoutX="200" layoutY="550"
            prefWidth="1100"
            wrapText="true"
            style="-fx-font-size: 24px; -fx-alignment: CENTER;" />
