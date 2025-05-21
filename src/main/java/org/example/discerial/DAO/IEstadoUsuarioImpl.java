@@ -61,4 +61,5 @@ public class IEstadoUsuarioImpl implements IEstadoUsuario {
             return stats;
         }
     }
+
 }

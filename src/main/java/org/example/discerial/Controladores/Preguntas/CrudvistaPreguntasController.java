@@ -1,5 +1,6 @@
 package org.example.discerial.Controladores.Preguntas;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -22,6 +23,14 @@ public class CrudvistaPreguntasController {
 
     private List<Pregunta> listaPreguntas;
     private int indiceActual = 0;
+    private Pregunta preguntaActual; // Solo guarda la pregunta actual
+
+    // Método para inicializar con una pregunta específica
+    public void initData(Pregunta pregunta) {
+        this.preguntaActual = pregunta;
+        mostrarPregunta(); // Muestra la pregunta recibida
+        hboxNav.setVisible(false); // Oculta navegación si solo es para ver una
+    }
 
     @FXML
     public void initialize() {
@@ -38,31 +47,41 @@ public class CrudvistaPreguntasController {
     }
 
     private void mostrarPregunta() {
-        if (listaPreguntas == null || listaPreguntas.isEmpty() || indiceActual < 0 || indiceActual >= listaPreguntas.size()) {
-            return;
-        }
+        if (preguntaActual == null) return;
 
-        Pregunta p = listaPreguntas.get(indiceActual);
+        lblCategoria.setText("Categoría: " + preguntaActual.getCategoria().getNombre());
+        lblPregunta.setText(preguntaActual.getPregunta());
 
-        lblCategoria.setText("Categoría: " + p.getCategoria().getNombre());
-        lblPregunta.setText(p.getPregunta());
-
-        if (p.getImagen() != null && !p.getImagen().isBlank()) {
-            try {
-                imgPregunta.setImage(new Image(p.getImagen()));
+        // Cargar imagen
+        try {
+            if (preguntaActual.getImagen() != null && !preguntaActual.getImagen().isBlank()) {
+                imgPregunta.setImage(new Image("file:" + preguntaActual.getImagen()));
                 imgPregunta.setVisible(true);
-            } catch (Exception e) {
+            } else {
                 imgPregunta.setVisible(false);
             }
-        } else {
+        } catch (Exception e) {
             imgPregunta.setVisible(false);
         }
 
-        lblOpcion1.setText("✔ " + p.getRespuestaCorrecta());
-        lblOpcion2.setText(p.getRespuesta2());
-        lblOpcion3.setText(p.getRespuesta3());
-        lblOpcion4.setText(p.getRespuesta4());
+        // Mostrar opciones según el tipo
+        if ("multiple".equals(preguntaActual.getTipo())) {
+            lblOpcion1.setText("A) " + preguntaActual.getRespuestaCorrecta());
+            lblOpcion2.setText("B) " + preguntaActual.getRespuesta2());
+            lblOpcion3.setText("C) " + preguntaActual.getRespuesta3());
+            lblOpcion4.setText("D) " + preguntaActual.getRespuesta4());
+        } else if ("vf".equals(preguntaActual.getTipo())) {
+            lblOpcion1.setText("✔ Verdadero: " + preguntaActual.getRespuestaCorrecta());
+            lblOpcion2.setText("✖ Falso: " + preguntaActual.getRespuesta2());
+            lblOpcion3.setVisible(false);
+            lblOpcion4.setVisible(false);
+        }
     }
+
+
+
+
+
 
     @FXML
     private void handleAnterior() {

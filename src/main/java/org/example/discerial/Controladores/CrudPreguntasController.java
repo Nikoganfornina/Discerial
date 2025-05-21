@@ -13,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import org.example.discerial.Controladores.Preguntas.CrudvistaPreguntasController;
 import org.example.discerial.DAO.ICategoria;
 import org.example.discerial.DAO.ICategoriaImpl;
 import org.example.discerial.DAO.IPregunta;
@@ -195,29 +196,34 @@ public class CrudPreguntasController {
     // Nuevo método para ver detalles en modo solo lectura
     @FXML
     private void handleVer(ActionEvent event) {
-        selectedPregunta = preguntaTable.getSelectionModel().getSelectedItem();
-        if (selectedPregunta != null) {
-            StringBuilder detalles = new StringBuilder();
-            detalles.append("ID: ").append(selectedPregunta.getId()).append("\n");
-            detalles.append("Categoría: ").append(selectedPregunta.getCategoria().getNombre()).append("\n");
-            detalles.append("Pregunta: ").append(selectedPregunta.getPregunta()).append("\n");
-            detalles.append("Tipo: ").append(selectedPregunta.getTipo()).append("\n");
-            detalles.append("Respuesta Correcta: ").append(selectedPregunta.getRespuestaCorrecta()).append("\n");
-            detalles.append("Respuesta 2: ").append(selectedPregunta.getRespuesta2()).append("\n");
-            if (selectedPregunta.getTipo().equals("multiple")) {
-                detalles.append("Respuesta 3: ").append(selectedPregunta.getRespuesta3()).append("\n");
-                detalles.append("Respuesta 4: ").append(selectedPregunta.getRespuesta4()).append("\n");
-            }
-            detalles.append("Imagen URL: ").append(selectedPregunta.getImagen()).append("\n");
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Detalles de la Pregunta");
-            alert.setHeaderText(null);
-            alert.setContentText(detalles.toString());
-            alert.showAndWait();
-        } else {
-            showAlert("Advertencia", "Seleccione una pregunta para ver sus detalles.");
+        // 1) Obtén la pregunta seleccionada
+        Pregunta sel = preguntaTable.getSelectionModel().getSelectedItem();
+        if (sel == null) {
+            showAlert("Advertencia", "Selecciona una pregunta para ver sus detalles.");
+            return;
+        }
+        try {
+            // 2) Carga el FXML de la vista individual
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/org/example/discerial/preguntas.fxml")
+            );
+            Parent detalleRoot = loader.load();
+
+            // 3) Obtén el controlador asociado y pásale la pregunta
+            VistaPreguntaController ctrl = loader.getController();
+            ctrl.initData(sel.getId());
+
+            // 4) Sustituye la raíz de la escena actual
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.getScene().setRoot(detalleRoot);
+            stage.setTitle("Detalle de Pregunta #" + sel.getId());
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Error", "No se pudo cargar la vista de detalles.");
         }
     }
+
+
 
     private void clearForm() {
         categoriaComboBox.setValue(null);

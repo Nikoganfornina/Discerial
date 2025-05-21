@@ -28,6 +28,8 @@ public class TabulaController {
 
     @FXML private Pane contenedorFXML;
     @FXML private Label usuarioNombre;
+    @FXML
+    private Label lblAciertosNumero;
 
     // Este VBox debe estar declarado en tu FXML dentro de contenedorFXML
     @FXML private VBox chartContainer;
@@ -37,15 +39,26 @@ public class TabulaController {
         mostrarNombreUsuario();
         cargarGraficaAvance();
 
+
+
     }
 
     private void mostrarNombreUsuario() {
-        Usuarios user = new IusuariosImpl().currentUser();
-        if (user != null && user.getNombre() != null && !user.getNombre().isBlank()) {
+        IusuariosImpl usuarioDao = new IusuariosImpl();
+        Usuarios user = usuarioDao.currentUser();
+
+        if (user != null) {
+            // Mostrar nombre del usuario
             String cap = user.getNombre().substring(0,1).toUpperCase() + user.getNombre().substring(1);
             usuarioNombre.setText(cap);
+
+            // Obtener y mostrar preguntas acertadas
+            int aciertos = usuarioDao.getPreguntasAcertadas(user.getId());
+            lblAciertosNumero.setText(String.valueOf(aciertos));
+
         } else {
             usuarioNombre.setText("Sin usuario activo");
+            lblAciertosNumero.setText("0");
         }
     }
 
