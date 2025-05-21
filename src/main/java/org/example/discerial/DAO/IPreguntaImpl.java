@@ -111,4 +111,12 @@ public class IPreguntaImpl implements IPregunta {
         session.close();
         return pregunta;
     }
+
+    public int countTotalPreguntas() {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return ((Number) session.createQuery("SELECT COUNT(p) FROM Pregunta p")
+                    .uniqueResult()).intValue();
+        }
+    }
 }
+
