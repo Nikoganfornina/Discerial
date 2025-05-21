@@ -11,22 +11,18 @@ public class PreguntasBiologia {
 
     public static void crearPreguntasBiologia() {
         IPregunta preguntaDao = new IPreguntaImpl();
+        int categoriaId = 4; // ID para Biología
 
-        // Verificamos si ya existen preguntas para la categoría "Biología"
-        List<Pregunta> preguntasBiologia = preguntaDao.findByCategoria(4); // ID 4 para Biología
-        if (!preguntasBiologia.isEmpty()) {
-            System.out.println("Ya existen preguntas para la categoría 'Biología'.");
-            return;
-        }
 
+        // 2) Definir el bloque de preguntas
         String[][] preguntas = {
                 {
                         "¿Cuál es la molécula que almacena la información genética?",
                         "ARN",
                         "Proteínas",
                         "Carbohidratos",
-                        "ADN",
-                        "https://upload.wikimedia.org/wikipedia/commons/1/1d/DNA_double_helix.svg",
+                        "ADN",  // Respuesta correcta
+                        "https://upload.wikimedia.org/wikipedia/commons/8/80/DNA_methylation.jpg",
                         "multiple"
                 },
                 {
@@ -35,7 +31,7 @@ public class PreguntasBiologia {
                         "Neutrón",
                         "Quark",
                         "Electrón",
-                        "https://upload.wikimedia.org/wikipedia/commons/8/8f/Electron.svg",
+                        "https://img.europapress.es/fotoweb/fotonoticia_20181017185536_690.jpg",
                         "multiple"
                 },
                 {
@@ -44,16 +40,7 @@ public class PreguntasBiologia {
                         "Antocianina",
                         "Xantofila",
                         "Clorofila",
-                        "https://upload.wikimedia.org/wikipedia/commons/8/8b/Chlorophyll.png",
-                        "multiple"
-                },
-                {
-                        "¿Cómo se llama el proceso por el cual las células convierten glucosa en energía en ausencia de oxígeno?",
-                        "Respiración aeróbica",
-                        "Fotosíntesis",
-                        "Fermentación láctica",
-                        "Transpiración",
-                        "https://upload.wikimedia.org/wikipedia/commons/1/1d/Lactic_fermentation.svg",
+                        "https://mejorconsalud.as.com/wp-content/uploads/2015/06/Composision-molecular-500x334.jpg",
                         "multiple"
                 },
                 {
@@ -62,169 +49,200 @@ public class PreguntasBiologia {
                         "Ribosoma",
                         "Retículo endoplasmático rugoso",
                         "Retículo endoplasmático liso",
-                        "https://upload.wikimedia.org/wikipedia/commons/7/7e/Smooth_ER.png",
+                        "https://pymstatic.com/47451/conversions/reticulo-endoplasmatico-liso-wide.jpg",
                         "multiple"
                 },
                 {
                         "¿Qué molécula transporta aminoácidos hasta el ribosoma durante la síntesis de proteínas?",
                         "ARN mensajero",
                         "ARN ribosómico",
-                        "ARN de transferencia",
                         "ADN",
-                        "https://upload.wikimedia.org/wikipedia/commons/5/5c/tRNA.svg",
+                        "ARN de transferencia",
+                        "https://www.genome.gov/sites/default/files/media/images/tg/Transfer_RNA_hero.png",
                         "multiple"
                 },
                 {
                         "¿Cuál de estos procesos ocurre en la mitocondria?",
                         "Síntesis de proteínas",
                         "Glucólisis",
-                        "Ciclo de Krebs",
                         "Fermentación",
-                        "https://upload.wikimedia.org/wikipedia/commons/6/6f/Krebs_cycle_diagram.svg",
+                        "Ciclo de Krebs",
+                        "https://pymstatic.com/63253/conversions/mitocondrias-wide.jpg",
                         "multiple"
                 },
                 {
-                        "¿Qué estructura celular controla la entrada y salida de sustancias?",
-                        "Mitocondria",
-                        "Núcleo",
-                        "Pared celular",
-                        "Membrana plasmática",
-                        "https://upload.wikimedia.org/wikipedia/commons/7/76/Cell_membrane_detailed_diagram_en.svg",
+                        "¿Cuál es la función principal de las mitocondrias?",
+                        "Síntesis de proteínas",
+                        "Almacenar material genético",
+                        "Transportar sustancias",
+                        "Producir energía (ATP)",
+                        "https://www.supersmart.com/data/images/blog/mitochondrie.jpg",
                         "multiple"
                 },
                 {
-                        "¿Cuál es el orgánulo encargado de la fotosíntesis?",
-                        "Núcleo",
+                        "¿Qué orgánulo contiene clorofila en las células vegetales?",
                         "Mitocondria",
+                        "Núcleo",
+                        "Vacuola",
                         "Cloroplasto",
-                        "Lisosoma",
-                        "https://upload.wikimedia.org/wikipedia/commons/4/4c/Chloroplast_diagram.svg",
+                        "https://s1.significados.com/foto/chloroplasts-g98a80c219-1920.png",
+                        "multiple"
+                },
+
+                // Genética
+                {
+                        "¿Qué científico es conocido como el padre de la genética?",
+                        "Charles Darwin",
+                        "Louis Pasteur",
+                        "James Watson",
+                        "Gregor Mendel",
+                        "https://c.files.bbci.co.uk/11D4D/production/_118073037_hi066780220-1.jpg",
                         "multiple"
                 },
                 {
-                        "¿Qué tipo de célula no tiene núcleo definido?",
-                        "Eucariota animal",
-                        "Eucariota vegetal",
-                        "Fúngica",
-                        "Procariota",
-                        "https://upload.wikimedia.org/wikipedia/commons/6/6f/Prokaryote_cell_diagram-en.svg",
+                        "¿Cuál es la probabilidad de que un hijo herede un alelo recesivo de ambos padres heterocigotos?",
+                        "0%",
+                        "75%",
+                        "50%",
+                        "25%",
+                        "https://cdn.computerhoy.com/sites/navi.axelspringer.es/public/media/image/2023/05/pelirrojo-ojos-azules-3039576.jpg?tf=3840x",
                         "multiple"
                 },
+
+                // Anatomía Humana
                 {
-                        "¿Qué estructura almacena el ADN en las células eucariotas?",
-                        "Citoplasma",
-                        "Nucleolo",
-                        "Mitocondria",
-                        "Núcleo",
-                        "https://upload.wikimedia.org/wikipedia/commons/f/f2/Nucleus_diagram.svg",
-                        "multiple"
-                },
-                {
-                        "¿Qué macromolécula es la principal fuente de energía inmediata para las células?",
-                        "Proteínas",
-                        "Lípidos",
-                        "Vitaminas",
-                        "Carbohidratos",
-                        "https://upload.wikimedia.org/wikipedia/commons/7/7f/Carbohydrate_general_structure.png",
-                        "multiple"
-                },
-                {
-                        "¿Qué componente de la sangre transporta oxígeno?",
-                        "Plaquetas",
-                        "Glóbulos blancos",
-                        "Plasma",
-                        "Hemoglobina",
-                        "https://upload.wikimedia.org/wikipedia/commons/e/e5/Hemoglobin_structure.png",
-                        "multiple"
-                },
-                {
-                        "¿Qué vitamina es producida en la piel con ayuda de la luz solar?",
-                        "Vitamina C",
-                        "Vitamina A",
-                        "Vitamina K",
-                        "Vitamina D",
-                        "https://upload.wikimedia.org/wikipedia/commons/7/7a/Vitamin_D3_structure.png",
-                        "multiple"
-                },
-                {
-                        "¿Qué glándula regula el metabolismo del cuerpo?",
-                        "Páncreas",
-                        "Glándulas suprarrenales",
-                        "Hipófisis",
+                        "¿Qué glándula produce la insulina?",
                         "Tiroides",
-                        "https://upload.wikimedia.org/wikipedia/commons/2/2f/Thyroid_gland.svg",
+                        "Suprarrenal",
+                        "Hipófisis",
+                        "Páncreas",
+                        "https://salud.nih.gov/sites/salud/files/styles/teaser_900x527/public/2023-08/pancreas-con-tumores.jpg?itok=gBCi_czh",
                         "multiple"
                 },
                 {
-                        "¿Qué sistema del cuerpo humano transporta sangre?",
-                        "Digestivo",
-                        "Excretor",
-                        "Respiratorio",
-                        "Circulatorio",
-                        "https://upload.wikimedia.org/wikipedia/commons/5/59/Circulatory_System_en.svg",
+                        "¿Cuál es el hueso más largo del cuerpo humano?",
+                        "Húmero",
+                        "Esternón",
+                        "Tibia",
+                        "Fémur",
+                        "https://media.istockphoto.com/id/526829550/es/foto/el-f%C3%A9mur-humanos.jpg?s=612x612&w=0&k=20&c=sdRTrWrUqQ9mTwD-0YT47LPKurKgjC2rRUV5V6WY4kQ=",
+                        "multiple"
+                },
+
+                // Ecología
+                {
+                        "¿Qué organismo ocuparía el primer nivel trófico en una pirámide alimenticia?",
+                        "Carnívoros",
+                        "Herbívoros",
+                        "Descomponedores",
+                        "Plantas",
+                        "https://lh6.googleusercontent.com/proxy/cOtjZFJpEzt3zOz1AfJPM0MU7Y8b87VCTDF0AapeogUntFFUQjXKKPNOcD-dEqtnyfcOCDPAzeLwo25WZbZDv0czsKpJSIDkLsQX_sJriTF1v7yRtTxZ6wo0Ap6Q3XVNWtN2npo6Nw",
                         "multiple"
                 },
                 {
-                        "¿Qué tipo de tejido conecta músculos con huesos?",
-                        "Ligamentos",
-                        "Cartílago",
-                        "Epitelial",
-                        "Tendón",
-                        "https://upload.wikimedia.org/wikipedia/commons/f/f9/Tendon_diagram.svg",
+                        "¿Qué proceso realizan las plantas durante la noche?",
+                        "Fotosíntesis",
+                        "Germinación",
+                        "Transpiración",
+                        "Respiración celular",
+                        "https://i.pinimg.com/474x/aa/2f/62/aa2f6263de44746345deeae9d31fb739.jpg",
                         "multiple"
                 },
+
+                // Microbiología
+                {
+                        "¿Qué tipo de microorganismo es responsable de la producción de yogur?",
+                        "Virus",
+                        "Protozoos",
+                        "Levaduras",
+                        "Bacterias lácticas",
+                        "https://mountainsideorganicos.com/cdn/shop/articles/Lactobacillus_para_Plantas-1800x900-opt_2000x.jpg?v=1673206062",
+                        "multiple"
+                },
+                {
+                        "¿Qué estructura permite a las bacterias moverse?",
+                        "Pared celular",
+                        "Plásmido",
+                        "Cápsula",
+                        "Flagelo",
+                        "https://media.istockphoto.com/id/859433642/es/foto/bacterias-azul-aisladas-3d.jpg?s=612x612&w=0&k=20&c=-1Q0rDzUZCzsriz-5BP1S2MNRg0bBsvM_b3qKFxjIwU=",
+                        "multiple"
+                },
+
+                // Fisiología Vegetal
+                {
+                        "¿Qué proceso permite el movimiento del agua a través de una planta?",
+                        "Ósmosis",
+                        "Capilaridad",
+                        "Difusión",
+                        "Transpiración",
+                        "https://agraria.pe/imgs/a/lx/facultad-de-agronomia-de-la-unalm-realizara-curso-de-actuali-22377.jpg",
+                        "multiple"
+                },
+                {
+                        "¿Qué hormonas vegetales promueven el crecimiento celular?",
+                        "Citoquininas",
+                        "Etileno",
+                        "Ácido abscísico",
+                        "Auxinas",
+                        "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Auxina.png/250px-Auxina.png",
+                        "multiple"
+                },
+
+                // Evolución
+                {
+                        "¿Qué científico propuso la teoría de la selección natural?",
+                        "Gregor Mendel",
+                        "Louis Pasteur",
+                        "Alfred Wallace",
+                        "Charles Darwin",
+                        "https://external-preview.redd.it/QJjlV0xpPx68nlHXJxntwgkg61qn6ClgThbKov2ZTPY.jpg?auto=webp&s=9f38309fd574e0e71882f218a076b239316a62d0",
+                        "multiple"
+                },
+                {
+                        "¿Qué órgano humano se considera vestigial?",
+                        "Corazón",
+                        "Páncreas",
+                        "Hígado",
+                        "Apéndice",
+                        "https://uvn-brightspot.s3.amazonaws.com/assets/vixes/btg/curiosidades.batanga.com/files/Para-que-sirve-el-apendice-2.jpg",
+                        "multiple"
+                },
+
+                // Sistema Nervioso
                 {
                         "¿Qué parte del cerebro controla el equilibrio y la coordinación?",
-                        "Bulbo raquídeo",
-                        "Tálamo",
                         "Hipotálamo",
+                        "Cerebro",
+                        "Tálamo",
                         "Cerebelo",
-                        "https://upload.wikimedia.org/wikipedia/commons/e/e0/Cerebellum_SVG.svg",
+                        "https://s3-us-west-2.amazonaws.com/courses-images/wp-content/uploads/sites/1940/2017/05/29213441/olpulgaeqnkqnqaoeubv.png",
                         "multiple"
                 },
                 {
-                        "¿Cómo se llama la unidad funcional del riñón?",
-                        "Glomérulo",
-                        "Alvéolo",
-                        "Nefrona",
-                        "Vesícula",
-                        "https://upload.wikimedia.org/wikipedia/commons/5/5c/Nephron_structure.png",
+                        "¿Qué células son responsables de transmitir impulsos nerviosos?",
+                        "Eritrocitos",
+                        "Hepatocitos",
+                        "Osteocitos",
+                        "Neuronas",
+                        "https://www.muyinteresante.com/wp-content/uploads/sites/5/2023/10/27/653bcdae153ce.jpeg",
                         "multiple"
                 },
-                {
-                        "¿Cuál es el principal gas que exhalamos al respirar?",
-                        "Oxígeno",
-                        "Nitrógeno",
-                        "Hidrógeno",
-                        "Dióxido de carbono",
-                        "https://upload.wikimedia.org/wikipedia/commons/4/4c/Carbon_dioxide_3D_ball.png",
-                        "multiple"
-                },
-                {
-                        "¿Qué tipo de célula del sistema inmune produce anticuerpos?",
-                        "Macrófago",
-                        "Neurona",
-                        "Plaqueta",
-                        "Linfocito B",
-                        "https://upload.wikimedia.org/wikipedia/commons/3/3b/B_cell_and_antibodies.png",
-                        "multiple"
-                }
         };
 
-
-        for (String[] datos : preguntas) {
-            Pregunta pregunta = new Pregunta();
-            pregunta.setCategoria(new Categoria(4, "Biología"));
-            pregunta.setPregunta(datos[0]);
-            pregunta.setRespuesta2(datos[1]);
-            pregunta.setRespuesta3(datos[2]);
-            pregunta.setRespuesta4(datos[3]);
-            pregunta.setRespuestaCorrecta(datos[4]); // ← posición 4
-            pregunta.setImagen(datos[5]);             // ← posición 5
-            pregunta.setTipo(datos[6]);               // ← posición 6
-            preguntaDao.save(pregunta);
+        // 3) Insertar todas las preguntas
+        for (String[] d : preguntas) {
+            Pregunta q = new Pregunta();
+            q.setCategoria(new Categoria(categoriaId, "Biología"));
+            q.setPregunta(d[0]);
+            q.setRespuesta2(d[1]);
+            q.setRespuesta3(d[2]);
+            q.setRespuesta4(d[3]);
+            q.setRespuestaCorrecta(d[4]);
+            q.setImagen(d[5]);
+            q.setTipo(d[6]);
+            preguntaDao.save(q);
         }
-
 
         System.out.println("Preguntas de biología añadidas con éxito.");
     }
