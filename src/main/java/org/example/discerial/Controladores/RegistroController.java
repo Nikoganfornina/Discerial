@@ -6,6 +6,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import org.example.discerial.DAO.IusuariosImpl;
+import org.example.discerial.Util.MusicManager;
 import org.example.discerial.entities.Usuarios;
 
 
@@ -14,10 +15,13 @@ import static org.example.discerial.Util.SessionManager.switchScene;
 
 public class RegistroController {
 
+    MusicManager musicManager = MusicManager.getInstance();
     @FXML
     public  TextField RegistroNombre , RegistroNickname , RegistroCorreo , RegistroContrasena , RegistroConfirmarContrasena;
 
     public void handleClick(MouseEvent event) throws Exception {
+        musicManager.playRandomSoundEffect();
+
         switchScene("/org/example/discerial/InicioSesion_View.fxml");
     }
 
@@ -66,6 +70,9 @@ public class RegistroController {
 
                 // Actualiza el objeto local para reflejar el estado activo
                 usuarioGuardado.setSessionActive(true);
+
+                musicManager.playRandomSoundEffect();
+
 
                 // Cambia de pantalla
                 switchScene("/org/example/discerial/Tabula_view.fxml");

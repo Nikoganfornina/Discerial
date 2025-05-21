@@ -7,6 +7,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import org.example.discerial.Util.MusicManager;
 
 import java.io.IOException;
 
@@ -14,6 +15,7 @@ import static org.example.discerial.Util.SessionManager.switchScene;
 
 public class CategoriasJuegoController {
 
+    MusicManager musicManager = MusicManager.getInstance();
     @FXML
     private ImageView imagenHistoriacategorias;
 
@@ -97,6 +99,8 @@ public class CategoriasJuegoController {
 
     @FXML
     public void volverTabula() throws IOException {
+        musicManager.playRandomSoundEffect();
+
         switchScene("/org/example/discerial/Tabula_view.fxml");
     }
 
@@ -108,6 +112,8 @@ public class CategoriasJuegoController {
     }
 
     private void openGameWithCategory(int categoria_id) {
+        musicManager.playRandomSoundEffect();
+
         try {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getResource("/org/example/discerial/LoadingPanelView.fxml")

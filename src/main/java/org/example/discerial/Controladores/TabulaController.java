@@ -14,6 +14,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import org.example.discerial.DAO.*;
+import org.example.discerial.Util.MusicManager;
 import org.example.discerial.entities.Categoria;
 import org.example.discerial.entities.Usuarios;
 import java.io.IOException;
@@ -29,6 +30,7 @@ public class TabulaController {
     @FXML private Pane contenedorFXML;
     @FXML private Label usuarioNombre;
 
+    MusicManager musicManager = MusicManager.getInstance();
     // Este VBox debe estar declarado en tu FXML dentro de contenedorFXML
     @FXML private VBox chartContainer;
 
@@ -144,6 +146,8 @@ public class TabulaController {
     private void handleJugar() {
         try {
             //switchScene("/org/example/discerial/VistaGameController.fxml");
+            musicManager.playRandomSoundEffect();
+
             switchScene("/org/example/discerial/CategoriasJuego_View.fxml");
 
         } catch (Exception e) {
@@ -154,6 +158,8 @@ public class TabulaController {
     @FXML
     private void FxmlHomoPanel() {
         try {
+            musicManager.playRandomSoundEffect();
+
             Parent pnl = FXMLLoader
                     .load(getClass().getResource("/org/example/discerial/Panels/HomoPanel_view.fxml"));
             contenedorFXML.getChildren().setAll(pnl);
@@ -163,6 +169,8 @@ public class TabulaController {
     }
     @FXML
     private void FxmlTabula() throws IOException {
+        musicManager.playRandomSoundEffect();
+
         switchScene("/org/example/discerial/Tabula_view.fxml");
     }
 
@@ -171,9 +179,12 @@ public class TabulaController {
     public void BotoncerrarSesion() throws IOException {
         var dao = new IusuariosImpl();
         Usuarios u = dao.currentUser();
+        musicManager.playRandomSoundEffect();
+
         if (u == null) {
             new Alert(Alert.AlertType.INFORMATION, "No hay ningún usuario conectado.")
                     .showAndWait();
+
             switchScene("/org/example/discerial/MainApp_View.fxml");
             return;
         }
@@ -190,6 +201,8 @@ public class TabulaController {
         Optional<ButtonType> res = conf.showAndWait();
         if (res.orElse(ButtonType.CANCEL).getButtonData() == ButtonBar.ButtonData.OK_DONE) {
             dao.cerrarSesion(u.getId());
+            musicManager.playRandomSoundEffect();
+
             switchScene("/org/example/discerial/MainApp_View.fxml");
         }
     }

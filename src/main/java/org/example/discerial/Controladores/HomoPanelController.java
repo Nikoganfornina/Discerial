@@ -8,6 +8,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Circle;
 import org.example.discerial.DAO.IusuariosImpl;
+import org.example.discerial.Util.MusicManager;
 import org.example.discerial.entities.Usuarios;
 
 import java.io.IOException;
@@ -28,6 +29,7 @@ public class HomoPanelController {
     @FXML private Button btnIconosPerfil;  // Este es el botón que quieres ocultar por defecto
     @FXML private AnchorPane contenedorImagenes;
 
+    MusicManager musicManager = MusicManager.getInstance();
     private IusuariosImpl usuariosDao = new IusuariosImpl();
     private Usuarios usuarioActual;
 
@@ -108,6 +110,8 @@ public class HomoPanelController {
 
     @FXML
     private void entrarModoEdicion() {
+        musicManager.playRandomSoundEffect();
+
         habilitarEdicion(true);
         configurarVisibilidadEdicion(true);
         btnIconosPerfil.setVisible(true);
@@ -118,13 +122,16 @@ public class HomoPanelController {
     @FXML
     private void guardarCambios() {
         if (validarCampos()) {
+            musicManager.playRandomSoundEffect();
+
             actualizarDatosUsuario();
             usuariosDao.update(usuarioActual);
             habilitarEdicion(false);
             configurarVisibilidadEdicion(false);
             btnIconosPerfil.setVisible(false);
             contenedorImagenes.setVisible(false);
-            btnEditar.setVisible(true);  // Mostrar botón Editar después de guardar
+            btnEditar.setVisible(true);
+            // Mostrar botón Editar después de guardar
         }
     }
 
@@ -165,6 +172,8 @@ public class HomoPanelController {
     @FXML
     private void visualizarImagen() {
         try {
+            musicManager.playRandomSoundEffect();
+
             btnIconosPerfil.setVisible(false);  // Ocultar al abrir selector
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/discerial/Panels/SelectImages.fxml"));
             AnchorPane panel = loader.load();

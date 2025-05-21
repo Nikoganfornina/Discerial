@@ -253,8 +253,10 @@ public class VistaPreguntaController {
 
 
     private void clearStyles() {
-        for (Label lbl : List.of(lblOpcion1, lblOpcion2, lblOpcion3, lblOpcion4))
+        for (Label lbl : List.of(lblOpcion1, lblOpcion2, lblOpcion3, lblOpcion4)) {
             lbl.setStyle("-fx-padding:10; -fx-border-width:2; -fx-border-color:transparent;");
+            lbl.getStyleClass().removeAll("correcta", "incorrecta"); // Limpiar clases
+        }
     }
 
     private void highlightCorrect() {
@@ -274,6 +276,8 @@ public class VistaPreguntaController {
     @FXML
     private void handleAnterior() {
         timer.stop();
+        musicManager.playRandomSoundEffect();
+
         if (indiceActual > 0) {
             indiceActual--;
             mostrarPregunta();
@@ -283,6 +287,8 @@ public class VistaPreguntaController {
     @FXML
     private void handleSiguiente() {
         timer.stop();
+        musicManager.playRandomSoundEffect();
+
 
         // Cuando estamos en la última pregunta, en lugar de bloquear el botón,
         // vamos a la vista de resultados.
@@ -296,6 +302,8 @@ public class VistaPreguntaController {
 
     private void irAVistaResultados() {
         try {
+
+            musicManager.playRandomSoundEffect();
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/discerial/ResultadoTestView.fxml"));
             Parent root = loader.load();
@@ -313,6 +321,8 @@ public class VistaPreguntaController {
     @FXML
     private void handleOpcion(MouseEvent e) {
         timer.stop();
+        musicManager.playRandomSoundEffect();
+
         Label clicked = (Label) e.getSource();
 
         boolean acertada = Boolean.TRUE.equals(clicked.getUserData());
@@ -323,8 +333,11 @@ public class VistaPreguntaController {
 
         if (acertada) {
             clicked.getStyleClass().add("correcta");
+            musicManager.playRandomSoundWin();
         } else {
             clicked.getStyleClass().add("incorrecta");
+            musicManager.playRandomSoundfail();
+
         }
 
         for (Label lbl : List.of(lblOpcion1, lblOpcion2, lblOpcion3, lblOpcion4)) {

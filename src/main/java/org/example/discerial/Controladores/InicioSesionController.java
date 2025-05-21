@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import org.example.discerial.DAO.IusuariosImpl;
+import org.example.discerial.Util.MusicManager;
 import org.example.discerial.Util.SessionManager;
 import org.example.discerial.entities.Usuarios;
 
@@ -17,6 +18,8 @@ public class InicioSesionController {
     @FXML
     private TextField SesionCorreo;
 
+    MusicManager musicManager = MusicManager.getInstance();
+
     @FXML
     private TextField SesionContrasena;
 
@@ -28,6 +31,8 @@ public class InicioSesionController {
 
     @FXML
     public void Registro() throws IOException {
+        musicManager.playRandomSoundEffect();
+
         switchScene("/org/example/discerial/Registro_View.fxml");
     }
 
@@ -47,6 +52,8 @@ public class InicioSesionController {
 
         try {
             if (autenticarUsuario(correo, contrasena, dao)) {
+                musicManager.playRandomSoundEffect();
+
                 SessionManager.switchScene("/org/example/discerial/Tabula_view.fxml");
             } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR, "Credenciales inválidas. Por favor, inténtalo de nuevo.");
