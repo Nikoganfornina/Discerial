@@ -45,7 +45,7 @@ public class SelectImagesController {
         for (int i = 0; i < labels.size(); i++) {
             cargarImagenEnLabel(labels.get(i), nombresImagenes.get(i));
         }
-    }
+    } 
 
     private void cargarImagenEnLabel(Label label, String nombreArchivo) {
         try {
