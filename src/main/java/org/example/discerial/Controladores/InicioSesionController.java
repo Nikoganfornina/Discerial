@@ -6,6 +6,7 @@ import javafx.scene.control.TextField;
 import org.example.discerial.DAO.IusuariosImpl;
 import org.example.discerial.Util.MusicManager;
 import org.example.discerial.Util.SessionManager;
+import org.example.discerial.Util.SessionTimer;
 import org.example.discerial.entities.Usuarios;
 
 
@@ -50,11 +51,16 @@ public class InicioSesionController {
         String correo = SesionCorreo.getText();
         String contrasena = SesionContrasena.getText();
 
+
         try {
-            if (autenticarUsuario(correo, contrasena, dao)) {
+            Usuarios usuario = dao.login(correo, contrasena);
+            if (usuario != null) {
                 musicManager.playRandomSoundEffect();
 
-                SessionManager.switchScene("/org/example/discerial/Tabula_view.fxml");
+                // Iniciar el timer con las horas acumuladas del usuario activo
+
+                // Cambiar la vista
+                switchScene("/org/example/discerial/Tabula_view.fxml");
             } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR, "Credenciales inválidas. Por favor, inténtalo de nuevo.");
                 alert.showAndWait();
@@ -64,5 +70,6 @@ public class InicioSesionController {
             alert.showAndWait();
         }
     }
+
 
 }

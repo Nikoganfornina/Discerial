@@ -35,7 +35,6 @@ public class TabulaController {
     private Label lblAciertosNumero;
     private final IusuariosImpl usuarioDao = new IusuariosImpl();
     private final IPreguntaImpl preguntaDao = new IPreguntaImpl(); // DAO de preguntas
-    private IEstadoUsuarioImpl estadoUsuarioDao = new IEstadoUsuarioImpl();
 
     // Este VBox debe estar declarado en tu FXML dentro de contenedorFXML
     @FXML private VBox chartContainer;
@@ -86,20 +85,17 @@ public class TabulaController {
 
         // 3) Configurar ejes con estilo
         CategoryAxis xAxis = new CategoryAxis();
-        xAxis.setLabel("Categoría");
         xAxis.setTickLabelRotation(45);
         xAxis.setTickLabelFont(Font.font("Arial", FontWeight.BOLD, 16)); // Texto más grande
 
         NumberAxis yAxis = new NumberAxis();
-        yAxis.setLabel("Cantidad");
         yAxis.setTickUnit(5);
         yAxis.setMinorTickVisible(false);
         yAxis.setTickLabelFont(Font.font("Arial", FontWeight.BOLD, 16)); // Texto más grande
 
         // 4) Crear gráfico con fondo totalmente transparente
         BarChart<String, Number> chart = new BarChart<>(xAxis, yAxis);
-        chart.setTitle("Progreso de Aprendizaje");
-        chart.setLegendSide(Side.RIGHT);
+        chart.setLegendVisible(false);
         chart.setAnimated(true);
         chart.setCategoryGap(20);
         chart.setBarGap(5);
@@ -119,9 +115,8 @@ public class TabulaController {
 
         // 5) Configurar series
         XYChart.Series<String, Number> serieAciertos = new XYChart.Series<>();
-        serieAciertos.setName("✅ Aciertos");
+
         XYChart.Series<String, Number> serieFallos = new XYChart.Series<>();
-        serieFallos.setName("❌ Fallos");
 
         // 6) Rellenar datos manteniendo orden
         Map<String, int[]> ordered = new LinkedHashMap<>(stats);
@@ -163,40 +158,6 @@ public class TabulaController {
                 }
             }
 
-            // Leyenda personalizada con colores correctos y redondeados
-            Set<Node> legendItems = chart.lookupAll(".chart-legend-item");
-            for (Node item : legendItems) {
-                if (item instanceof HBox hbox && hbox.getChildren().size() >= 2) {
-                    Node symbol = hbox.getChildren().get(0);
-                    Label label = (Label) hbox.getChildren().get(1);
-
-                    if (label.getText().contains("Aciertos")) {
-                        symbol.setStyle(
-                                "-fx-background-color: " + colorAciertos + ";" +
-                                        "-fx-background-radius: 10;" +
-                                        "-fx-min-width: 15;" +
-                                        "-fx-min-height: 15;" +
-                                        "-fx-max-width: 15;" +
-                                        "-fx-max-height: 15;"
-                        );
-                    } else if (label.getText().contains("Fallos")) {
-                        symbol.setStyle(
-                                "-fx-background-color: " + colorFallos + ";" +
-                                        "-fx-background-radius: 10;" +
-                                        "-fx-min-width: 15;" +
-                                        "-fx-min-height: 15;" +
-                                        "-fx-max-width: 15;" +
-                                        "-fx-max-height: 15;"
-                        );
-                    }
-                }
-            }
-
-            // Fondo transparente de la leyenda y padding
-            Node legend = chart.lookup(".chart-legend");
-            if (legend != null) {
-                legend.setStyle("-fx-background-color: transparent; -fx-padding: 10;");
-            }
 
             // Líneas guía visibles
             chart.setHorizontalGridLinesVisible(true);

@@ -30,4 +30,6 @@ public class SessionManager {
     public static void setMainStage(Stage primaryStage) {
         mainStage = primaryStage;
     }
+
+
 }

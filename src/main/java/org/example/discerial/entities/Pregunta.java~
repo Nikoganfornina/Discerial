@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 public class Pregunta {
 
     @Id
-    //@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     // Relación con la categoría con carga EAGER para evitar problemas de LazyInitializationException

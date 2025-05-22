@@ -6,7 +6,7 @@
 
 <AnchorPane prefHeight="1000.0" prefWidth="1100.0" stylesheets="@../../../../Styles.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.discerial.Controladores.HomoPanelController">
 
-    <Label fx:id="homoText" layoutX="160.0" layoutY="80.0" style="-fx-font-size: 50px; -fx-text-fill: #2E8540;" text="HOMO" />
+    <Label fx:id="homoText" layoutX="160.0" layoutY="80.0" style="-fx-font-size: 50px; -fx-text-fill: #4c5b3d -fx-font-weight: bold; " text="HOMO" />
     <Label fx:id="TituloStyle" layoutX="321.0" layoutY="80.0" style="-fx-font-size: 50px; -fx-text-fill: #2E8540;" text="MODO EDICION" />
 
     <ImageView id="imagenPerfilRedonda" fx:id="imagenSeleccionada" fitHeight="320.0" fitWidth="320.0" layoutX="95.0" layoutY="243.0" preserveRatio="true" />
@@ -44,6 +44,7 @@
     <Button id="botonPersonalizado" fx:id="btnGuardar" layoutX="622.0" layoutY="740.0" onAction="#guardarCambios" prefHeight="80.0" prefWidth="193.0" text="Guardar" visible="false" />
 
     <AnchorPane fx:id="contenedorImagenes" layoutX="21.0" layoutY="550.0" prefHeight="400" prefWidth="600" visible="false" />
+
     <Button id="botonPersonalizado" fx:id="btnIconosPerfil" layoutX="88.0" layoutY="740.0" onAction="#visualizarImagen" prefHeight="80.0" prefWidth="264.0" text="Cambiar Foto Perfil" visible="false" />
 
 

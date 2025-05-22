@@ -153,30 +153,6 @@ public class IusuariosImpl implements Iusuarios {
 
     }
 
-    public String getCategoriaFavorita(int userId) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            // Devuelve la categoría con mayor número de aciertos
-            String hql = "SELECT r.categoria, COUNT(*) as total " +
-                    "FROM Respuesta r " +
-                    "WHERE r.usuario.id = :userId AND r.acertada = true " +
-                    "GROUP BY r.categoria " +
-                    "ORDER BY total DESC";
-
-            List<Object[]> results = session.createQuery(hql, Object[].class)
-                    .setParameter("userId", userId)
-                    .setMaxResults(1) // Solo la favorita
-                    .list();
-
-            if (!results.isEmpty()) {
-                return (String) results.get(0)[0]; // Nombre de la categoría
-            } else {
-                return "Sin datos";
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 
 
 

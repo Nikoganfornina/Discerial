@@ -11,7 +11,7 @@
 
     <Label id="ngbernet" layoutX="78.0" layoutY="60.0" prefHeight="50.0" prefWidth="250.0" text="Ng and Bernet" />
 
-    <Label id="ngbernet" alignment="CENTER" layoutX="516.0" layoutY="583.0" prefHeight="50.0" prefWidth="469.0" text="EL  SABER  NO  OCUPA  LUGAR" />
+    <Label id="ngbernet" alignment="CENTER" layoutX="600.0" layoutY="581.0" prefHeight="50.0" prefWidth="301.0" text="EL  SABER  NO  OCUPA  LUGAR" />
 
 
     <Label id="adytotext" layoutX="1168.0" layoutY="60.0" prefHeight="50.0" prefWidth="301.0" text="AdytoGroup" />

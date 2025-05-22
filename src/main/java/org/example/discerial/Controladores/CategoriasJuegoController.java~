@@ -113,12 +113,6 @@ public class CategoriasJuegoController {
         aplicarHoverYClick(imagenBiologiacategorias);
         aplicarHoverYClick(imagenLiteraturacategorias);
         aplicarHoverYClick(imagenMixtacategorias);
-        aplicarHoverYClickLabel(labelHistoria, 1);
-        aplicarHoverYClickLabel(labelLiteratura, 2);
-        aplicarHoverYClickLabel(labelFilosofia, 3);
-        aplicarHoverYClickLabel(labelBiologia, 4);
-        aplicarHoverYClickLabel(labelMixta, 5);
-
     }
 
     private void cargarImagen(ImageView iv, String ruta) {

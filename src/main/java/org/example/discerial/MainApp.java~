@@ -28,6 +28,8 @@ import static org.example.discerial.Controladores.Preguntas.PreguntasBiologia.cr
 
 public class MainApp extends Application {
 
+    public static SessionManager sessionManager ;
+
     private static Stage primaryStage;
     private final IusuariosImpl usuarioDAO = new IusuariosImpl();
     private MediaPlayer splashPlayer;
@@ -38,7 +40,7 @@ public class MainApp extends Application {
         seedCategorias();
 
         crearPreguntasBiologia();
-      
+
 
 
         primaryStage = stage;
@@ -121,12 +123,29 @@ public class MainApp extends Application {
         alert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 Usuarios usuarioActivo = usuarioDAO.currentUser();
-                if (usuarioActivo != null) cerrarSesion(usuarioActivo.getId());
+                if (usuarioActivo != null) {
+                    // 1. Parar el hilo/reloj que está midiendo el tiempo activo
+                    sessionManager.stopSessionTimer();  // Método que pares el hilo y devuelva el tiempo acumulado
+
+                    // 2. Obtener tiempo acumulado desde el hilo o desde la variable donde lo tienes
+                    long tiempoExtra = sessionManager.getSessionElapsedTimeMillis();
+
+                    // 3. Actualizar el usuario con el tiempo acumulado
+                    long nuevoTiempo = usuarioActivo.getTiempoSesionAcumulado() + tiempoExtra;
+                    usuarioActivo.setTiempoSesionAcumulado(nuevoTiempo);
+
+                    // 4. Guardar en BD
+                    usuarioDAO.updateUsuario(usuarioActivo);
+
+                    // 5. Desactivar sesión en BD
+                    cerrarSesion(usuarioActivo.getId());
+                }
 
                 musicManager.stopAll();
                 Platform.exit();
                 System.exit(0);
             }
+
         });
     }
 

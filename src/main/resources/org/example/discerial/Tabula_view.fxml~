@@ -62,10 +62,10 @@
     <Pane fx:id="contenedorFXML" layoutX="450.0" prefHeight="1000.0" prefWidth="1100.0">
         <children>
 
-            <Label  layoutX="10.0" layoutY="35.0" style="-fx-font-size: 50px; -fx-text-fill: #4c5b3d -fx-font-weight: bold; " text="TABULA" />
+            <Label  layoutX="10.0" layoutY="40.0" style="-fx-font-size: 50px; -fx-text-fill: #4c5b3d -fx-font-weight: bold; " text="TABULA" />
 
             <!-- Contenedor para el BarChart -->
-            <VBox fx:id="chartContainer" layoutX="50.0" layoutY="100.0" prefHeight="600.0" prefWidth="1000.0" spacing="10.0" />
+            <VBox fx:id="chartContainer" layoutX="50.0" layoutY="80.0" prefHeight="600.0" prefWidth="1000.0" spacing="10.0" />
 
 
             <HBox spacing="50.0" layoutX="100.0" layoutY="700.0" alignment="CENTER">
