@@ -35,6 +35,7 @@ public class TabulaController {
     private Label lblAciertosNumero;
     private final IusuariosImpl usuarioDao = new IusuariosImpl();
     private final IPreguntaImpl preguntaDao = new IPreguntaImpl(); // DAO de preguntas
+    private IEstadoUsuarioImpl estadoUsuarioDao = new IEstadoUsuarioImpl();
 
     // Este VBox debe estar declarado en tu FXML dentro de contenedorFXML
     @FXML private VBox chartContainer;
