@@ -142,11 +142,8 @@ public class Usuarios {
         this.imagen = imagen;
     }
 
-    public String getHorasJugadas() {
-        long horas = horasJugadas / 3600000; // 1 hora = 3,600,000 ms
-        long minutos = (horasJugadas % 3600000) / 60000; // 1 minuto = 60,000 ms
-        return String.format("%02d:%02d", horas, minutos);
-    }
+    public long getHorasJugadas() {return horasJugadas;}
+
     public void setHorasJugadas(long horasJugadas) {
         this.horasJugadas = horasJugadas;
     }

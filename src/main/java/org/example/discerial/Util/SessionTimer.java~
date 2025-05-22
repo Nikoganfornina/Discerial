@@ -1,81 +1,117 @@
 package org.example.discerial.Util;
 
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
 import org.example.discerial.DAO.IusuariosImpl;
 import org.example.discerial.entities.Usuarios;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
+
 public class SessionTimer {
+    private volatile long startTime = 0;
+    private volatile long accumulatedTime = 0;
+    private volatile boolean running = false;
+    private final IusuariosImpl dao;
+    private ScheduledExecutorService scheduler;
+    private ScheduledFuture<?> updateTask;
+    private volatile long sessionAccumulated = 0; // Tiempo de ESTA sesión
+    private volatile long totalAccumulated = 0;    // Tiempo total (BD + sesión actual)
+    private LongProperty elapsedTime = new SimpleLongProperty();
+    private Usuarios usuarioActivo; // Declaración correcta
 
-    private long startTime = 0;
-    private long accumulatedTime = 0;
-    private boolean running = false;
+    // Singleton para una única instancia
+    private static SessionTimer instance;
 
-    private final IusuariosImpl dao; // DAO para acceder a usuarios
-
-    public SessionTimer() {
+    private SessionTimer() {
         dao = new IusuariosImpl();
     }
 
-    /**
-     * Inicia el timer si hay usuario activo en BD (sessionActive = true).
-     * Suma el tiempo acumulado previo desde la BD y comienza el conteo.
-     * Si no hay usuario activo, no hace nada.
-     */
+    public static SessionTimer getInstance() {
+        if (instance == null) {
+            instance = new SessionTimer();
+        }
+        return instance;
+    }
+
+
+
     public void start() throws Exception {
         if (running) return;
-            
-        Usuarios usuarioActivo = dao.currentUser();
-        if (usuarioActivo != null && usuarioActivo.isSessionActive()) {
-            // Recuperamos tiempo acumulado previo (suponiendo que tienes un campo long en Usuarios)
-            accumulatedTime = usuarioActivo.getHorasJugadas(); // Ejemplo: getter para tiempo acumulado
+
+        Usuarios usuario = dao.currentUser();
+        if (usuario != null && usuario.isSessionActive()) {
+            // Obtener el valor ACTUAL de la BD
+            totalAccumulated = dao.getHorasJugadasFromBD(usuario.getId());
+
+            // Inicializar contadores
+            sessionAccumulated = 0;
             startTime = System.currentTimeMillis();
             running = true;
-            System.out.println("SessionTimer: iniciando timer para usuario " + usuarioActivo.getId());
-        } else {
-            System.out.println("SessionTimer: no hay usuario activo, no inicia timer.");
+
+            scheduler = Executors.newSingleThreadScheduledExecutor();
+            updateTask = scheduler.scheduleAtFixedRate(() -> {
+                try {
+                    // Calcular tiempo transcurrido y sumar al total
+                    long elapsed = System.currentTimeMillis() - startTime;
+                    dao.addHorasJugadasNative(usuario.getId(), elapsed); // Suma a la BD
+                    totalAccumulated += elapsed;
+                    sessionAccumulated += elapsed;
+                    startTime = System.currentTimeMillis(); // Resetear contador parcial
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }, 5, 5, TimeUnit.SECONDS);
+
+            System.out.printf("Timer iniciado. Tiempo acumulado: %d ms%n", totalAccumulated);
         }
     }
 
-    /**
-     * Para el timer y suma el tiempo transcurrido a la base de datos,
-     * actualizando el campo tiempo acumulado del usuario.
-     * También desactiva la sesión (sessionActive = false).
-     */
     public void stop() throws Exception {
-        if (!running) {
-            System.out.println("SessionTimer: no estaba corriendo, nada que hacer en stop.");
-            return;
+        if (!running) return;
+        running = false;
+
+        Usuarios usuario = dao.currentUser();
+        if (usuario != null) {
+            // Sumar tiempo final no guardado
+            long finalElapsed = System.currentTimeMillis() - startTime;
+            dao.addHorasJugadasNative(usuario.getId(), finalElapsed);
+
+            // Cerrar sesión sin afectar horasJugadas
+            dao.cerrarSesionSoloSessionActive(usuario.getId());
         }
 
-        Usuarios usuarioActivo = dao.currentUser();
-        if (usuarioActivo != null && usuarioActivo.isSessionActive()) {
-            long endTime = System.currentTimeMillis();
-            long tiempoSesionActual = endTime - startTime;
-            accumulatedTime += tiempoSesionActual;
-
-            // Actualizar el tiempo acumulado en BD
-            usuarioActivo.setHorasJugadas(accumulatedTime);
-
-            // Guardar en BD y desactivar sesión
-            dao.cerrarSesion(usuarioActivo.getId());
-
-            running = false;
-
-            System.out.println("SessionTimer: sesión parada para usuario " + usuarioActivo.getId() +
-                    ". Tiempo total acumulado: " + accumulatedTime + " ms.");
-        } else {
-            System.out.println("SessionTimer: no hay usuario activo o sesión ya inactiva.");
-        }
+        if (updateTask != null) updateTask.cancel(true);
+        if (scheduler != null) scheduler.shutdownNow();
+    }
+    public boolean isRunning() {
+        return running;
     }
 
-    /**
-     * Devuelve el tiempo acumulado total en milisegundos.
-     * Si está corriendo, suma tiempo desde start hasta ahora.
-     */
+
+    private void updateDatabase() {
+        if (!running) return;
+
+        long currentElapsed = System.currentTimeMillis() - startTime;
+        accumulatedTime += currentElapsed;
+        startTime = System.currentTimeMillis();
+
+        // Actualizar BD sumando tiempo transcurrido
+        dao.addHorasJugadasNative(usuarioActivo.getId(), currentElapsed);
+    }
+
+    public LongProperty elapsedTimeProperty() {
+        return elapsedTime;
+    }
     public long getElapsedTime() {
         if (running) {
             return accumulatedTime + (System.currentTimeMillis() - startTime);
         } else {
-            return accumulatedTime;
+            return accumulatedTime; // Devuelve el valor acumulado, no 0
         }
     }
+
+
 }

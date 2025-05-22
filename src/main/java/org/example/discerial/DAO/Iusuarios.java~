@@ -56,7 +56,6 @@ public interface Iusuarios {
      * @return El usuario guardado, con los datos persistidos (incluido el ID generado).
      */
     Usuarios save(Usuarios usuarios);
-    void updateHorasJugadas(long userId, long horas) throws Exception;
 
     void activateUser(int id);
     Usuarios login(String correo, String contrasena);

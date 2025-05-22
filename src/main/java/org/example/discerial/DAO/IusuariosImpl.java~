@@ -217,6 +217,7 @@ public class IusuariosImpl implements Iusuarios {
         }
     }
 
+    // Sumar tiempo a horasJugadas usando consulta nativa
     public void addHorasJugadasNative(long userId, long milliseconds) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Transaction tx = session.beginTransaction();
@@ -226,7 +227,7 @@ public class IusuariosImpl implements Iusuarios {
                     .setParameter(2, userId)
                     .executeUpdate();
             tx.commit();
-            session.clear();
+            session.clear(); // Limpiar caché
         }
     }
     // Cerrar sesión SIN tocar otras propiedades

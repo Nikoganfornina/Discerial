@@ -15,8 +15,10 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import org.example.discerial.DAO.ICategoriaImpl;
 import org.example.discerial.DAO.IusuariosImpl;
+import org.example.discerial.Util.HibernateUtil;
 import org.example.discerial.Util.MusicManager;
 import org.example.discerial.Util.SessionManager;
+import org.example.discerial.Util.SessionTimer;
 import org.example.discerial.entities.Categoria;
 import org.example.discerial.entities.Usuarios;
 
@@ -120,12 +122,26 @@ public class MainApp extends Application {
 
         alert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
-                Usuarios usuarioActivo = usuarioDAO.currentUser();
-                if (usuarioActivo != null) cerrarSesion(usuarioActivo.getId());
+                try {
+                    // 1. Detener el timer y forzar guardado
+                    SessionTimer.getInstance().stop();
 
-                musicManager.stopAll();
-                Platform.exit();
-                System.exit(0);
+                    // 2. Esperar 100ms para asegurar flush de Hibernate
+                    Thread.sleep(100);
+
+                    // 3. Cierre seguro de recursos
+                    HibernateUtil.shutdown();
+                    musicManager.stopAll();
+
+                    // 4. Salir de la aplicación
+                    Platform.exit();
+                    System.exit(0);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    new Alert(Alert.AlertType.ERROR,
+                            "Error crítico al cerrar: " + e.getMessage()).show();
+                }
             }
         });
     }

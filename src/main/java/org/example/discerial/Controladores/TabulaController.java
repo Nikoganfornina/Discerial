@@ -20,8 +20,10 @@ import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 import org.example.discerial.DAO.*;
 import org.example.discerial.Util.MusicManager;
+import org.example.discerial.Util.SessionTimer;
 import org.example.discerial.entities.Categoria;
 import org.example.discerial.entities.Usuarios;
+
 import java.io.IOException;
 import java.util.*;
 
@@ -29,15 +31,18 @@ import static org.example.discerial.Util.SessionManager.switchScene;
 
 public class TabulaController {
 
-    @FXML private Pane contenedorFXML;
-    @FXML private Label usuarioNombre;
+    @FXML
+    private Pane contenedorFXML;
+    @FXML
+    private Label usuarioNombre;
     @FXML
     private Label lblAciertosNumero;
     private final IusuariosImpl usuarioDao = new IusuariosImpl();
     private final IPreguntaImpl preguntaDao = new IPreguntaImpl(); // DAO de preguntas
 
     // Este VBox debe estar declarado en tu FXML dentro de contenedorFXML
-    @FXML private VBox chartContainer;
+    @FXML
+    private VBox chartContainer;
 
     @FXML
     public void initialize() {
@@ -64,8 +69,6 @@ public class TabulaController {
             lblAciertosNumero.setText("0/0");
         }
     }
-
-
 
 
     private void cargarGraficaAvance() {
@@ -174,8 +177,6 @@ public class TabulaController {
     }
 
 
-
-
     private void configurarTooltip(XYChart.Data<String, Number> data, String tipo) {
         Tooltip tooltip = new Tooltip(
                 String.format("%s\n%s: %d",
@@ -212,6 +213,7 @@ public class TabulaController {
             e.printStackTrace();
         }
     }
+
     @FXML
     private void FxmlTabula() throws IOException {
         MusicManager.getInstance().playRandomSoundEffect();
@@ -229,6 +231,7 @@ public class TabulaController {
         alert.setContentText("Mantengase a la espera, estamos trabajando en la implementaci n de esta secci n.");
         alert.showAndWait();
     }
+
     @FXML
     private void FxmlAdaptationes() throws IOException {
         MusicManager.getInstance().playRandomSoundEffect();
@@ -239,6 +242,7 @@ public class TabulaController {
         alert.showAndWait();
         //switchScene("/org/example/discerial/Adaptationes_view.fxml");
     }
+
     @FXML
     private void FxmlAuxilium() throws IOException {
 
@@ -252,6 +256,7 @@ public class TabulaController {
     }
 
 
+
     public void BotoncerrarSesion() throws IOException {
         var dao = new IusuariosImpl();
         Usuarios u = dao.currentUser();
@@ -261,7 +266,6 @@ public class TabulaController {
             new Alert(Alert.AlertType.INFORMATION, "No hay ningún usuario conectado.")
                     .showAndWait();
             MusicManager.getInstance().playRandomSoundEffect();
-
             switchScene("/org/example/discerial/MainApp_View.fxml");
             return;
         }
@@ -269,7 +273,7 @@ public class TabulaController {
         Alert conf = new Alert(Alert.AlertType.CONFIRMATION);
         conf.setTitle("Cerrar sesión");
         conf.setHeaderText(null);
-        conf.setContentText("¿Deseas cerrar sesión de la cuenta: "+u.getNombre()+"?");
+        conf.setContentText("¿Deseas cerrar sesión de la cuenta: " + u.getNombre() + "?");
         conf.getButtonTypes().setAll(
                 new ButtonType("Sí", ButtonBar.ButtonData.OK_DONE),
                 new ButtonType("No", ButtonBar.ButtonData.CANCEL_CLOSE)
@@ -277,8 +281,23 @@ public class TabulaController {
 
         Optional<ButtonType> res = conf.showAndWait();
         if (res.orElse(ButtonType.CANCEL).getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-            dao.cerrarSesion(u.getId());
-            switchScene("/org/example/discerial/MainApp_View.fxml");
+            try {
+                SessionTimer.getInstance().stop();
+
+                // Esperar 100ms para asegurar la sincronización
+                Thread.sleep(100);
+
+                dao.cerrarSesion(u.getId());
+                switchScene("/org/example/discerial/MainApp_View.fxml");
+
+                // Verificación final
+                Usuarios usuarioActualizado = dao.findById(u.getId()).get(0);
+                System.out.println("Tiempo REAL en BD: " + usuarioActualizado.getHorasJugadas());
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            System.out.println("Tiempo total jugado por el usuario " + u.getNombre() + ": " + SessionTimer.getInstance().getElapsedTime() + " ms");
         }
     }
 }
