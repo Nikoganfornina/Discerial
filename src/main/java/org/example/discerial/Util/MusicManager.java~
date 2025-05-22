@@ -33,7 +33,7 @@ public class MusicManager {
 
     public void playAmbientMusic() {
         stopMusic(); // Solo para ambient y action
-        int songNumber = random.nextInt(12) + 1;
+        int songNumber = random.nextInt(10) + 1;
         playMusic("/Songs/TestSong" + songNumber + ".mp3", true, player -> ambientPlayer = player);
     }
 

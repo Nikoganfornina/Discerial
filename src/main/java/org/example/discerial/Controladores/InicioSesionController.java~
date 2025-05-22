@@ -59,8 +59,6 @@ public class InicioSesionController {
 
                 // Iniciar el timer con las horas acumuladas del usuario activo
 
-                SessionTimer.getInstance().start(); // Iniciar el timer
-
                 // Cambiar la vista
                 switchScene("/org/example/discerial/Tabula_view.fxml");
             } else {

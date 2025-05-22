@@ -1,5 +1,9 @@
 package org.example.discerial.Controladores;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
@@ -7,11 +11,15 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Circle;
+import javafx.util.Duration;
 import org.example.discerial.DAO.IEstadoUsuarioImpl;
 import org.example.discerial.DAO.IPreguntaImpl;
 import org.example.discerial.DAO.IusuariosImpl;
+import org.example.discerial.Util.HibernateUtil;
 import org.example.discerial.Util.MusicManager;
+import org.example.discerial.Util.SessionTimer;
 import org.example.discerial.entities.Usuarios;
+import org.hibernate.Session;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,6 +45,8 @@ public class HomoPanelController {
 
     MusicManager musicManager = MusicManager.getInstance();
     private Usuarios usuarioActual;
+    private Timeline timelineActualizacionTiempo;
+
 
     @FXML
     public void initialize() {
@@ -44,6 +54,8 @@ public class HomoPanelController {
         configurarCampos();
         configurarVisibilidadInicial();
         mostrarCategoriaFavorita();  // Actualiza el campo aquí
+        iniciarActualizacionTiempo(); // Nueva línea
+
     }
 
     private void mostrarCategoriaFavorita() {
@@ -69,8 +81,12 @@ public class HomoPanelController {
     private void cargarUsuarioActivo() {
         usuarioActual = usuarioDao.currentUser();
         if (usuarioActual != null) {
+            // Actualizar campos antes de iniciar el timeline
             actualizarCamposUsuario();
             cargarImagenPerfil();
+
+            // Forzar primera actualización
+            Platform.runLater(() -> actualizarTiempoJugado());
         }
     }
 
@@ -90,6 +106,22 @@ public class HomoPanelController {
         lblTiempoJugado.setText(usuarioActual.getHorasJugadasFormato());
     }
 
+
+
+    private String formatMillisToHHMM(long millis) {
+        long totalSeconds = millis / 1000;
+        long hours = totalSeconds / 3600;
+        long minutes = (totalSeconds % 3600) / 60;
+        return String.format("%02d:%02d", hours, minutes);
+    }
+
+
+    // Método para detener la actualización cuando sea necesario
+    public void detenerActualizacionTiempo() {
+        if (timelineActualizacionTiempo != null) {
+            timelineActualizacionTiempo.stop();
+        }
+    }
     private void cargarImagenPerfil() {
         if (usuarioActual.getImagen() != null) {
             try {
@@ -149,6 +181,7 @@ public class HomoPanelController {
         }
     }
 
+
     private boolean validarCampos() {
         if (usuarioNombre.getText().isBlank() || usuarioCorreo.getText().isBlank()) {
             mostrarAlerta("Campos requeridos", "Nickname y correo son obligatorios");
@@ -181,6 +214,41 @@ public class HomoPanelController {
         alert.setHeaderText(null);
         alert.setContentText(mensaje);
         alert.showAndWait();
+    }
+
+    private void iniciarActualizacionTiempo() {
+        timelineActualizacionTiempo = new Timeline(
+                new KeyFrame(Duration.seconds(1), event -> {
+                    if (usuarioActual != null) {
+                        // Obtener tiempo DESDE LA BD (no del timer)
+                        long tiempoBD = usuarioDao.getHorasJugadasFromBD(usuarioActual.getId());
+                        lblTiempoJugado.setText(formatMillisToHHMM(tiempoBD));
+                    }
+                })
+        );
+        timelineActualizacionTiempo.setCycleCount(Timeline.INDEFINITE);
+        timelineActualizacionTiempo.play();
+    }
+    // Añadir método en IusuariosImpl
+    public long getHorasJugadasFromBD(long userId) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return ((Number) session.createNativeQuery("SELECT horasJugadas FROM usuarios WHERE id = ?")
+                    .setParameter(1, userId)
+                    .uniqueResult()).longValue();
+        }
+    }
+
+    private void actualizarTiempoJugado() {
+        if (usuarioActual != null) {
+            if (SessionTimer.getInstance().isRunning()) {
+                // Tiempo en sesión activa (actual + acumulado)
+                long tiempoTotal = SessionTimer.getInstance().getElapsedTime();
+                lblTiempoJugado.setText(formatMillisToHHMM(tiempoTotal));
+            } else {
+                // Tiempo histórico desde BD
+                lblTiempoJugado.setText(usuarioActual.getHorasJugadasFormato());
+            }
+        }
     }
 
     @FXML

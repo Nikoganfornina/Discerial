@@ -5,6 +5,8 @@ import org.hibernate.cfg.Configuration;
 
 public class HibernateUtil {
 
+    private static SessionFactory sessionFactory;
+
     public static SessionFactory getSessionFactory() {
         // Crear configuración de Hibernate
         Configuration configuration = new Configuration();
@@ -14,5 +16,10 @@ public class HibernateUtil {
 
         // Devolver la fábrica de sesiones configurada
         return configuration.buildSessionFactory();
+    }
+    public static void shutdown() {
+        if (sessionFactory != null && !sessionFactory.isClosed()) {
+            sessionFactory.close();
+        }
     }
 }
