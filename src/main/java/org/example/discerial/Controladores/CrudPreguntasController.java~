@@ -126,6 +126,7 @@ public class CrudPreguntasController {
             respuesta2Field.setText(selectedPregunta.getRespuesta2());
             respuesta3Field.setText(selectedPregunta.getRespuesta3());
             respuesta4Field.setText(selectedPregunta.getRespuesta4());
+            imagenField.setText(selectedPregunta.getImagen());
         } else {
             showAlert("Advertencia", "Seleccione una pregunta para editar.");
         }
@@ -168,7 +169,7 @@ public class CrudPreguntasController {
 
         if (selectedPregunta == null) {
             // Crear una nueva pregunta
-            Pregunta nueva = new Pregunta(categoria, preguntaText, respCorrecta, resp2, resp3, resp4, tipo);
+            Pregunta nueva = new Pregunta(categoria, preguntaText, respCorrecta, resp2, resp3, resp4, imagen, tipo);
             preguntaDAO.save(nueva);
         } else {
             // Actualizar la pregunta existente
@@ -179,6 +180,7 @@ public class CrudPreguntasController {
             selectedPregunta.setRespuesta2(resp2);
             selectedPregunta.setRespuesta3(resp3);
             selectedPregunta.setRespuesta4(resp4);
+            selectedPregunta.setImagen(imagen);
             preguntaDAO.update(selectedPregunta);
         }
         loadPreguntas();
@@ -206,6 +208,7 @@ public class CrudPreguntasController {
                 detalles.append("Respuesta 3: ").append(selectedPregunta.getRespuesta3()).append("\n");
                 detalles.append("Respuesta 4: ").append(selectedPregunta.getRespuesta4()).append("\n");
             }
+            detalles.append("Imagen URL: ").append(selectedPregunta.getImagen()).append("\n");
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Detalles de la Pregunta");
             alert.setHeaderText(null);

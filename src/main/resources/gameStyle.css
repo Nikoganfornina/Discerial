@@ -44,6 +44,22 @@
     -fx-transition: all 0.3s ease;
 }
 
+.opcion-custom {
+    -fx-background-color: #f0f0f0;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-border-color: transparent;
+    -fx-padding: 15px;
+    -fx-font-size: 20px;
+    -fx-cursor: hand;
+    -fx-text-alignment: center;
+}
+
+.opcion-custom:hover {
+    -fx-background-color: #ccffcc;
+}
+
+
 .opcion-custom:hover {
     -fx-background-color: #cde6cd;
     -fx-border-color: #4a7d4a;

@@ -2,25 +2,15 @@ package org.example.discerial.Controladores;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-import javafx.scene.media.MediaView;
-import javafx.scene.shape.Rectangle;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.example.discerial.DAO.IEstadoUsuarioImpl;
 import org.example.discerial.DAO.IPreguntaImpl;
@@ -39,13 +29,10 @@ public class VistaPreguntaController {
 
     @FXML private AnchorPane rootPane;
     @FXML private Label lblCategoria, lblPregunta, lblTimer;
-    @FXML private ImageView imgPregunta;
     @FXML private Label lblOpcion1, lblOpcion2, lblOpcion3, lblOpcion4;
-    @FXML private VBox vboxOpciones;
     @FXML private HBox hboxNav;
     @FXML private Button btnAnterior, btnSiguiente;
     @FXML private Label lblCountTest;
-
 
     private List<Pregunta> listaPreguntas;
     private int indiceActual = 0;
@@ -55,10 +42,6 @@ public class VistaPreguntaController {
 
     private final IusuariosImpl usuarioDao = new IusuariosImpl();
     private Usuarios usuarioActual;
-
-    // --- VIDEO ---
-    private MediaPlayer goPlayer;
-    private MediaView goMediaView;
 
     private final MusicManager musicManager = MusicManager.getInstance();
 
@@ -77,69 +60,12 @@ public class VistaPreguntaController {
             mostrarPregunta();
         }
         hboxNav.setVisible(false);
-        mostrarCuentaAtras();
     }
 
-    public void mostrarCuentaAtras() {
-        try {
-            Media media = new Media(getClass().getResource("/Go.mp4").toExternalForm());
-            goPlayer = new MediaPlayer(media);
-            goMediaView = new MediaView(goPlayer);
-
-            goMediaView.setFitWidth(rootPane.getWidth());
-            goMediaView.setFitHeight(rootPane.getHeight());
-            goMediaView.setPreserveRatio(false);
-
-            if (!rootPane.getChildren().contains(goMediaView)) {
-                rootPane.getChildren().add(goMediaView);
-            }
-            goMediaView.toFront();
-
-            rootPane.widthProperty().addListener((obs, oldVal, newVal) -> goMediaView.setFitWidth(newVal.doubleValue()));
-            rootPane.heightProperty().addListener((obs, oldVal, newVal) -> goMediaView.setFitHeight(newVal.doubleValue()));
-
-            musicManager.stopAll();
-
-            goPlayer.setOnEndOfMedia(() -> {
-                goPlayer.stop();
-                goPlayer.dispose();
-                rootPane.getChildren().remove(goMediaView);
-                musicManager.playActionMusic();
-                empezarJuegoDespuesVideo();
-            });
-
-            goPlayer.setOnError(() -> {
-                System.err.println("Error en reproducción de Go.mp4: " + goPlayer.getError());
-                rootPane.getChildren().remove(goMediaView);
-                musicManager.playActionMusic();
-                empezarJuegoDespuesVideo();
-            });
-
-            goPlayer.setRate(1.5);
-            goPlayer.play();
-
-        } catch (Exception e) {
-            System.err.println("Error cargando video Go.mp4: " + e.getMessage());
-            musicManager.playActionMusic();
-            empezarJuegoDespuesVideo();
-        }
-    }
     private void actualizarContadorPregunta() {
         int total = listaPreguntas.size();
         int actual = indiceActual + 1; // +1 porque los índices empiezan en 0
         lblCountTest.setText(actual + "/" + total);
-    }
-
-    private void empezarJuegoDespuesVideo() {
-        mostrarPregunta();
-    }
-
-    public void initData(int categoria_id) {
-        List<Pregunta> preguntasCategoria = new IPreguntaImpl().findByCategoria(categoria_id);
-        Collections.shuffle(preguntasCategoria);
-        listaPreguntas = preguntasCategoria.stream().limit(10).collect(Collectors.toList());
-        indiceActual = 0;
-        mostrarPregunta();
     }
 
     private void setupTimer() {
@@ -176,7 +102,6 @@ public class VistaPreguntaController {
         lblCategoria.setText("Categoría: " + p.getCategoria().getNombre());
         lblPregunta.setText(p.getPregunta());
 
-
         // Generar opciones aleatorias
         class Opcion {
             String text;
@@ -201,7 +126,7 @@ public class VistaPreguntaController {
                 lbl.setText(op.text);
                 lbl.setUserData(op.correct);
                 lbl.setVisible(true);
-                lbl.setStyle("-fx-padding:10; -fx-border-width:2; -fx-border-color:transparent;");
+                lbl.setStyle("-fx-padding:15; -fx-border-width:3; -fx-border-color:transparent; -fx-background-color: #f0f0f0; -fx-font-size: 20px;");
             } else {
                 lbl.setVisible(false);
                 lbl.setText("");
@@ -217,19 +142,42 @@ public class VistaPreguntaController {
         actualizarContadorPregunta();
     }
 
-
-
     private void clearStyles() {
         for (Label lbl : List.of(lblOpcion1, lblOpcion2, lblOpcion3, lblOpcion4)) {
-            lbl.setStyle("-fx-padding:10; -fx-border-width:2; -fx-border-color:transparent;");
-            lbl.getStyleClass().removeAll("correcta", "incorrecta"); // Limpiar clases
+            lbl.setStyle("-fx-padding:15; -fx-border-width:3; -fx-border-color:transparent; -fx-background-color: #f0f0f0; -fx-font-size: 20px;");
         }
+    }
+
+    @FXML
+    private void handleOpcion(MouseEvent event) {
+        if (timer == null || !timer.getStatus().equals(Timeline.Status.RUNNING)) {
+            return; // no responder si el timer ya terminó
+        }
+
+        Label clicked = (Label) event.getSource();
+        boolean esCorrecta = Boolean.TRUE.equals(clicked.getUserData());
+
+        timer.stop();
+        deshabilitarOpciones(true);
+
+        if (esCorrecta) {
+            clicked.setStyle("-fx-background-color: #00ff00; -fx-padding:15; -fx-border-width:3; -fx-border-color: #009900; -fx-font-size: 20px;");
+            musicManager.playRandomSoundWin();
+            saveAttempt(true);
+        } else {
+            clicked.setStyle("-fx-background-color: #ff0000; -fx-padding:15; -fx-border-width:3; -fx-border-color: #990000; -fx-font-size: 20px;");
+            musicManager.playRandomSoundfail();
+            saveAttempt(false);
+            highlightCorrect();
+        }
+
+        hboxNav.setVisible(true);
     }
 
     private void highlightCorrect() {
         for (Label lbl : List.of(lblOpcion1, lblOpcion2, lblOpcion3, lblOpcion4)) {
             if (Boolean.TRUE.equals(lbl.getUserData())) {
-                lbl.setStyle("-fx-padding:10; -fx-border-width:3; -fx-border-color:green;");
+                lbl.setStyle("-fx-background-color: #00cc00; -fx-padding:15; -fx-border-width:3; -fx-border-color: #006600; -fx-font-size: 20px;");
             }
         }
     }
@@ -242,9 +190,6 @@ public class VistaPreguntaController {
 
     @FXML
     private void handleAnterior() {
-        timer.stop();
-        musicManager.playRandomSoundEffect();
-
         if (indiceActual > 0) {
             indiceActual--;
             mostrarPregunta();
@@ -253,69 +198,13 @@ public class VistaPreguntaController {
 
     @FXML
     private void handleSiguiente() {
-        timer.stop();
-        musicManager.playRandomSoundEffect();
-
-
-        // Cuando estamos en la última pregunta, en lugar de bloquear el botón,
-        // vamos a la vista de resultados.
-        if (indiceActual == listaPreguntas.size() - 1) {
-            irAVistaResultados();
-        } else {
+        if (indiceActual < listaPreguntas.size() - 1) {
             indiceActual++;
             mostrarPregunta();
-        }
-    }
-
-    private void irAVistaResultados() {
-        try {
-
-            musicManager.playRandomSoundEffect();
-
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/discerial/ResultadoTestView.fxml"));
-            Parent root = loader.load();
-
-            org.example.discerial.Controladores.Preguntas.ResultadoTestViewController controller = loader.getController();
-            controller.initData(listaPreguntas); // Pasamos la lista de preguntas para resultados
-
-            Stage stage = (Stage) rootPane.getScene().getWindow();
-            stage.setScene(new Scene(root));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @FXML
-    private void handleOpcion(MouseEvent e) {
-        timer.stop();
-        musicManager.playRandomSoundEffect();
-
-        Label clicked = (Label) e.getSource();
-
-        boolean acertada = Boolean.TRUE.equals(clicked.getUserData());
-
-        for (Label lbl : List.of(lblOpcion1, lblOpcion2, lblOpcion3, lblOpcion4)) {
-            lbl.getStyleClass().removeAll("correcta", "incorrecta");
-        }
-
-        if (acertada) {
-            clicked.getStyleClass().add("correcta");
-            musicManager.playRandomSoundWin();
         } else {
-            clicked.getStyleClass().add("incorrecta");
-            musicManager.playRandomSoundfail();
-
+            // Terminar test o volver a menú principal
+            terminarTest();
         }
-
-        for (Label lbl : List.of(lblOpcion1, lblOpcion2, lblOpcion3, lblOpcion4)) {
-            if (Boolean.TRUE.equals(lbl.getUserData()) && !lbl.equals(clicked)) {
-                lbl.getStyleClass().add("correcta");
-            }
-        }
-
-        saveAttempt(acertada);
-        hboxNav.setVisible(true);
-        deshabilitarOpciones(true);
     }
 
     private void saveAttempt(boolean acertada) {
@@ -330,7 +219,16 @@ public class VistaPreguntaController {
         }
     }
 
-    public void handleVolver(ActionEvent actionEvent) {
-        // Lógica para volver si es necesaria
+    private void terminarTest() {
+        timer.stop();
+        musicManager.stopAll();
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/discerial/vistas/VistaMenu.fxml"));
+            Parent root = loader.load();
+            rootPane.getScene().setRoot(root);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

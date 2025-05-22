@@ -22,7 +22,6 @@ public class PreguntasBiologia {
                         "Proteínas",
                         "Carbohidratos",
                         "ADN",  // Respuesta correcta
-                        "https://upload.wikimedia.org/wikipedia/commons/8/80/DNA_methylation.jpg",
                         "multiple"
                 },
                 {
@@ -31,7 +30,6 @@ public class PreguntasBiologia {
                         "Neutrón",
                         "Quark",
                         "Electrón",
-                        "https://img.europapress.es/fotoweb/fotonoticia_20181017185536_690.jpg",
                         "multiple"
                 },
                 {
@@ -40,7 +38,6 @@ public class PreguntasBiologia {
                         "Antocianina",
                         "Xantofila",
                         "Clorofila",
-                        "https://mejorconsalud.as.com/wp-content/uploads/2015/06/Composision-molecular-500x334.jpg",
                         "multiple"
                 },
                 {
@@ -49,7 +46,6 @@ public class PreguntasBiologia {
                         "Ribosoma",
                         "Retículo endoplasmático rugoso",
                         "Retículo endoplasmático liso",
-                        "https://pymstatic.com/47451/conversions/reticulo-endoplasmatico-liso-wide.jpg",
                         "multiple"
                 },
                 {
@@ -58,7 +54,6 @@ public class PreguntasBiologia {
                         "ARN ribosómico",
                         "ADN",
                         "ARN de transferencia",
-                        "https://www.genome.gov/sites/default/files/media/images/tg/Transfer_RNA_hero.png",
                         "multiple"
                 },
                 {
@@ -67,7 +62,6 @@ public class PreguntasBiologia {
                         "Glucólisis",
                         "Fermentación",
                         "Ciclo de Krebs",
-                        "https://pymstatic.com/63253/conversions/mitocondrias-wide.jpg",
                         "multiple"
                 },
                 {
@@ -76,7 +70,6 @@ public class PreguntasBiologia {
                         "Almacenar material genético",
                         "Transportar sustancias",
                         "Producir energía (ATP)",
-                        "https://www.supersmart.com/data/images/blog/mitochondrie.jpg",
                         "multiple"
                 },
                 {
@@ -85,7 +78,6 @@ public class PreguntasBiologia {
                         "Núcleo",
                         "Vacuola",
                         "Cloroplasto",
-                        "https://s1.significados.com/foto/chloroplasts-g98a80c219-1920.png",
                         "multiple"
                 },
 
@@ -96,7 +88,6 @@ public class PreguntasBiologia {
                         "Louis Pasteur",
                         "James Watson",
                         "Gregor Mendel",
-                        "https://c.files.bbci.co.uk/11D4D/production/_118073037_hi066780220-1.jpg",
                         "multiple"
                 },
                 {
@@ -105,7 +96,6 @@ public class PreguntasBiologia {
                         "75%",
                         "50%",
                         "25%",
-                        "https://cdn.computerhoy.com/sites/navi.axelspringer.es/public/media/image/2023/05/pelirrojo-ojos-azules-3039576.jpg?tf=3840x",
                         "multiple"
                 },
 
@@ -116,7 +106,6 @@ public class PreguntasBiologia {
                         "Suprarrenal",
                         "Hipófisis",
                         "Páncreas",
-                        "https://salud.nih.gov/sites/salud/files/styles/teaser_900x527/public/2023-08/pancreas-con-tumores.jpg?itok=gBCi_czh",
                         "multiple"
                 },
                 {
@@ -125,7 +114,6 @@ public class PreguntasBiologia {
                         "Esternón",
                         "Tibia",
                         "Fémur",
-                        "https://media.istockphoto.com/id/526829550/es/foto/el-f%C3%A9mur-humanos.jpg?s=612x612&w=0&k=20&c=sdRTrWrUqQ9mTwD-0YT47LPKurKgjC2rRUV5V6WY4kQ=",
                         "multiple"
                 },
 
@@ -136,7 +124,6 @@ public class PreguntasBiologia {
                         "Herbívoros",
                         "Descomponedores",
                         "Plantas",
-                        "https://lh6.googleusercontent.com/proxy/cOtjZFJpEzt3zOz1AfJPM0MU7Y8b87VCTDF0AapeogUntFFUQjXKKPNOcD-dEqtnyfcOCDPAzeLwo25WZbZDv0czsKpJSIDkLsQX_sJriTF1v7yRtTxZ6wo0Ap6Q3XVNWtN2npo6Nw",
                         "multiple"
                 },
                 {
@@ -145,7 +132,6 @@ public class PreguntasBiologia {
                         "Germinación",
                         "Transpiración",
                         "Respiración celular",
-                        "https://i.pinimg.com/474x/aa/2f/62/aa2f6263de44746345deeae9d31fb739.jpg",
                         "multiple"
                 },
 
@@ -156,7 +142,6 @@ public class PreguntasBiologia {
                         "Protozoos",
                         "Levaduras",
                         "Bacterias lácticas",
-                        "https://mountainsideorganicos.com/cdn/shop/articles/Lactobacillus_para_Plantas-1800x900-opt_2000x.jpg?v=1673206062",
                         "multiple"
                 },
                 {
@@ -165,7 +150,6 @@ public class PreguntasBiologia {
                         "Plásmido",
                         "Cápsula",
                         "Flagelo",
-                        "https://media.istockphoto.com/id/859433642/es/foto/bacterias-azul-aisladas-3d.jpg?s=612x612&w=0&k=20&c=-1Q0rDzUZCzsriz-5BP1S2MNRg0bBsvM_b3qKFxjIwU=",
                         "multiple"
                 },
 
@@ -176,7 +160,6 @@ public class PreguntasBiologia {
                         "Capilaridad",
                         "Difusión",
                         "Transpiración",
-                        "https://agraria.pe/imgs/a/lx/facultad-de-agronomia-de-la-unalm-realizara-curso-de-actuali-22377.jpg",
                         "multiple"
                 },
                 {
@@ -185,7 +168,6 @@ public class PreguntasBiologia {
                         "Etileno",
                         "Ácido abscísico",
                         "Auxinas",
-                        "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Auxina.png/250px-Auxina.png",
                         "multiple"
                 },
 
@@ -196,7 +178,6 @@ public class PreguntasBiologia {
                         "Louis Pasteur",
                         "Alfred Wallace",
                         "Charles Darwin",
-                        "https://external-preview.redd.it/QJjlV0xpPx68nlHXJxntwgkg61qn6ClgThbKov2ZTPY.jpg?auto=webp&s=9f38309fd574e0e71882f218a076b239316a62d0",
                         "multiple"
                 },
                 {
@@ -205,7 +186,6 @@ public class PreguntasBiologia {
                         "Páncreas",
                         "Hígado",
                         "Apéndice",
-                        "https://uvn-brightspot.s3.amazonaws.com/assets/vixes/btg/curiosidades.batanga.com/files/Para-que-sirve-el-apendice-2.jpg",
                         "multiple"
                 },
 
@@ -216,7 +196,6 @@ public class PreguntasBiologia {
                         "Cerebro",
                         "Tálamo",
                         "Cerebelo",
-                        "https://s3-us-west-2.amazonaws.com/courses-images/wp-content/uploads/sites/1940/2017/05/29213441/olpulgaeqnkqnqaoeubv.png",
                         "multiple"
                 },
                 {
@@ -225,7 +204,6 @@ public class PreguntasBiologia {
                         "Hepatocitos",
                         "Osteocitos",
                         "Neuronas",
-                        "https://www.muyinteresante.com/wp-content/uploads/sites/5/2023/10/27/653bcdae153ce.jpeg",
                         "multiple"
                 },
         };
@@ -239,8 +217,7 @@ public class PreguntasBiologia {
             q.setRespuesta3(d[2]);
             q.setRespuesta4(d[3]);
             q.setRespuestaCorrecta(d[4]);
-            q.setImagen(d[5]);
-            q.setTipo(d[6]);
+            q.setTipo(d[5]);
             preguntaDao.save(q);
         }
 

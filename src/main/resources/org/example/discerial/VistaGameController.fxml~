@@ -45,7 +45,7 @@
                onMouseClicked="#handleOpcion"
                styleClass="opcion-custom"
                GridPane.columnIndex="0" GridPane.rowIndex="0"
-               prefWidth="520" prefHeight="150"
+               prefWidth="520" prefHeight="120"
                wrapText="true"
         />
 
@@ -53,7 +53,7 @@
                onMouseClicked="#handleOpcion"
                styleClass="opcion-custom"
                GridPane.columnIndex="1" GridPane.rowIndex="0"
-               prefWidth="520" prefHeight="150"
+               prefWidth="520" prefHeight="120"
                wrapText="true"
         />
 
@@ -61,7 +61,7 @@
                onMouseClicked="#handleOpcion"
                styleClass="opcion-custom"
                GridPane.columnIndex="0" GridPane.rowIndex="1"
-               prefWidth="520" prefHeight="150"
+               prefWidth="520" prefHeight="120"
                wrapText="true"
         />
 
@@ -69,7 +69,7 @@
                onMouseClicked="#handleOpcion"
                styleClass="opcion-custom"
                GridPane.columnIndex="1" GridPane.rowIndex="1"
-               prefWidth="520" prefHeight="150"
+               prefWidth="520" prefHeight="120"
                wrapText="true"
         />
     </GridPane>
