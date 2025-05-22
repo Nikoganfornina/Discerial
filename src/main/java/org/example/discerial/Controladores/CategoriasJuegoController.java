@@ -3,10 +3,12 @@ package org.example.discerial.Controladores;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import org.example.discerial.Util.MusicManager;
 
 import java.io.IOException;
 
@@ -14,6 +16,7 @@ import static org.example.discerial.Util.SessionManager.switchScene;
 
 public class CategoriasJuegoController {
 
+    MusicManager musicManager = MusicManager.getInstance();
     @FXML
     private ImageView imagenHistoriacategorias;
 
@@ -28,6 +31,33 @@ public class CategoriasJuegoController {
 
     @FXML
     private ImageView imagenMixtacategorias;
+
+    @FXML
+    private Label labelHistoria, labelFilosofia, labelBiologia, labelLiteratura, labelMixta;
+
+    private void aplicarHoverYClickLabel(Label label, int categoria_id) {
+        label.setOnMouseEntered(e -> {
+            label.setScaleX(1.05);
+            label.setScaleY(1.05);
+        });
+
+        label.setOnMouseExited(e -> {
+            label.setScaleX(1.0);
+            label.setScaleY(1.0);
+        });
+
+        label.setOnMousePressed(e -> {
+            label.setScaleX(0.95);
+            label.setScaleY(0.95);
+        });
+
+        label.setOnMouseReleased(e -> {
+            label.setScaleX(1.05);
+            label.setScaleY(1.05);
+        });
+
+        label.setOnMouseClicked(e -> openGameWithCategory(categoria_id));
+    }
 
 
     private void aplicarHoverYClick(ImageView imageView) {
@@ -83,6 +113,12 @@ public class CategoriasJuegoController {
         aplicarHoverYClick(imagenBiologiacategorias);
         aplicarHoverYClick(imagenLiteraturacategorias);
         aplicarHoverYClick(imagenMixtacategorias);
+        aplicarHoverYClickLabel(labelHistoria, 1);
+        aplicarHoverYClickLabel(labelLiteratura, 2);
+        aplicarHoverYClickLabel(labelFilosofia, 3);
+        aplicarHoverYClickLabel(labelBiologia, 4);
+        aplicarHoverYClickLabel(labelMixta, 5);
+
     }
 
     private void cargarImagen(ImageView iv, String ruta) {
@@ -97,6 +133,8 @@ public class CategoriasJuegoController {
 
     @FXML
     public void volverTabula() throws IOException {
+        musicManager.playRandomSoundEffect();
+
         switchScene("/org/example/discerial/Tabula_view.fxml");
     }
 
@@ -108,6 +146,8 @@ public class CategoriasJuegoController {
     }
 
     private void openGameWithCategory(int categoria_id) {
+        musicManager.playRandomSoundEffect();
+
         try {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getResource("/org/example/discerial/LoadingPanelView.fxml")

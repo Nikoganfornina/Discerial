@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 public class Pregunta {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     // Relación con la categoría con carga EAGER para evitar problemas de LazyInitializationException
@@ -30,9 +30,6 @@ public class Pregunta {
     @Column(name = "respuesta_4")
     private String respuesta4;
 
-    // URL de la imagen (puede ser null)
-    @Column
-    private String imagen;
 
     // "multiple" para opción múltiple, "vf" para Verdadero/Falso
     @Column(name = "tipo", nullable = false)
@@ -41,15 +38,13 @@ public class Pregunta {
     public Pregunta() { }
 
     public Pregunta(Categoria categoria, String pregunta, String respuestaCorrecta,
-                    String respuesta2, String respuesta3, String respuesta4,
-                    String imagen, String tipo) {
+                    String respuesta2, String respuesta3, String respuesta4, String tipo) {
         this.categoria = categoria;
         this.pregunta = pregunta;
         this.respuestaCorrecta = respuestaCorrecta;
         this.respuesta2 = respuesta2;
         this.respuesta3 = respuesta3;
         this.respuesta4 = respuesta4;
-        this.imagen = imagen;
         this.tipo = tipo;
     }
 
@@ -95,12 +90,6 @@ public class Pregunta {
     }
     public void setRespuesta4(String respuesta4) {
         this.respuesta4 = respuesta4;
-    }
-    public String getImagen() {
-        return imagen;
-    }
-    public void setImagen(String imagen) {
-        this.imagen = imagen;
     }
     public String getTipo() {
         return tipo;

@@ -26,6 +26,24 @@ public class IEstadoUsuarioImpl implements IEstadoUsuario {
         }
     }
 
+    public String getCategoriaFavorita(int userId) {
+        Map<String, int[]> estadisticas = getEstadisticasPorCategoria(userId);
+
+        String categoriaFavorita = null;
+        int maxAciertos = -1;
+
+        for (Map.Entry<String, int[]> entry : estadisticas.entrySet()) {
+            int aciertos = entry.getValue()[0];
+            if (aciertos > maxAciertos) {
+                maxAciertos = aciertos;
+                categoriaFavorita = entry.getKey();
+            }
+        }
+
+        return categoriaFavorita;  // puede devolver null si no hay datos
+    }
+
+
     public List<EstadoUsuario> findByUsuario(int userId) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             return session.createQuery(

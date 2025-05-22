@@ -19,18 +19,18 @@
 
 /* Colores individuales */
 .label-titulo-fallos {
-    -fx-text-fill: #e74c3c;
+    -fx-text-fill: #c5b3d;
 }
 
 .label-titulo-aciertos {
-    -fx-text-fill: #27ae60;
+    -fx-text-fill: #c5b3d;
 }
 
 /* Números grandes */
 .numeros-grandes {
     -fx-font-size: 120px; /* MUCHO más grande */
     -fx-font-weight: bold;
-    -fx-text-fill: #4c5b3d; /* Verde que pediste */
+    -fx-text-fill: #c5b3d; /* Verde que pediste */
 }
 
 /* Mensaje debajo */
@@ -38,6 +38,7 @@
     -fx-font-size: 26px;
     -fx-font-weight: normal;
     -fx-text-fill: #34495e;
+    -fx-alignment: center;
 }
 
 /* Botón principal */

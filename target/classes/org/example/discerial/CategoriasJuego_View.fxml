@@ -25,11 +25,11 @@
             <VBox alignment="CENTER" spacing="40.0">
                 <VBox alignment="CENTER" spacing="10.0">
                     <ImageView fx:id="imagenHistoriacategorias" fitHeight="250.0" fitWidth="400.0" onMouseClicked="#onHistoriaClicked" pickOnBounds="true" preserveRatio="false" />
-                    <Label id="labelHistoria" styleClass="categoria-label" text="Historia" />
+                    <Label fx:id="labelHistoria" id="labelHistoria" styleClass="categoria-label" text="Historia" />
                 </VBox>
                 <VBox alignment="CENTER" spacing="10.0">
                     <ImageView fx:id="imagenLiteraturacategorias" fitHeight="250.0" fitWidth="400.0" onMouseClicked="#onLiteraturaClicked" pickOnBounds="true" preserveRatio="false" />
-                    <Label id="labelLiteratura" styleClass="categoria-label" text="Literatura" />
+                    <Label fx:id="labelLiteratura" id="labelLiteratura" styleClass="categoria-label" text="Literatura" />
                 </VBox>
             </VBox>
 
@@ -37,18 +37,18 @@
             <VBox alignment="CENTER" spacing="40.0">
                 <VBox alignment="CENTER" spacing="10.0">
                     <ImageView fx:id="imagenFilosofiacategorias" fitHeight="250.0" fitWidth="400.0" onMouseClicked="#onFilosofiaClicked" pickOnBounds="true" preserveRatio="false" />
-                    <Label id="labelFilosofia" styleClass="categoria-label" text="Filosofía" />
+                    <Label fx:id="labelFilosofia" id="labelFilosofia" styleClass="categoria-label" text="Filosofía" />
                 </VBox>
                 <VBox alignment="CENTER" prefWidth="400.0" spacing="10.0">
                     <ImageView fx:id="imagenBiologiacategorias" fitHeight="250.0" fitWidth="400.0" onMouseClicked="#onBiologiaClicked" pickOnBounds="true" preserveRatio="false" />
-                    <Label id="labelBiologia" styleClass="categoria-label" text="Biología" />
+                    <Label fx:id="labelBiologia" id="labelBiologia" styleClass="categoria-label" text="Biología" />
                 </VBox>
             </VBox>
 
             <!-- Columna 3: Mixta (vertical) -->
             <VBox alignment="CENTER" spacing="10.0">
                 <ImageView fx:id="imagenMixtacategorias" fitHeight="593.0" fitWidth="300.0" onMouseClicked="#onMixtaClicked" pickOnBounds="true" preserveRatio="false" />
-                <Label id="labelMixta" styleClass="categoria-label" text="Mixta" />
+                <Label  fx:id="labelMixta" id="labelMixta" styleClass="categoria-label" text="Mixta" />
             </VBox>
         </HBox>
 

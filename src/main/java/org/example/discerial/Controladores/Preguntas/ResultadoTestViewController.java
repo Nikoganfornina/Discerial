@@ -63,12 +63,19 @@ public class ResultadoTestViewController {
 
         if (porcentaje == 100) {
             mensaje = "¡Perfecto! Has acertado todas las preguntas.";
+            MusicManager.getInstance().playRandomSoundWin();
         } else if (porcentaje >= 75) {
             mensaje = "Muy bien, buen trabajo. Sigue así.";
+            MusicManager.getInstance().playRandomSoundWin();
+
         } else if (porcentaje >= 50) {
             mensaje = "No está mal, pero puedes mejorar.";
+            MusicManager.getInstance().playRandomSoundfail();
+
         } else {
             mensaje = "Necesitas practicar más. ¡Ánimo!";
+            MusicManager.getInstance().playRandomSoundfail();
+
         }
         lblMensaje.setText(mensaje);
     }
@@ -79,6 +86,8 @@ public class ResultadoTestViewController {
         try {
             // Detiene música de juego y reproduce la del menú
             MusicManager.getInstance().playAmbientMusic();
+            MusicManager.getInstance().playRandomSoundEffect();
+
 
             // Cargar vista del menú
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/discerial/Tabula_view.fxml"));

@@ -1,26 +1,29 @@
 package org.example.discerial.Controladores;
 
+import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.geometry.Side;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.chart.*;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.TextAlignment;
+import javafx.util.Duration;
 import org.example.discerial.DAO.*;
+import org.example.discerial.Util.MusicManager;
 import org.example.discerial.entities.Categoria;
 import org.example.discerial.entities.Usuarios;
 import java.io.IOException;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static org.example.discerial.Util.SessionManager.switchScene;
 
@@ -28,6 +31,10 @@ public class TabulaController {
 
     @FXML private Pane contenedorFXML;
     @FXML private Label usuarioNombre;
+    @FXML
+    private Label lblAciertosNumero;
+    private final IusuariosImpl usuarioDao = new IusuariosImpl();
+    private final IPreguntaImpl preguntaDao = new IPreguntaImpl(); // DAO de preguntas
 
     // Este VBox debe estar declarado en tu FXML dentro de contenedorFXML
     @FXML private VBox chartContainer;
@@ -40,14 +47,25 @@ public class TabulaController {
     }
 
     private void mostrarNombreUsuario() {
-        Usuarios user = new IusuariosImpl().currentUser();
-        if (user != null && user.getNombre() != null && !user.getNombre().isBlank()) {
-            String cap = user.getNombre().substring(0,1).toUpperCase() + user.getNombre().substring(1);
-            usuarioNombre.setText(cap);
+        Usuarios user = usuarioDao.currentUser();
+        usuarioNombre.setText(usuarioDao.currentUser().getNombre());
+
+        if (user != null) {
+            // Obtener aciertos del usuario
+            int aciertos = usuarioDao.getPreguntasAcertadas(user.getId());
+
+            // Obtener total de preguntas en la BD
+            int totalPreguntas = preguntaDao.countTotalPreguntas();
+
+            // Actualizar el texto del Label
+            lblAciertosNumero.setText(aciertos + "/" + totalPreguntas);
+
         } else {
-            usuarioNombre.setText("Sin usuario activo");
+            lblAciertosNumero.setText("0/0");
         }
     }
+
+
 
 
     private void cargarGraficaAvance() {
@@ -65,29 +83,38 @@ public class TabulaController {
 
         // 3) Configurar ejes con estilo
         CategoryAxis xAxis = new CategoryAxis();
-        xAxis.setLabel("Categoría");
         xAxis.setTickLabelRotation(45);
-        xAxis.setTickLabelFont(Font.font("Arial", FontWeight.BOLD, 12));
+        xAxis.setTickLabelFont(Font.font("Arial", FontWeight.BOLD, 16)); // Texto más grande
 
         NumberAxis yAxis = new NumberAxis();
-        yAxis.setLabel("Cantidad");
         yAxis.setTickUnit(5);
         yAxis.setMinorTickVisible(false);
+        yAxis.setTickLabelFont(Font.font("Arial", FontWeight.BOLD, 16)); // Texto más grande
 
-        // 4) Crear gráfico con estilos
+        // 4) Crear gráfico con fondo totalmente transparente
         BarChart<String, Number> chart = new BarChart<>(xAxis, yAxis);
-        chart.setTitle("Progreso de Aprendizaje");
-        chart.setStyle("-fx-background-color: #F8F9FA; -fx-font-family: 'Arial';");
+        chart.setLegendVisible(false);
+        chart.setAnimated(true);
         chart.setCategoryGap(20);
         chart.setBarGap(5);
-        chart.setLegendSide(Side.RIGHT);
-        chart.setAnimated(true);
+
+        // Aplicar estilos directamente al gráfico y fondo interior
+        chart.setStyle("-fx-background-color: transparent;");
+        Node plotBackground = chart.lookup(".chart-plot-background");
+        if (plotBackground != null) {
+            plotBackground.setStyle("-fx-background-color: transparent;");
+        }
+
+        // Aumentar tamaño del título
+        Label title = new Label("Progreso de Aprendizaje");
+        title.setFont(Font.font("Arial", FontWeight.EXTRA_BOLD, 24));
+        title.setPadding(new Insets(10, 0, 20, 0));
+        title.setTextAlignment(TextAlignment.CENTER);
 
         // 5) Configurar series
         XYChart.Series<String, Number> serieAciertos = new XYChart.Series<>();
-        serieAciertos.setName("✅ Aciertos");
+
         XYChart.Series<String, Number> serieFallos = new XYChart.Series<>();
-        serieFallos.setName("❌ Fallos");
 
         // 6) Rellenar datos manteniendo orden
         Map<String, int[]> ordered = new LinkedHashMap<>(stats);
@@ -98,36 +125,56 @@ public class TabulaController {
 
         chart.getData().addAll(serieAciertos, serieFallos);
 
-        // 7) Personalizar colores y tooltips después de renderizar
-        Platform.runLater(() -> {
-            // Colores diferenciados
-            String estiloAciertos = "-fx-bar-fill: #2E8540;";
-            String estiloFallos = "-fx-bar-fill: #CC0000;";
+        // 7) Usar PauseTransition para esperar renderizado antes de personalizar colores, redondear barras y leyenda
+        PauseTransition pause = new PauseTransition(Duration.millis(250));
+        pause.setOnFinished(event -> {
+            String colorAciertos = "#2E8540";
+            String colorFallos = "#CC0000";
 
+            // Colorear y redondear barras, y añadir tooltips
             for (XYChart.Data<String, Number> data : serieAciertos.getData()) {
-                data.getNode().setStyle(estiloAciertos);
-                configurarTooltip(data, "Aciertos");
+                Node node = data.getNode();
+                if (node != null) {
+                    node.setStyle(
+                            "-fx-bar-fill: " + colorAciertos + ";" +
+                                    "-fx-background-radius: 10 10 0 0;" +  // redondeo arriba solo
+                                    "-fx-border-radius: 10 10 0 0;"
+                    );
+                    configurarTooltip(data, "Aciertos");
+                }
             }
 
             for (XYChart.Data<String, Number> data : serieFallos.getData()) {
-                data.getNode().setStyle(estiloFallos);
-                configurarTooltip(data, "Fallos");
+                Node node = data.getNode();
+                if (node != null) {
+                    node.setStyle(
+                            "-fx-bar-fill: " + colorFallos + ";" +
+                                    "-fx-background-radius: 10 10 0 0;" +
+                                    "-fx-border-radius: 10 10 0 0;"
+                    );
+                    configurarTooltip(data, "Fallos");
+                }
             }
 
-            // Estilo leyenda
-            Node leyenda = chart.lookup(".chart-legend");
-            if (leyenda != null) {
-                leyenda.setStyle("-fx-background-color: #E9ECEF; -fx-padding: 10;");
-            }
+
+            // Líneas guía visibles
+            chart.setHorizontalGridLinesVisible(true);
+            chart.setVerticalGridLinesVisible(true);
         });
+        pause.play();
 
-        // 8) Configurar responsividad
+        // 8) Responsividad
         chart.prefWidthProperty().bind(chartContainer.widthProperty());
         chart.prefHeightProperty().bind(chartContainer.heightProperty().subtract(20));
 
-        // 9) Añadir al contenedor
-        chartContainer.getChildren().setAll(chart);
+        // 9) Añadir al contenedor con título separado
+        VBox contenedor = new VBox(title, chart);
+        contenedor.setSpacing(10);
+        chartContainer.getChildren().setAll(contenedor);
     }
+
+
+
 
     private void configurarTooltip(XYChart.Data<String, Number> data, String tipo) {
         Tooltip tooltip = new Tooltip(
@@ -143,6 +190,8 @@ public class TabulaController {
     @FXML
     private void handleJugar() {
         try {
+            MusicManager.getInstance().playRandomSoundEffect();
+
             //switchScene("/org/example/discerial/VistaGameController.fxml");
             switchScene("/org/example/discerial/CategoriasJuego_View.fxml");
 
@@ -154,6 +203,8 @@ public class TabulaController {
     @FXML
     private void FxmlHomoPanel() {
         try {
+            MusicManager.getInstance().playRandomSoundEffect();
+
             Parent pnl = FXMLLoader
                     .load(getClass().getResource("/org/example/discerial/Panels/HomoPanel_view.fxml"));
             contenedorFXML.getChildren().setAll(pnl);
@@ -163,17 +214,54 @@ public class TabulaController {
     }
     @FXML
     private void FxmlTabula() throws IOException {
+        MusicManager.getInstance().playRandomSoundEffect();
         switchScene("/org/example/discerial/Tabula_view.fxml");
     }
 
+    @FXML
+    private void FxmlNuntiato() throws IOException {
+        MusicManager.getInstance().playRandomSoundEffect();
+
+        //switchScene("/org/example/discerial/Nuntiato_view.fxml");
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Vista no disponible");
+        alert.setHeaderText(null);
+        alert.setContentText("Mantengase a la espera, estamos trabajando en la implementaci n de esta secci n.");
+        alert.showAndWait();
+    }
+    @FXML
+    private void FxmlAdaptationes() throws IOException {
+        MusicManager.getInstance().playRandomSoundEffect();
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Vista no disponible");
+        alert.setHeaderText(null);
+        alert.setContentText("Mantengase a la espera, estamos trabajando en la implementaci n de esta secci n.");
+        alert.showAndWait();
+        //switchScene("/org/example/discerial/Adaptationes_view.fxml");
+    }
+    @FXML
+    private void FxmlAuxilium() throws IOException {
+
+        MusicManager.getInstance().playRandomSoundEffect();
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Vista no disponible");
+        alert.setHeaderText(null);
+        alert.setContentText("Mantengase a la espera, estamos trabajando en la implementaci n de esta secci n.");
+        alert.showAndWait();
+        //switchScene("/org/example/discerial/Auxilium_view.fxml");
+    }
 
 
     public void BotoncerrarSesion() throws IOException {
         var dao = new IusuariosImpl();
         Usuarios u = dao.currentUser();
+        MusicManager.getInstance().playRandomSoundEffect();
+
         if (u == null) {
             new Alert(Alert.AlertType.INFORMATION, "No hay ningún usuario conectado.")
                     .showAndWait();
+            MusicManager.getInstance().playRandomSoundEffect();
+
             switchScene("/org/example/discerial/MainApp_View.fxml");
             return;
         }

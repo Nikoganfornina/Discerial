@@ -7,7 +7,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Circle;
+import org.example.discerial.DAO.IEstadoUsuarioImpl;
+import org.example.discerial.DAO.IPreguntaImpl;
 import org.example.discerial.DAO.IusuariosImpl;
+import org.example.discerial.Util.MusicManager;
 import org.example.discerial.entities.Usuarios;
 
 import java.io.IOException;
@@ -25,10 +28,14 @@ public class HomoPanelController {
     @FXML private Label lblTiempoJugado;
     @FXML private Button btnEditar;
     @FXML private Button btnGuardar;
-    @FXML private Button btnIconosPerfil;  // Este es el botón que quieres ocultar por defecto
+    @FXML private Button btnIconosPerfil;  // Botón oculto por defecto
     @FXML private AnchorPane contenedorImagenes;
 
-    private IusuariosImpl usuariosDao = new IusuariosImpl();
+    private IEstadoUsuarioImpl estadoUsuarioDao = new IEstadoUsuarioImpl();
+    private final IusuariosImpl usuarioDao = new IusuariosImpl();
+    private final IPreguntaImpl preguntaDao = new IPreguntaImpl();
+
+    MusicManager musicManager = MusicManager.getInstance();
     private Usuarios usuarioActual;
 
     @FXML
@@ -36,6 +43,20 @@ public class HomoPanelController {
         cargarUsuarioActivo();
         configurarCampos();
         configurarVisibilidadInicial();
+        mostrarCategoriaFavorita();  // Actualiza el campo aquí
+    }
+
+    private void mostrarCategoriaFavorita() {
+        if (usuarioActual != null) {
+            String categoria = estadoUsuarioDao.getCategoriaFavorita(usuarioActual.getId());
+            if (categoria != null && !categoria.isEmpty()) {
+                usuarioCategoriaFavorita.setText(categoria);
+            } else {
+                usuarioCategoriaFavorita.setText("Sin categoría favorita");
+            }
+        } else {
+            usuarioCategoriaFavorita.setText("Sin usuario activo");
+        }
     }
 
     private void configurarVisibilidadInicial() {
@@ -46,7 +67,7 @@ public class HomoPanelController {
     }
 
     private void cargarUsuarioActivo() {
-        usuarioActual = usuariosDao.currentUser();
+        usuarioActual = usuarioDao.currentUser();
         if (usuarioActual != null) {
             actualizarCamposUsuario();
             cargarImagenPerfil();
@@ -57,8 +78,8 @@ public class HomoPanelController {
         usuarioNombre.setText(usuarioActual.getNickname());
         usuarioCorreo.setText(usuarioActual.getCorreo());
 
-        int acertadas = usuariosDao.getPreguntasAcertadas(usuarioActual.getId());
-        int erroneas = usuariosDao.getPreguntasErroneas(usuarioActual.getId());
+        int acertadas = usuarioDao.getPreguntasAcertadas(usuarioActual.getId());
+        int erroneas = usuarioDao.getPreguntasErroneas(usuarioActual.getId());
 
         usuarioActual.setPreguntasAcertadas(acertadas);
         usuarioActual.setPreguntasErroneas(erroneas);
@@ -66,14 +87,12 @@ public class HomoPanelController {
         usuarioPreguntasAcertadas.setText(String.valueOf(acertadas));
         usuarioPreguntasErroneas.setText(String.valueOf(erroneas));
 
-
         lblTiempoJugado.setText(usuarioActual.getHorasJugadasFormato());
     }
 
     private void cargarImagenPerfil() {
         if (usuarioActual.getImagen() != null) {
             try {
-                // Usa getResourceAsStream con rutas absolutas
                 InputStream inputStream = getClass().getResourceAsStream(
                         "/Images/IconosPerfil/" + usuarioActual.getImagen()
                 );
@@ -82,7 +101,6 @@ public class HomoPanelController {
                     Image image = new Image(inputStream);
                     imagenSeleccionada.setImage(image);
 
-                    // Configuración del clip circular
                     Circle clip = new Circle(
                             imagenSeleccionada.getFitWidth()/2,
                             imagenSeleccionada.getFitHeight()/2,
@@ -108,23 +126,26 @@ public class HomoPanelController {
 
     @FXML
     private void entrarModoEdicion() {
+        musicManager.playRandomSoundEffect();
+
         habilitarEdicion(true);
         configurarVisibilidadEdicion(true);
         btnIconosPerfil.setVisible(true);
-        btnEditar.setVisible(false);  // Ocultar botón Editar inmediatamente
-// El botón se hace visible cuando entramos en modo edición
+        btnEditar.setVisible(false);
     }
 
     @FXML
     private void guardarCambios() {
         if (validarCampos()) {
+            musicManager.playRandomSoundEffect();
+
             actualizarDatosUsuario();
-            usuariosDao.update(usuarioActual);
+            usuarioDao.update(usuarioActual);
             habilitarEdicion(false);
             configurarVisibilidadEdicion(false);
             btnIconosPerfil.setVisible(false);
             contenedorImagenes.setVisible(false);
-            btnEditar.setVisible(true);  // Mostrar botón Editar después de guardar
+            btnEditar.setVisible(true);
         }
     }
 
@@ -165,7 +186,9 @@ public class HomoPanelController {
     @FXML
     private void visualizarImagen() {
         try {
-            btnIconosPerfil.setVisible(false);  // Ocultar al abrir selector
+            musicManager.playRandomSoundEffect();
+
+            btnIconosPerfil.setVisible(false);
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/discerial/Panels/SelectImages.fxml"));
             AnchorPane panel = loader.load();
 
@@ -174,7 +197,7 @@ public class HomoPanelController {
                 usuarioActual.setImagen(nombreImagen);
                 cargarImagenPerfil();
                 contenedorImagenes.setVisible(false);
-                btnIconosPerfil.setVisible(true);  // Restaurar visibilidad
+                btnIconosPerfil.setVisible(true);
             });
 
             contenedorImagenes.getChildren().setAll(panel);

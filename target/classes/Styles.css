@@ -271,7 +271,7 @@
 
 /* 🎯 Aciertos */
 .aciertos-box {
-    -fx-background-color: #2e8b57;
+    -fx-background-color: #4c5b3d ;
     -fx-border-color: black;
     -fx-border-width: 1.5;
     -fx-border-radius: 15;
@@ -483,6 +483,11 @@
              -fx-translate-x: 60; /* Mueve 80px a la derecha */
 
 
+}
+.boton-verde-camo:hover {
+    -fx-background-color: linear-gradient(to right, #2E8540, #3e5e2e);
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
 }
 
 .loading-background {

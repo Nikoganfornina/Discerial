@@ -15,9 +15,7 @@ public class CrudvistaPreguntasController {
 
     @FXML private Label lblCategoria;
     @FXML private Label lblPregunta;
-    @FXML private ImageView imgPregunta;
     @FXML private Label lblOpcion1, lblOpcion2, lblOpcion3, lblOpcion4;
-    @FXML private VBox vboxOpciones;
     @FXML private HBox hboxNav;
 
     private List<Pregunta> listaPreguntas;
@@ -47,16 +45,7 @@ public class CrudvistaPreguntasController {
         lblCategoria.setText("Categoría: " + p.getCategoria().getNombre());
         lblPregunta.setText(p.getPregunta());
 
-        if (p.getImagen() != null && !p.getImagen().isBlank()) {
-            try {
-                imgPregunta.setImage(new Image(p.getImagen()));
-                imgPregunta.setVisible(true);
-            } catch (Exception e) {
-                imgPregunta.setVisible(false);
-            }
-        } else {
-            imgPregunta.setVisible(false);
-        }
+
 
         lblOpcion1.setText("✔ " + p.getRespuestaCorrecta());
         lblOpcion2.setText(p.getRespuesta2());

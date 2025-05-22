@@ -149,7 +149,8 @@ public class Usuarios {
     }
 
     //Sesion activa sera un buleano dentro de la propia clase, el programa preguntara cual es el estado de la sesion si es true o false, en caso de ser true se guardaran los datos en ese menu
-    public boolean isSessionActive() { return sessionActive;}  public void setSessionActive(boolean sessionActive) { this.sessionActive = sessionActive; }
+    public boolean isSessionActive() { return sessionActive;}
+    public void setSessionActive(boolean sessionActive) { this.sessionActive = sessionActive; }
     // Inicializar valores por defecto antes de persistir en la BD
 
     @PrePersist

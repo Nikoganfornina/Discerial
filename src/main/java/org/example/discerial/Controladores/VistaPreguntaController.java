@@ -2,6 +2,7 @@ package org.example.discerial.Controladores;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,6 +19,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.example.discerial.DAO.IEstadoUsuarioImpl;
@@ -42,6 +44,8 @@ public class VistaPreguntaController {
     @FXML private VBox vboxOpciones;
     @FXML private HBox hboxNav;
     @FXML private Button btnAnterior, btnSiguiente;
+    @FXML private Label lblCountTest;
+
 
     private List<Pregunta> listaPreguntas;
     private int indiceActual = 0;
@@ -120,6 +124,11 @@ public class VistaPreguntaController {
             empezarJuegoDespuesVideo();
         }
     }
+    private void actualizarContadorPregunta() {
+        int total = listaPreguntas.size();
+        int actual = indiceActual + 1; // +1 porque los índices empiezan en 0
+        lblCountTest.setText(actual + "/" + total);
+    }
 
     private void empezarJuegoDespuesVideo() {
         mostrarPregunta();
@@ -167,17 +176,8 @@ public class VistaPreguntaController {
         lblCategoria.setText("Categoría: " + p.getCategoria().getNombre());
         lblPregunta.setText(p.getPregunta());
 
-        if (p.getImagen() != null && !p.getImagen().isBlank()) {
-            try {
-                imgPregunta.setImage(new Image(p.getImagen()));
-                imgPregunta.setVisible(true);
-            } catch (Exception e) {
-                imgPregunta.setVisible(false);
-            }
-        } else {
-            imgPregunta.setVisible(false);
-        }
 
+        // Generar opciones aleatorias
         class Opcion {
             String text;
             boolean correct;
@@ -212,13 +212,18 @@ public class VistaPreguntaController {
         resetTimer();
 
         btnAnterior.setDisable(indiceActual == 0);
-        // El botón siguiente siempre activo porque puede ir a resultados
         btnSiguiente.setDisable(false);
+
+        actualizarContadorPregunta();
     }
 
+
+
     private void clearStyles() {
-        for (Label lbl : List.of(lblOpcion1, lblOpcion2, lblOpcion3, lblOpcion4))
+        for (Label lbl : List.of(lblOpcion1, lblOpcion2, lblOpcion3, lblOpcion4)) {
             lbl.setStyle("-fx-padding:10; -fx-border-width:2; -fx-border-color:transparent;");
+            lbl.getStyleClass().removeAll("correcta", "incorrecta"); // Limpiar clases
+        }
     }
 
     private void highlightCorrect() {
@@ -238,6 +243,8 @@ public class VistaPreguntaController {
     @FXML
     private void handleAnterior() {
         timer.stop();
+        musicManager.playRandomSoundEffect();
+
         if (indiceActual > 0) {
             indiceActual--;
             mostrarPregunta();
@@ -247,6 +254,8 @@ public class VistaPreguntaController {
     @FXML
     private void handleSiguiente() {
         timer.stop();
+        musicManager.playRandomSoundEffect();
+
 
         // Cuando estamos en la última pregunta, en lugar de bloquear el botón,
         // vamos a la vista de resultados.
@@ -260,6 +269,8 @@ public class VistaPreguntaController {
 
     private void irAVistaResultados() {
         try {
+
+            musicManager.playRandomSoundEffect();
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/discerial/ResultadoTestView.fxml"));
             Parent root = loader.load();
@@ -277,6 +288,8 @@ public class VistaPreguntaController {
     @FXML
     private void handleOpcion(MouseEvent e) {
         timer.stop();
+        musicManager.playRandomSoundEffect();
+
         Label clicked = (Label) e.getSource();
 
         boolean acertada = Boolean.TRUE.equals(clicked.getUserData());
@@ -287,8 +300,11 @@ public class VistaPreguntaController {
 
         if (acertada) {
             clicked.getStyleClass().add("correcta");
+            musicManager.playRandomSoundWin();
         } else {
             clicked.getStyleClass().add("incorrecta");
+            musicManager.playRandomSoundfail();
+
         }
 
         for (Label lbl : List.of(lblOpcion1, lblOpcion2, lblOpcion3, lblOpcion4)) {
