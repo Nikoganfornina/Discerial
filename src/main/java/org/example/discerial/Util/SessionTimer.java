@@ -71,23 +71,41 @@ public class SessionTimer {
         }
     }
 
-    public void stop() throws Exception {
+    public void stop() {
         if (!running) return;
         running = false;
 
-        Usuarios usuario = dao.currentUser();
-        if (usuario != null) {
-            // Sumar tiempo final no guardado
-            long finalElapsed = System.currentTimeMillis() - startTime;
-            dao.addHorasJugadasNative(usuario.getId(), finalElapsed);
+        try {
+            // Detener todas las tareas programadas
+            if (updateTask != null && !updateTask.isDone()) {
+                updateTask.cancel(true);
+            }
 
-            // Cerrar sesión sin afectar horasJugadas
-            dao.cerrarSesionSoloSessionActive(usuario.getId());
+            // Cerrar el scheduler
+            if (scheduler != null && !scheduler.isShutdown()) {
+                scheduler.shutdownNow();
+                if (!scheduler.awaitTermination(1, TimeUnit.SECONDS)) {
+                    System.err.println("El scheduler no terminó correctamente");
+                }
+            }
+
+            // Guardar tiempo final en BD
+            if (usuarioActivo != null) {
+                long finalTime = getElapsedTime();
+                dao.addHorasJugadasNative(usuarioActivo.getId(), finalTime);
+                dao.cerrarSesionSoloSessionActive(usuarioActivo.getId());
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // Resetear variables
+            accumulatedTime = 0;
+            startTime = 0;
+            usuarioActivo = null;
         }
-
-        if (updateTask != null) updateTask.cancel(true);
-        if (scheduler != null) scheduler.shutdownNow();
     }
+
     public boolean isRunning() {
         return running;
     }

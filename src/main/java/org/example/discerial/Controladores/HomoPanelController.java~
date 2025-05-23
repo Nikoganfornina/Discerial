@@ -15,9 +15,11 @@ import javafx.util.Duration;
 import org.example.discerial.DAO.IEstadoUsuarioImpl;
 import org.example.discerial.DAO.IPreguntaImpl;
 import org.example.discerial.DAO.IusuariosImpl;
+import org.example.discerial.Util.HibernateUtil;
 import org.example.discerial.Util.MusicManager;
 import org.example.discerial.Util.SessionTimer;
 import org.example.discerial.entities.Usuarios;
+import org.hibernate.Session;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,6 +39,12 @@ public class HomoPanelController {
     @FXML private Button btnIconosPerfil;  // Botón oculto por defecto
     @FXML private AnchorPane contenedorImagenes;
 
+    @FXML private ImageView premiohistoria;
+    @FXML private ImageView premiobiologia;
+    @FXML private ImageView premiofilosofia;
+    @FXML private ImageView premioliteratura;
+
+
     private IEstadoUsuarioImpl estadoUsuarioDao = new IEstadoUsuarioImpl();
     private final IusuariosImpl usuarioDao = new IusuariosImpl();
     private final IPreguntaImpl preguntaDao = new IPreguntaImpl();
@@ -53,7 +61,7 @@ public class HomoPanelController {
         configurarVisibilidadInicial();
         mostrarCategoriaFavorita();  // Actualiza el campo aquí
         iniciarActualizacionTiempo(); // Nueva línea
-
+        cargarImagenesPremios();
     }
 
     private void mostrarCategoriaFavorita() {
@@ -227,6 +235,15 @@ public class HomoPanelController {
         timelineActualizacionTiempo.setCycleCount(Timeline.INDEFINITE);
         timelineActualizacionTiempo.play();
     }
+    // Añadir método en IusuariosImpl
+    public long getHorasJugadasFromBD(long userId) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return ((Number) session.createNativeQuery("SELECT horasJugadas FROM usuarios WHERE id = ?")
+                    .setParameter(1, userId)
+                    .uniqueResult()).longValue();
+        }
+    }
+
     private void actualizarTiempoJugado() {
         if (usuarioActual != null) {
             if (SessionTimer.getInstance().isRunning()) {
@@ -263,4 +280,26 @@ public class HomoPanelController {
             e.printStackTrace();
         }
     }
+private void cargarImagenesPremios() {
+    cargarImagen(premiohistoria, "/Images/Premios/Historia/hnegro.png");
+    cargarImagen(premiobiologia, "/Images/Premios/Biologia/bnegro.png");
+    cargarImagen(premiofilosofia, "/Images/Premios/Filosofia/fnegro.png");
+    cargarImagen(premioliteratura, "/Images/Premios/Literatura/lnegro.png");
+}
+private void cargarImagen(ImageView imageView, String ruta) {
+    try {
+        InputStream inputStream = getClass().getResourceAsStream(ruta);
+        if (inputStream != null) {
+            Image image = new Image(inputStream);
+            imageView.setImage(image);
+        } else {
+            System.err.println("No se encontró la imagen en la ruta: " + ruta);
+        }
+    } catch (Exception e) {
+        System.err.println("Error al cargar la imagen: " + e.getMessage());
+    }
+}
+
+
+
 }

@@ -5,28 +5,35 @@
 
 <hibernate-configuration>
     <session-factory>
-        <!-- Configuración de MySQL 8 -->
+        <!-- Configuración básica de MySQL -->
         <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
-        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/discerial?useSSL=false&amp;serverTimezone=UTC</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/discerial?useSSL=false&amp;serverTimezone=UTC&amp;allowPublicKeyRetrieval=true</property>
         <property name="hibernate.connection.username">root</property>
         <property name="hibernate.connection.password"></property>
 
-        <!-- Usar dialecto para MySQL 8 -->
-        <property name="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</property>
+        <!-- Configuración del pool de conexiones HikariCP -->
+        <property name="hibernate.hikari.maximumPoolSize">10</property>
+        <property name="hibernate.hikari.minimumIdle">5</property>
+        <property name="hibernate.hikari.idleTimeout">30000</property> <!-- 30 segundos -->
+        <property name="hibernate.hikari.connectionTimeout">10000</property> <!-- 10 segundos -->
+        <property name="hibernate.hikari.maxLifetime">1800000</property> <!-- 30 minutos -->
+        <property name="hibernate.hikari.leakDetectionThreshold">5000</property> <!-- 5 segundos -->
 
-        <!-- Configuración de logging y DDL -->
+        <!-- Dialecto y configuración de SQL -->
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</property>
+        <property name="hibernate.hbm2ddl.auto">update</property>
         <property name="hibernate.show_sql">true</property>
         <property name="hibernate.format_sql">true</property>
-        <property name="hibernate.hbm2ddl.auto">update</property>
 
-        <!-- Configuración de conexión y caché -->
-        <property name="hibernate.connection.pool_size">10</property>
-        <property name="hibernate.connection.autocommit">false</property>
+        <!-- Optimización de transacciones -->
+        <property name="hibernate.connection.provider_disables_autocommit">true</property>
+        <property name="hibernate.transaction.coordinator_class">jdbc</property>
+
+        <!-- Deshabilitar cachés secundarios -->
         <property name="hibernate.cache.use_second_level_cache">false</property>
         <property name="hibernate.cache.use_query_cache">false</property>
-        <property name="hibernate.generate_statistics">true</property>
 
-        <!-- Mapeo de entidades (mejor práctica: usar package en lugar de clases individuales) -->
+        <!-- Mapeo de entidades -->
         <mapping class="org.example.discerial.entities.Usuarios"/>
         <mapping class="org.example.discerial.entities.Categoria"/>
         <mapping class="org.example.discerial.entities.Pregunta"/>
