@@ -280,14 +280,12 @@ public class HomoPanelController {
             e.printStackTrace();
         }
     }
-
 private void cargarImagenesPremios() {
-    cargarImagen(premiohistoria, "/Images/Premios/Biologia/bnegro.png");
-    cargarImagen(premiobiologia, "/Images/Premios/Filosofia/fnegro.png");
-    cargarImagen(premiofilosofia, "/Images/Premios/Historia/hnegro.png");
+    cargarImagen(premiohistoria, "/Images/Premios/Historia/hnegro.png");
+    cargarImagen(premiobiologia, "/Images/Premios/Biologia/bnegro.png");
+    cargarImagen(premiofilosofia, "/Images/Premios/Filosofia/fnegro.png");
     cargarImagen(premioliteratura, "/Images/Premios/Literatura/lnegro.png");
 }
-
 private void cargarImagen(ImageView imageView, String ruta) {
     try {
         InputStream inputStream = getClass().getResourceAsStream(ruta);

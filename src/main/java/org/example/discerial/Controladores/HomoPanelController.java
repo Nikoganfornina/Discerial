@@ -282,9 +282,9 @@ public class HomoPanelController {
     }
 private void cargarImagenesPremios() {
     cargarImagen(premiohistoria, "/Images/Premios/Historia/hnegro.png");
-    cargarImagen(premiobiologia, "/Images/Premios/Biologia/bnegro.png");
-    cargarImagen(premiofilosofia, "/Images/Premios/Filosofia/fnegro.png");
-    cargarImagen(premioliteratura, "/Images/Premios/Literatura/lnegro.png");
+    cargarImagen(premiobiologia, "/Images/Premios/Biologia/bcobre.png");
+    cargarImagen(premiofilosofia, "/Images/Premios/Filosofia/fplata.png");
+    cargarImagen(premioliteratura, "/Images/Premios/Literatura/loro.png");
 }
 private void cargarImagen(ImageView imageView, String ruta) {
     try {
