@@ -39,7 +39,7 @@
     -fx-max-width: 1100px;
 }
 .enunciado-grande {
-    -fx-font-size: 40px;
+    -fx-font-size: 45px;
     -fx-font-weight: bold;
     -fx-text-fill: #4c5b3d ;
     -fx-wrap-text: true;

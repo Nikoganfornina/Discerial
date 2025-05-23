@@ -39,6 +39,12 @@ public class HomoPanelController {
     @FXML private Button btnIconosPerfil;  // Botón oculto por defecto
     @FXML private AnchorPane contenedorImagenes;
 
+    @FXML private ImageView premiohistoria;
+    @FXML private ImageView premiobiologia;
+    @FXML private ImageView premiofilosofia;
+    @FXML private ImageView premioliteratura;
+
+
     private IEstadoUsuarioImpl estadoUsuarioDao = new IEstadoUsuarioImpl();
     private final IusuariosImpl usuarioDao = new IusuariosImpl();
     private final IPreguntaImpl preguntaDao = new IPreguntaImpl();
@@ -55,7 +61,7 @@ public class HomoPanelController {
         configurarVisibilidadInicial();
         mostrarCategoriaFavorita();  // Actualiza el campo aquí
         iniciarActualizacionTiempo(); // Nueva línea
-
+        cargarImagenesPremios();
     }
 
     private void mostrarCategoriaFavorita() {
@@ -274,4 +280,26 @@ public class HomoPanelController {
             e.printStackTrace();
         }
     }
+private void cargarImagenesPremios() {
+    cargarImagen(premiohistoria, "/Images/Premios/Historia/hnegro.png");
+    cargarImagen(premiobiologia, "/Images/Premios/Biologia/bnegro.png");
+    cargarImagen(premiofilosofia, "/Images/Premios/Filosofia/fnegro.png");
+    cargarImagen(premioliteratura, "/Images/Premios/Literatura/lnegro.png");
+}
+private void cargarImagen(ImageView imageView, String ruta) {
+    try {
+        InputStream inputStream = getClass().getResourceAsStream(ruta);
+        if (inputStream != null) {
+            Image image = new Image(inputStream);
+            imageView.setImage(image);
+        } else {
+            System.err.println("No se encontró la imagen en la ruta: " + ruta);
+        }
+    } catch (Exception e) {
+        System.err.println("Error al cargar la imagen: " + e.getMessage());
+    }
+}
+
+
+
 }

@@ -4,48 +4,90 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="1000.0" prefWidth="1100.0" stylesheets="@../../../../Styles.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.discerial.Controladores.HomoPanelController">
+<?import javafx.geometry.Insets?>
+<AnchorPane prefHeight="1000.0" prefWidth="1100.0" stylesheets="@../../../../Styles.css"
+            xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.example.discerial.Controladores.HomoPanelController">
 
-    <Label fx:id="homoText" layoutX="10.0" layoutY="35.0" style="-fx-font-size: 50px; -fx-text-fill: #4c5b3d -fx-font-weight: bold; " text="HOMO" />
-    <Label fx:id="TituloStyle" layoutX="321.0" layoutY="80.0" style="-fx-font-size: 50px; -fx-text-fill: #2E8540;" text="MODO EDICION" />
+    <Label fx:id="homoText" layoutX="10.0" layoutY="35.0"
+           style="-fx-font-size: 50px; -fx-text-fill: #4c5b3d -fx-font-weight: bold; " text="HOMO"/>
+    <Label fx:id="TituloStyle" layoutX="321.0" layoutY="80.0" style="-fx-font-size: 50px; -fx-text-fill: #2E8540;"
+           text="MODO EDICION"/>
 
-    <ImageView id="imagenPerfilRedonda" fx:id="imagenSeleccionada" fitHeight="320.0" fitWidth="320.0" layoutX="95.0" layoutY="243.0" preserveRatio="true" />
+    <ImageView id="imagenPerfilRedonda" fx:id="imagenSeleccionada" fitHeight="320.0" fitWidth="320.0" layoutX="95.0"
+               layoutY="243.0" preserveRatio="true"/>
 
 
     <VBox alignment="CENTER_LEFT" layoutX="474.0" layoutY="236.0" prefHeight="300.0" prefWidth="600.0" spacing="15">
         <HBox alignment="CENTER_LEFT" spacing="20">
-            <Label id="SubstitulosStyle" prefWidth="200.0" style="-fx-font-size: 18px;" text="NickName:" />
-            <TextField id="textFieldSesion" fx:id="usuarioNombre" prefWidth="250.0" text="Usuario_Register1978" />
+            <Label id="SubstitulosStyle" prefWidth="200.0" style="-fx-font-size: 18px;" text="NickName:"/>
+            <TextField id="textFieldSesion" fx:id="usuarioNombre" prefWidth="250.0" text="Usuario_Register1978"/>
         </HBox>
         <HBox alignment="CENTER_LEFT" spacing="20">
-            <Label id="SubstitulosStyle" prefWidth="200.0" style="-fx-font-size: 18px;" text="Correo:" />
-            <TextField id="textFieldSesion" fx:id="usuarioCorreo" prefWidth="250.0" text="Usuario@registrado.com" />
+            <Label id="SubstitulosStyle" prefWidth="200.0" style="-fx-font-size: 18px;" text="Correo:"/>
+            <TextField id="textFieldSesion" fx:id="usuarioCorreo" prefWidth="250.0" text="Usuario@registrado.com"/>
         </HBox>
         <HBox alignment="CENTER_LEFT" spacing="20">
-            <Label id="SubstitulosStyle" prefWidth="200.0" style="-fx-font-size: 18px;" text="Preguntas Acertadas:" />
-            <TextField id="textFieldSesion" fx:id="usuarioPreguntasAcertadas" prefWidth="250.0" text="230" />
+            <Label id="SubstitulosStyle" prefWidth="200.0" style="-fx-font-size: 18px;" text="Preguntas Acertadas:"/>
+            <TextField id="textFieldSesion" fx:id="usuarioPreguntasAcertadas" prefWidth="250.0" text="230"/>
         </HBox>
         <HBox alignment="CENTER_LEFT" spacing="20">
-            <Label id="SubstitulosStyle" prefWidth="200.0" style="-fx-font-size: 18px;" text="Preguntas Erróneas:" />
-            <TextField id="textFieldSesion" fx:id="usuarioPreguntasErroneas" prefWidth="250.0" text="30" />
+            <Label id="SubstitulosStyle" prefWidth="200.0" style="-fx-font-size: 18px;" text="Preguntas Erróneas:"/>
+            <TextField id="textFieldSesion" fx:id="usuarioPreguntasErroneas" prefWidth="250.0" text="30"/>
         </HBox>
         <HBox alignment="CENTER_LEFT" spacing="20">
-            <Label id="SubstitulosStyle" prefWidth="200.0" style="-fx-font-size: 18px;" text="Categoría Favorita:" />
-            <TextField id="textFieldSesion" fx:id="usuarioCategoriaFavorita" prefWidth="250.0" text="Historia" />
+            <Label id="SubstitulosStyle" prefWidth="200.0" style="-fx-font-size: 18px;" text="Categoría Favorita:"/>
+            <TextField id="textFieldSesion" fx:id="usuarioCategoriaFavorita" prefWidth="250.0" text="Historia"/>
         </HBox>
         <HBox alignment="CENTER_LEFT" spacing="20">
-            <Label id="SubstitulosStyle" prefWidth="200.0" style="-fx-font-size: 18px;" text="Horas en juego:" />
-            <Label id="textFieldSesion" fx:id="lblTiempoJugado" prefWidth="250.0" text="10" />
+            <Label id="SubstitulosStyle" prefWidth="200.0" style="-fx-font-size: 18px;" text="Horas en juego:"/>
+            <Label id="textFieldSesion" fx:id="lblTiempoJugado" prefWidth="250.0" text="10"/>
         </HBox>
     </VBox>
 
+    <HBox alignment="CENTER" layoutX="44.0" layoutY="738.0" spacing="20">
+        <VBox alignment="CENTER">
+            <ImageView fx:id="premiohistoria" fitHeight="200.0" fitWidth="200.0"/>
+            <Label text="Historia" style="-fx-text-fill: #4c5b3d; -fx-font-size: 18px; -fx-font-weight: bold;"/>
+            <HBox.margin>
+                <Insets top="0" right="20" bottom="0" left="20"/>
+            </HBox.margin>
+        </VBox>
+        <VBox alignment="CENTER">
+            <ImageView fx:id="premiobiologia" fitHeight="200.0" fitWidth="200.0"/>
+            <Label text="Biología" style="-fx-text-fill: #4c5b3d; -fx-font-size: 18px; -fx-font-weight: bold;"/>
+            <HBox.margin>
+                <Insets top="0" right="20" bottom="0" left="20"/>
+            </HBox.margin>
+        </VBox>
+        <VBox alignment="CENTER">
+            <ImageView fx:id="premiofilosofia" fitHeight="200.0" fitWidth="200.0"/>
+            <Label text="Filosofía" style="-fx-text-fill: #4c5b3d; -fx-font-size: 18px; -fx-font-weight: bold;"/>
+            <HBox.margin>
+                <Insets top="0" right="20" bottom="0" left="20"/>
+            </HBox.margin>
+        </VBox>
+        <VBox alignment="CENTER">
+            <ImageView fx:id="premioliteratura" fitHeight="200.0" fitWidth="200.0"/>
+            <Label text="Literatura" style="-fx-text-fill: #4c5b3d; -fx-font-size: 18px; -fx-font-weight: bold;"/>
+            <HBox.margin>
+                <Insets top="0" right="20" bottom="0" left="20"/>
+            </HBox.margin>
+        </VBox>
+    </HBox>
 
-    <Button id="botonPersonalizado" fx:id="btnEditar" layoutX="622.0" layoutY="740.0" onAction="#entrarModoEdicion" prefHeight="80.0" prefWidth="193.0" text="Editar" visible="true" />
-    <Button id="botonPersonalizado" fx:id="btnGuardar" layoutX="622.0" layoutY="740.0" onAction="#guardarCambios" prefHeight="80.0" prefWidth="193.0" text="Guardar" visible="false" />
 
-    <AnchorPane fx:id="contenedorImagenes" layoutX="21.0" layoutY="550.0" prefHeight="400" prefWidth="600" visible="false" />
 
-    <Button id="botonPersonalizado" fx:id="btnIconosPerfil" layoutX="88.0" layoutY="740.0" onAction="#visualizarImagen" prefHeight="80.0" prefWidth="264.0" text="Cambiar Foto Perfil" visible="false" />
+    <Button id="botonPersonalizado" fx:id="btnEditar" layoutX="719.0" layoutY="588.0" onAction="#entrarModoEdicion"
+            prefHeight="80.0" prefWidth="193.0" text="Editar" visible="true"/>
+    <Button id="botonPersonalizado" fx:id="btnGuardar" layoutX="622.0" layoutY="740.0" onAction="#guardarCambios"
+            prefHeight="80.0" prefWidth="193.0" text="Guardar" visible="false"/>
+
+    <AnchorPane fx:id="contenedorImagenes" layoutX="21.0" layoutY="550.0" prefHeight="400" prefWidth="600"
+                visible="false"/>
+
+    <Button id="botonPersonalizado" fx:id="btnIconosPerfil" layoutX="88.0" layoutY="740.0" onAction="#visualizarImagen"
+            prefHeight="80.0" prefWidth="264.0" text="Cambiar Foto Perfil" visible="false"/>
 
 
 </AnchorPane>
