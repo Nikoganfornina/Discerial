@@ -26,6 +26,9 @@ import java.io.IOException;
 import java.util.List;
 
 import static org.example.discerial.Controladores.Preguntas.PreguntasBiologia.crearPreguntasBiologia;
+import static org.example.discerial.Controladores.Preguntas.PreguntasFilosofia.crearPreguntasFilosofia;
+import static org.example.discerial.Controladores.Preguntas.PreguntasHistoria.crearPreguntasHistoria;
+import static org.example.discerial.Controladores.Preguntas.PreguntasLiteratura.crearPreguntasLiteratura;
 
 
 public class MainApp extends Application {
@@ -40,7 +43,9 @@ public class MainApp extends Application {
         seedCategorias();
 
         crearPreguntasBiologia();
-
+        crearPreguntasFilosofia();
+        crearPreguntasHistoria();
+        crearPreguntasLiteratura();
 
 
         primaryStage = stage;

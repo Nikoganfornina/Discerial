@@ -130,7 +130,7 @@ public class PreguntasHistoria {
             if (preguntaDao.findById(idPregunta).isEmpty()) {
                 Pregunta q = new Pregunta();
                 q.setId(idPregunta); // Asignamos el ID manual
-                q.setCategoria(new Categoria(categoriaId, "Historia"));
+                q.setCategoria(new Categoria(categoriaId, "Filosofía"));
                 q.setPregunta((String) d[1]);
                 q.setRespuesta2((String) d[2]);
                 q.setRespuesta3((String) d[3]);

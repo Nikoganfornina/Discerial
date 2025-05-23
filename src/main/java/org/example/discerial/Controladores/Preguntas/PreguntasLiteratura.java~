@@ -97,27 +97,6 @@ public class PreguntasLiteratura {
                 {378, "¿Qué poeta simbolista francés escribió 'El pájaro azul'?", "Paul Verlaine", "Stéphane Mallarmé", "Arthur Rimbaud", "Maurice Maeterlinck", "multiple"},
                 {379, "¿Quién escribió 'La divina comedia'?", "Dante Alighieri", "Petrarca", "Giovanni Boccaccio", "Dante Alighieri", "multiple"},
                 {380, "¿Qué poeta peruano es autor de 'Los heraldos negros'?", "César Vallejo", "Jorge Eduardo Eielson", "José María Arguedas", "César Vallejo", "multiple"},
-                {381, "¿Quién escribió 'Pedro Páramo'?", "Gabriel García Márquez", "Julio Cortázar", "Juan Rulfo", "Juan Rulfo", "multiple"},
-                {382, "¿Qué poeta francés es conocido por 'Las flores del mal'?", "Arthur Rimbaud", "Paul Verlaine", "Charles Baudelaire", "Charles Baudelaire", "multiple"},
-                {383, "¿Quién escribió 'El Principito'?", "Jules Verne", "Victor Hugo", "Antoine de Saint-Exupéry", "Antoine de Saint-Exupéry", "multiple"},
-                {384, "¿Qué autor escribió 'Crimen y castigo'?", "León Tolstói", "Nikolái Gógol", "Fiódor Dostoyevski", "Fiódor Dostoyevski", "multiple"},
-                {385, "¿Cuál es el autor de la novela 'Moby Dick'?", "Nathaniel Hawthorne", "Edgar Allan Poe", "Herman Melville", "Herman Melville", "multiple"},
-                {386, "¿Quién escribió 'La metamorfosis'?", "Thomas Mann", "Rainer Maria Rilke", "Franz Kafka", "Franz Kafka", "multiple"},
-                {387, "¿Qué poeta chileno escribió 'Veinte poemas de amor y una canción desesperada'?", "Gabriela Mistral", "Nicanor Parra", "Pablo Neruda", "Pablo Neruda", "multiple"},
-                {388, "¿Quién es el autor de 'Ulises'?", "William Faulkner", "T. S. Eliot", "James Joyce", "James Joyce", "multiple"},
-                {389, "¿Cuál es el nombre del poema épico griego atribuido a Homero?", "La Odisea", "Los Trabajos y los Días", "La Ilíada", "La Ilíada", "multiple"},
-                {390, "¿Quién escribió la tragedia 'Edipo Rey'?", "Eurípides", "Esquilo", "Sófocles", "Sófocles", "multiple"},
-                {391, "¿Qué escritor británico es autor de 'Orgullo y prejuicio'?", "Charlotte Brontë", "Emily Brontë", "Jane Austen", "Jane Austen", "multiple"},
-                {392, "¿Quién escribió 'En busca del tiempo perdido'?", "Albert Camus", "Jean-Paul Sartre", "Marcel Proust", "Marcel Proust", "multiple"},
-                {393, "¿Cuál es el nombre del poeta inglés famoso por 'Paradise Lost'?", "William Blake", "John Keats", "John Milton", "John Milton", "multiple"},
-                {394, "¿Qué poeta italiano escribió 'La Divina Comedia'?", "Giovanni Boccaccio", "Petrarca", "Dante Alighieri", "Dante Alighieri", "multiple"},
-                {395, "¿Quién es el autor de 'Las mil y una noches'?", "Omar Khayyam", "Rumi", "Autores anónimos", "Autores anónimos", "multiple"},
-                {396, "¿Quién escribió 'Madame Bovary'?", "Émile Zola", "Honoré de Balzac", "Gustave Flaubert", "Gustave Flaubert", "multiple"},
-                {397, "¿Qué autor ruso escribió 'Anna Karénina'?", "Fiódor Dostoyevski", "Anton Chéjov", "León Tolstói", "León Tolstói", "multiple"},
-                {398, "¿Quién escribió 'El retrato de Dorian Gray'?", "George Bernard Shaw", "H. G. Wells", "Oscar Wilde", "Oscar Wilde", "multiple"},
-                {399, "¿Cuál es el autor de 'El conde de Montecristo'?", "Victor Hugo", "Honoré de Balzac", "Alejandro Dumas", "Alejandro Dumas", "multiple"},
-                {400, "¿Quién escribió 'Hamlet'?", "Christopher Marlowe", "Ben Jonson", "William Shakespeare", "William Shakespeare", "multiple"}
-
 
 
 
