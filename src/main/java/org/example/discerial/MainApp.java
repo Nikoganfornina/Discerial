@@ -115,30 +115,30 @@ public class MainApp extends Application {
     }
 
     private void mostrarConfirmacionCierre() {
+
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmar cierre");
         alert.setHeaderText("¿Seguro que quieres cerrar la aplicación?");
-        alert.setContentText("Se cerrará la sesión automáticamente.");
+        alert.setContentText("Se cerrarán todas las conexiones activas.");
 
         alert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 try {
-                    // 1. Detener el timer y forzar guardado
                     SessionTimer.getInstance().stop();
 
-                    // 2. Esperar 100ms para asegurar flush de Hibernate
-                    Thread.sleep(100);
-
-                    // 3. Cierre seguro de recursos
+                    // Cerrar conexiones de Hibernate primero
                     HibernateUtil.shutdown();
+
+                    // Detener música
                     musicManager.stopAll();
 
-                    // 4. Salir de la aplicación
+                    // Destruir componentes de JavaFX
                     Platform.exit();
+
+                    // Forzar cierre de JVM
                     System.exit(0);
 
                 } catch (Exception e) {
-                    e.printStackTrace();
                     new Alert(Alert.AlertType.ERROR,
                             "Error crítico al cerrar: " + e.getMessage()).show();
                 }
@@ -164,6 +164,7 @@ public class MainApp extends Application {
         alert.showAndWait();
         Platform.exit();
     }
+
 
     public static void main(String[] args) {
         launch(args);
