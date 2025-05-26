@@ -12,6 +12,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.example.discerial.DAO.IPreguntaImpl;
+import org.example.discerial.entities.Pregunta;
+
+import java.util.List;
 
 public class LoadingPanelController {
 
@@ -28,6 +32,7 @@ public class LoadingPanelController {
         mostrarCuriosidadAleatoria();
         startLoadingProgress();
     }
+
 
     private void mostrarImagenAleatoria() {
         int index = (int) (Math.random() * 22) + 1; // 1 a 22
@@ -243,13 +248,19 @@ public class LoadingPanelController {
             Parent root = loader.load();
 
             VistaPreguntaController controller = loader.getController();
-            controller.initData(categoria_id);
+
+            if (categoria_id == 5) { // Mixta
+                IPreguntaImpl preguntaDAO = new IPreguntaImpl();
+                List<Pregunta> preguntas = preguntaDAO.findPreguntasMixta();
+                controller.initData(categoria_id);
+            } else {
+                controller.initData(categoria_id);
+            }
 
             Stage stage = (Stage) progressBar.getScene().getWindow();
             stage.getScene().setRoot(root);
-            stage.setTitle("Categoría " + categoria_id);
+
         } catch (Exception e) {
-            System.err.println("Error al cargar VistaGameController:");
             e.printStackTrace();
         }
     }

@@ -361,4 +361,8 @@ public class VistaPreguntaController {
     public void handleVolver(ActionEvent actionEvent) {
         // Lógica para volver si es necesaria
     }
+
+
+
+
 }

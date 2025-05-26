@@ -46,6 +46,7 @@ public class MainApp extends Application {
         crearPreguntasFilosofia();
         crearPreguntasHistoria();
         crearPreguntasLiteratura();
+        SessionManager.ajustarAutoIncrementPreguntas();
 
 
         primaryStage = stage;
@@ -60,6 +61,8 @@ public class MainApp extends Application {
         });
 
         mostrarSplashScreen();
+
+
 
     }
 

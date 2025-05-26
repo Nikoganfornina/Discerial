@@ -48,4 +48,9 @@ public interface IPregunta {
      * @return La pregunta eliminada o null si no se encontró.
      */
     Pregunta deleteById(int id);
+
+
+    List<Pregunta> findPreguntasMixta();
+
+    int getTotalPreguntasCategoria(String nombreCategoria);
 }

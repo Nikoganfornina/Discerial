@@ -152,7 +152,7 @@ public class CrudPreguntasController {
         String resp2 = respuesta2Field.getText();
         String resp3 = respuesta3Field.getText();
         String resp4 = respuesta4Field.getText();
-        String imagen = imagenField.getText();
+
 
         // Validación mínima de campos obligatorios
         if (categoria == null || tipo == null || preguntaText.isEmpty() || respCorrecta.isEmpty()) {
