@@ -254,14 +254,16 @@ public class TabulaController {
 
     @FXML
     private void FxmlAuxilium() throws IOException {
-
         MusicManager.getInstance().playRandomSoundEffect();
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Vista no disponible");
-        alert.setHeaderText(null);
-        alert.setContentText("Mantengase a la espera, estamos trabajando en la implementaci n de esta secci n.");
-        alert.showAndWait();
-        //switchScene("/org/example/discerial/Auxilium_view.fxml");
+        try {
+            MusicManager.getInstance().playRandomSoundEffect();
+
+            Parent pnl = FXMLLoader
+                    .load(getClass().getResource("/org/example/discerial/Panels/Auxilium_View.fxml"));
+            contenedorFXML.getChildren().setAll(pnl);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
