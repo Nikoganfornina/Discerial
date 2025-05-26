@@ -146,16 +146,18 @@ public class VistaPreguntaController {
         List<Pregunta> preguntasCategoria = new IPreguntaImpl().findNoRespondidasPorCategoria(categoria_id, usuarioActual.getId());
 
         if (preguntasCategoria.isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Test terminado");
-            alert.setHeaderText("¡Ya has respondido a todas las preguntas!");
-            alert.setContentText("Has completado todas las preguntas de esta categoría. Puedes probar otra.");
-            alert.showAndWait().ifPresent(response -> {
-                try {
-                    switchScene("/org/example/discerial/VistaCategorias.fxml");
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            Platform.runLater(() -> {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Test terminado");
+                alert.setHeaderText("¡Ya has respondido a todas las preguntas!");
+                alert.setContentText("Has completado todas las preguntas de esta categoría. Puedes probar otra.");
+                alert.showAndWait().ifPresent(response -> {
+                    try {
+                        switchScene("/org/example/discerial/VistaCategorias.fxml");
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
             });
             return;
         }
