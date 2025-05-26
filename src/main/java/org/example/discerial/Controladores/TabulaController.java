@@ -85,17 +85,26 @@ public class TabulaController {
             stats.putIfAbsent(cat.getNombre(), new int[]{0, 0});
         }
 
-        // 3) Configurar ejes con estilo
+        // 3) Calcular el valor máximo entre aciertos y fallos para ajustar el rango Y
+        int maxValor = 0;
+        for (int[] arr : stats.values()) {
+            maxValor = Math.max(maxValor, Math.max(arr[0], arr[1]));
+        }
+
+        // Redondear maxValor hacia arriba al siguiente múltiplo de 5
+        int maxEjeY = ((maxValor + 4) / 5) * 5;
+        if (maxEjeY == 0) maxEjeY = 5; // evitar rango 0 para que se vea el eje
+
+        // 4) Configurar ejes con estilo
         CategoryAxis xAxis = new CategoryAxis();
         xAxis.setTickLabelRotation(45);
         xAxis.setTickLabelFont(Font.font("Arial", FontWeight.BOLD, 16)); // Texto más grande
 
-        NumberAxis yAxis = new NumberAxis();
-        yAxis.setTickUnit(5);
+        NumberAxis yAxis = new NumberAxis(0, maxEjeY, 5);
         yAxis.setMinorTickVisible(false);
         yAxis.setTickLabelFont(Font.font("Arial", FontWeight.BOLD, 16)); // Texto más grande
 
-        // 4) Crear gráfico con fondo totalmente transparente
+        // 5) Crear gráfico con fondo totalmente transparente
         BarChart<String, Number> chart = new BarChart<>(xAxis, yAxis);
         chart.setLegendVisible(false);
         chart.setAnimated(true);
@@ -115,12 +124,11 @@ public class TabulaController {
         title.setPadding(new Insets(10, 0, 20, 0));
         title.setTextAlignment(TextAlignment.CENTER);
 
-        // 5) Configurar series
+        // 6) Configurar series
         XYChart.Series<String, Number> serieAciertos = new XYChart.Series<>();
-
         XYChart.Series<String, Number> serieFallos = new XYChart.Series<>();
 
-        // 6) Rellenar datos manteniendo orden
+        // 7) Rellenar datos manteniendo orden
         Map<String, int[]> ordered = new LinkedHashMap<>(stats);
         ordered.forEach((cat, arr) -> {
             serieAciertos.getData().add(new XYChart.Data<>(cat, arr[0]));
@@ -129,7 +137,7 @@ public class TabulaController {
 
         chart.getData().addAll(serieAciertos, serieFallos);
 
-        // 7) Usar PauseTransition para esperar renderizado antes de personalizar colores, redondear barras y leyenda
+        // 8) Usar PauseTransition para esperar renderizado antes de personalizar colores, redondear barras y leyenda
         PauseTransition pause = new PauseTransition(Duration.millis(250));
         pause.setOnFinished(event -> {
             String colorAciertos = "#2E8540";
@@ -160,22 +168,22 @@ public class TabulaController {
                 }
             }
 
-
             // Líneas guía visibles
             chart.setHorizontalGridLinesVisible(true);
             chart.setVerticalGridLinesVisible(true);
         });
         pause.play();
 
-        // 8) Responsividad
+        // 9) Responsividad
         chart.prefWidthProperty().bind(chartContainer.widthProperty());
         chart.prefHeightProperty().bind(chartContainer.heightProperty().subtract(20));
 
-        // 9) Añadir al contenedor con título separado
+        // 10) Añadir al contenedor con título separado
         VBox contenedor = new VBox(title, chart);
         contenedor.setSpacing(10);
         chartContainer.getChildren().setAll(contenedor);
     }
+
 
 
     private void configurarTooltip(XYChart.Data<String, Number> data, String tipo) {

@@ -19,6 +19,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 import org.example.discerial.DAO.*;
+import org.example.discerial.Util.HibernateUtil;
 import org.example.discerial.Util.MusicManager;
 import org.example.discerial.Util.SessionTimer;
 import org.example.discerial.entities.Categoria;
@@ -258,14 +259,13 @@ public class TabulaController {
 
 
     public void BotoncerrarSesion() throws IOException {
-        var dao = new IusuariosImpl();
+        IusuariosImpl dao = new IusuariosImpl();
         Usuarios u = dao.currentUser();
         MusicManager.getInstance().playRandomSoundEffect();
 
         if (u == null) {
             new Alert(Alert.AlertType.INFORMATION, "No hay ningún usuario conectado.")
                     .showAndWait();
-            MusicManager.getInstance().playRandomSoundEffect();
             switchScene("/org/example/discerial/MainApp_View.fxml");
             return;
         }
@@ -279,25 +279,27 @@ public class TabulaController {
                 new ButtonType("No", ButtonBar.ButtonData.CANCEL_CLOSE)
         );
 
-        Optional<ButtonType> res = conf.showAndWait();
-        if (res.orElse(ButtonType.CANCEL).getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-            try {
-                SessionTimer.getInstance().stop();
+        conf.showAndWait().ifPresent(response -> {
+            if (response.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
+                try {
+                    SessionTimer timer = SessionTimer.getInstance();
+                    timer.stop(); // Detiene el timer y guarda el tiempo
 
-                // Esperar 100ms para asegurar la sincronización
-                Thread.sleep(100);
+                    // Cerrar sesión en BD
+                    dao.cerrarSesionSoloSessionActive(u.getId());
 
-                dao.cerrarSesion(u.getId());
-                switchScene("/org/example/discerial/MainApp_View.fxml");
+                    // Forzar liberación de recursos
+                    HibernateUtil.shutdown();
 
-                // Verificación final
-                Usuarios usuarioActualizado = dao.findById(u.getId()).get(0);
-                System.out.println("Tiempo REAL en BD: " + usuarioActualizado.getHorasJugadas());
+                    switchScene("/org/example/discerial/MainApp_View.fxml");
 
-            } catch (Exception e) {
-                e.printStackTrace();
+                    // Verificación
+                    System.out.println("Timer detenido. Estado: " + timer.isRunning());
+
+                } catch (Exception e) {
+                    new Alert(Alert.AlertType.ERROR, "Error al cerrar sesión: " + e.getMessage()).show();
+                }
             }
-            System.out.println("Tiempo total jugado por el usuario " + u.getNombre() + ": " + SessionTimer.getInstance().getElapsedTime() + " ms");
-        }
+        });
     }
 }

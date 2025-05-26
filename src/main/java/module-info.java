@@ -8,6 +8,12 @@ module org.example.discerial {
     requires java.naming;
     requires javafx.media;
     requires javafx.graphics;
+    requires jakarta.transaction;
+    requires jakarta.cdi;
+    requires jakarta.inject;
+
+
+
 
     opens org.example.discerial to javafx.fxml;
     exports org.example.discerial;

@@ -13,7 +13,8 @@ public class PreguntasFilosofia {
         IPregunta preguntaDao = new IPreguntaImpl();
         int categoriaId = 3; // ID para Filosofia
 
-        // Lista de preguntas con ID manual (añadido un campo id en la posición 0)
+        // Lista de preguntas con ID manual (añadido un campo id en la posición 0)positivismo lógico
+
         Object[][] preguntas = {
 
                 {101, "¿Quién es considerado el padre de la filosofía occidental?", "Heráclito", "Sócrates", "Epicuro", "Tales de Mileto", "multiple"},
@@ -81,7 +82,7 @@ public class PreguntasFilosofia {
                 {163, "¿Qué corriente filosófica afirma que nada puede ser conocido con certeza?", "Hedonismo", "Racionalismo", "Empirismo", "Escepticismo", "multiple"},
                 {164, "¿Qué pensador medieval afirmó que 'comprender es creer'?", "Tomás de Aquino", "Boecio", "Ockham", "San Agustín", "multiple"},
                 {165, "¿Qué filósofo moderno escribió 'El Leviatán'?", "Kant", "Descartes", "Rousseau", "Hobbes", "multiple"},
-                {166, "¿Qué pensador estableció las bases del positivismo lógico?", "Kant", "Hume", "Comte", "Wittgenstein", "multiple"},
+                {166, "¿Qué pensador estableció las bases del positivismo lógico?", "Kant", "Hume", "Wittgenstein", "Comte", "multiple"},
                 {167, "¿Qué escuela filosófica sostiene que todo está determinado por causas previas?", "Existencialismo", "Escepticismo", "Hedonismo", "Determinismo", "multiple"},
                 {168, "¿Qué corriente sostiene que la realidad última es inmaterial?", "Empirismo", "Realismo", "Materialismo", "Idealismo", "multiple"},
                 {169, "¿Qué filósofo desarrolló la dialéctica hegeliana?", "Nietzsche", "Kant", "Marx", "Hegel", "multiple"},
