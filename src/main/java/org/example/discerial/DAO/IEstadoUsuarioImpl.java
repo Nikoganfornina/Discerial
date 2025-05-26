@@ -5,6 +5,7 @@ import org.example.discerial.entities.EstadoUsuario;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,6 +56,28 @@ public class IEstadoUsuarioImpl implements IEstadoUsuario {
             return session.createQuery(hql, Integer.class)
                     .setParameter("uid", userId)
                     .getResultList();
+        }
+    }
+
+    public Map<Integer, Long> contarFallosPorCategoria(int userId) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            String hql = "SELECT eu.pregunta.categoria.id, COUNT(eu) " +
+                    "FROM EstadoUsuario eu " +
+                    "WHERE eu.usuario.id = :uid AND eu.acertada = false " +
+                    "GROUP BY eu.pregunta.categoria.id";
+
+            List<Object[]> resultados = session.createQuery(hql, Object[].class)
+                    .setParameter("uid", userId)
+                    .getResultList();
+
+            Map<Integer, Long> fallosPorCategoria = new HashMap<>();
+            for (Object[] fila : resultados) {
+                Integer categoriaId = (Integer) fila[0];
+                Long cantidadFallos = (Long) fila[1];
+                fallosPorCategoria.put(categoriaId, cantidadFallos);
+            }
+
+            return fallosPorCategoria;
         }
     }
 
