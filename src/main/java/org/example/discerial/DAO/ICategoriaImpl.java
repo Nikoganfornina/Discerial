@@ -34,4 +34,14 @@ public class ICategoriaImpl implements ICategoria {
             return session.createQuery("FROM Categoria", Categoria.class).list();
         }
     }
+
+    @Override
+    public Categoria findById(int id) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery(
+                            "FROM Categoria WHERE id = :id", Categoria.class)
+                    .setParameter("id", id)
+                    .uniqueResult();
+        }
+    }
 }

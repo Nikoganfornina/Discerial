@@ -41,6 +41,8 @@ public class TabulaController {
     private final IusuariosImpl usuarioDao = new IusuariosImpl();
     private final IPreguntaImpl preguntaDao = new IPreguntaImpl(); // DAO de preguntas
 
+    @FXML
+    private VBox vboxFallos;
     // Este VBox debe estar declarado en tu FXML dentro de contenedorFXML
     @FXML
     private VBox chartContainer;
@@ -49,8 +51,61 @@ public class TabulaController {
     public void initialize() {
         mostrarNombreUsuario();
         cargarGraficaAvance();
+        //cargarBotonesFallos();
 
     }
+
+   /* public void cargarBotonesFallos() {
+        Usuarios user = usuarioDao.currentUser();
+        if (user == null) {
+            System.out.println("Usuario no encontrado.");
+            return;
+        }
+
+        int userId = user.getId();
+        IEstadoUsuarioImpl estadoUsuarioDAO = new IEstadoUsuarioImpl();
+        ICategoriaImpl categoriaDAO = new ICategoriaImpl();
+
+        Map<Integer, Long> fallosPorCategoria = estadoUsuarioDAO.contarFallosPorCategoria(userId);
+
+        // Limpia el VBox antes de añadir nuevos botones (por si se llama varias veces)
+        vboxFallos.getChildren().clear();
+
+        if (fallosPorCategoria == null || fallosPorCategoria.isEmpty()) {
+            Label label = new Label("¡No hay fallos registrados!");
+            label.setStyle("-fx-text-fill: #2E8540; -fx-font-weight: bold;");
+            vboxFallos.getChildren().add(label);
+            return;
+        }
+
+        for (Map.Entry<Integer, Long> entrada : fallosPorCategoria.entrySet()) {
+            int categoriaId = entrada.getKey();
+            long cantidadFallos = entrada.getValue();
+
+            // Obtener nombre de la categoría
+            Categoria categoria = categoriaDAO.findById(categoriaId);
+            String nombreCategoria = (categoria != null) ? categoria.getNombre() : "Categoría desconocida";
+
+            // Crear botón
+            Button botonCategoria = new Button(nombreCategoria + " (" + cantidadFallos + " fallos)");
+            botonCategoria.setOnAction(e -> abrirPreguntasFalladasPorCategoria(categoriaId));
+
+            // Estilo opcional
+            botonCategoria.setStyle("""
+            -fx-background-color: #ff6b6b;
+            -fx-text-fill: white;
+            -fx-font-size: 14;
+            -fx-padding: 10 20 10 20;
+            -fx-background-radius: 8;
+        """);
+
+
+
+            // Agregar al VBox
+            vboxFallos.getChildren().add(botonCategoria);
+        }
+    }*/
+
 
     private void mostrarNombreUsuario() {
         Usuarios user = usuarioDao.currentUser();
