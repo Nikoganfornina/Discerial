@@ -30,7 +30,7 @@ public class LoadingPanelController {
     }
 
     private void mostrarImagenAleatoria() {
-        int index = (int) (Math.random() * 22) + 1; // 1 a 22
+        int index = (int) (Math.random() * 35) + 1; // 1 a 22
         String ruta = "/Images/LoadingGame/loadingimage" + index + ".jpg";
 
         try {
