@@ -6,7 +6,9 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Implementación de la interfaz IPregunta para gestionar operaciones CRUD en la entidad Pregunta.
@@ -44,19 +46,27 @@ public class IPreguntaImpl implements IPregunta {
 
     public List<Pregunta> findNoRespondidasPorCategoria(int categoriaId, int userId) {
         IEstadoUsuarioImpl estadoUsuarioDAO = new IEstadoUsuarioImpl();
-        List<Integer> idsRespondidas = estadoUsuarioDAO.getIdsPreguntasRespondidas(userId);
+
+        // Obtener IDs de preguntas no respondidas
+        List<Integer> idsNoRespondidas = estadoUsuarioDAO.getIdsPreguntasNoRespondidas(userId);
+
+        // Obtener IDs de preguntas respondidas de forma errónea
+        List<Integer> idsErroneas = estadoUsuarioDAO.getIdsPreguntasRespondidasErroneamente(userId);
+
+        // Unir ambas listas, evitando duplicados
+        Set<Integer> idsAConsiderar = new HashSet<>();
+        idsAConsiderar.addAll(idsNoRespondidas);
+        idsAConsiderar.addAll(idsErroneas);
+
+        if (idsAConsiderar.isEmpty()) {
+            return List.of(); // No hay preguntas que cumplirían la condición
+        }
 
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            String hql = "FROM Pregunta p WHERE p.categoria.id = :categoriaId";
-            if (!idsRespondidas.isEmpty()) {
-                hql += " AND p.id NOT IN (:ids)";
-            }
-
-            var query = session.createQuery(hql, Pregunta.class);
+            String hql = "FROM Pregunta p WHERE p.categoria.id = :categoriaId AND p.id IN (:ids)";
+            Query<Pregunta> query = session.createQuery(hql, Pregunta.class);
             query.setParameter("categoriaId", categoriaId);
-            if (!idsRespondidas.isEmpty()) {
-                query.setParameter("ids", idsRespondidas);
-            }
+            query.setParameter("ids", idsAConsiderar);
 
             return query.getResultList();
         }
