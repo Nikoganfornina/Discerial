@@ -34,6 +34,7 @@
             <artifactId>HikariCP</artifactId>
             <version>5.1.0</version>
         </dependency>
+
         <!-- JUnit -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -75,6 +76,12 @@
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
             <version>7.0.2.Final</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>jakarta.enterprise</groupId>
+                    <artifactId>jakarta.cdi-api</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- Jakarta Validation API -->
@@ -84,11 +91,19 @@
             <version>3.0.2</version>
         </dependency>
 
+        <!-- Jakarta CDI API para resolver el error de módulo -->
+        <!-- https://mvnrepository.com/artifact/jakarta.enterprise/jakarta.enterprise.cdi-api -->
+        <dependency>
+            <groupId>jakarta.enterprise</groupId>
+            <artifactId>jakarta.enterprise.cdi-api</artifactId>
+            <version>4.1.0</version>
+        </dependency>
+
         <!-- Versión alineada con las demás dependencias de JavaFX -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-media</artifactId>
-            <version>${javafx.version}</version> <!-- Usa la misma variable -->
+            <version>${javafx.version}</version>
         </dependency>
 
         <!-- Mockito -->

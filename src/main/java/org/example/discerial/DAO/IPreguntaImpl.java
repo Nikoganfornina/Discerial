@@ -42,6 +42,27 @@ public class IPreguntaImpl implements IPregunta {
         return preguntaList;
     }
 
+    public List<Pregunta> findNoRespondidasPorCategoria(int categoriaId, int userId) {
+        IEstadoUsuarioImpl estadoUsuarioDAO = new IEstadoUsuarioImpl();
+        List<Integer> idsRespondidas = estadoUsuarioDAO.getIdsPreguntasRespondidas(userId);
+
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            String hql = "FROM Pregunta p WHERE p.categoria.id = :categoriaId";
+            if (!idsRespondidas.isEmpty()) {
+                hql += " AND p.id NOT IN (:ids)";
+            }
+
+            var query = session.createQuery(hql, Pregunta.class);
+            query.setParameter("categoriaId", categoriaId);
+            if (!idsRespondidas.isEmpty()) {
+                query.setParameter("ids", idsRespondidas);
+            }
+
+            return query.getResultList();
+        }
+    }
+
+
     /**
      * Busca preguntas por el ID de la categoría.
      * @param categoriaId Identificador de la categoría.

@@ -61,7 +61,7 @@ public class HomoPanelController {
         configurarVisibilidadInicial();
         mostrarCategoriaFavorita();  // Actualiza el campo aquí
         iniciarActualizacionTiempo(); // Nueva línea
-        cargarImagenesPremios();
+        actualizarPremios();
     }
 
     private void mostrarCategoriaFavorita() {
@@ -280,12 +280,37 @@ public class HomoPanelController {
             e.printStackTrace();
         }
     }
-private void cargarImagenesPremios() {
-    cargarImagen(premiohistoria, "/Images/Premios/Historia/hnegro.png");
-    cargarImagen(premiobiologia, "/Images/Premios/Biologia/bcobre.png");
-    cargarImagen(premiofilosofia, "/Images/Premios/Filosofia/fplata.png");
-    cargarImagen(premioliteratura, "/Images/Premios/Literatura/loro.png");
-}
+
+    private void actualizarPremios() {
+        if (usuarioActual == null) return;
+
+        Long usuarioIdLong = Long.valueOf(usuarioActual.getId());
+
+        int acertadasHistoria = estadoUsuarioDao.getPreguntasAcertadasPorCategoria(usuarioIdLong, "Historia");
+        int acertadasBiologia = estadoUsuarioDao.getPreguntasAcertadasPorCategoria(usuarioIdLong, "Biologia");
+        int acertadasFilosofia = estadoUsuarioDao.getPreguntasAcertadasPorCategoria(usuarioIdLong, "Filosofia");
+        int acertadasLiteratura = estadoUsuarioDao.getPreguntasAcertadasPorCategoria(usuarioIdLong, "Literatura");
+
+        cargarImagen(premiohistoria, getRutaPremio("Historia", acertadasHistoria));
+        cargarImagen(premiobiologia, getRutaPremio("Biologia", acertadasBiologia));
+        cargarImagen(premiofilosofia, getRutaPremio("Filosofia", acertadasFilosofia));
+        cargarImagen(premioliteratura, getRutaPremio("Literatura", acertadasLiteratura));
+    }
+
+
+    private String getRutaPremio(String categoria, int aciertos) {
+        String letra = categoria.substring(0,1).toLowerCase(); // ej. "h" para historia
+        if (aciertos >= 100) {
+            return "/Images/Premios/" + categoria + "/" + letra + "oro.png";
+        } else if (aciertos >= 50) {
+            return "/Images/Premios/" + categoria + "/" + letra + "plata.png";
+        } else if (aciertos >= 20) {
+            return "/Images/Premios/" + categoria + "/" + letra + "cobre.png";
+        } else {
+            return "/Images/Premios/" + categoria + "/" + letra + "negro.png";
+        }
+    }
+
 private void cargarImagen(ImageView imageView, String ruta) {
     try {
         InputStream inputStream = getClass().getResourceAsStream(ruta);
