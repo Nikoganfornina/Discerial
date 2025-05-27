@@ -13,7 +13,9 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.example.discerial.DAO.IPreguntaImpl;
+import org.example.discerial.DAO.IusuariosImpl;
 import org.example.discerial.entities.Pregunta;
+import org.example.discerial.entities.Usuarios;
 
 import java.util.List;
 
@@ -251,10 +253,11 @@ public class LoadingPanelController {
 
             if (categoria_id == 5) { // Mixta
                 IPreguntaImpl preguntaDAO = new IPreguntaImpl();
-                List<Pregunta> preguntas = preguntaDAO.findPreguntasMixta();
-                controller.initData(categoria_id);
+                Usuarios usuario = new IusuariosImpl().currentUser();
+                List<Pregunta> preguntas = preguntaDAO.findPreguntasMixta(usuario.getId());
+                controller.initData(preguntas); // Llama al nuevo método
             } else {
-                controller.initData(categoria_id);
+                controller.initData(categoria_id); // Método original
             }
 
             Stage stage = (Stage) progressBar.getScene().getWindow();

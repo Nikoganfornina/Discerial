@@ -50,7 +50,9 @@ public interface IPregunta {
     Pregunta deleteById(int id);
 
 
-    List<Pregunta> findPreguntasMixta();
+
+
+    List<Pregunta> findPreguntasMixta(int userId);
 
     int getTotalPreguntasCategoria(String nombreCategoria);
 }

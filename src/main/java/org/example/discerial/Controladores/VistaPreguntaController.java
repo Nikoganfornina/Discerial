@@ -24,6 +24,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.example.discerial.DAO.IEstadoUsuarioImpl;
+import org.example.discerial.DAO.IPregunta;
 import org.example.discerial.DAO.IPreguntaImpl;
 import org.example.discerial.DAO.IusuariosImpl;
 import org.example.discerial.Util.MusicManager;
@@ -57,6 +58,8 @@ public class VistaPreguntaController {
     private Button btnAnterior, btnSiguiente;
     @FXML
     private Label lblCountTest;
+
+
 
 
     private List<Pregunta> listaPreguntas;
@@ -143,7 +146,10 @@ public class VistaPreguntaController {
     }
 
     public void initData(int categoria_id) {
+        IPreguntaImpl preguntaDAO = new IPreguntaImpl();
+
         List<Pregunta> preguntasCategoria = new IPreguntaImpl().findNoRespondidasPorCategoria(categoria_id, usuarioActual.getId());
+
 
         if (preguntasCategoria.isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -164,6 +170,41 @@ public class VistaPreguntaController {
         listaPreguntas = preguntasCategoria.size() > 10 ? preguntasCategoria.subList(0, 10) : new ArrayList<>(preguntasCategoria);
         indiceActual = 0;
         mostrarPregunta();
+    }
+
+    // Para categoría mixta (5)
+    public void initData(List<Pregunta> preguntasMixtas) {
+        listaPreguntas = preguntasMixtas;
+        manejarListaPreguntas();
+    }
+
+    private void manejarListaPreguntas() {
+        if (listaPreguntas.isEmpty()) {
+            mostrarAlertaCategoriaCompletada();
+            return;
+        }
+
+        Collections.shuffle(listaPreguntas);
+        if (listaPreguntas.size() > 10) {
+            listaPreguntas = listaPreguntas.subList(0, 10);
+        }
+
+        indiceActual = 0;
+        mostrarPregunta();
+    }
+
+    private void mostrarAlertaCategoriaCompletada() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Test terminado");
+        alert.setHeaderText("¡Ya has respondido a todas las preguntas!");
+        alert.setContentText("Has completado todas las preguntas de esta categoría. Puedes probar otra.");
+        alert.showAndWait().ifPresent(response -> {
+            try {
+                switchScene("/org/example/discerial/VistaCategorias.fxml");
+            } catch (IOException e) {
+                throw new RuntimeException("Error al cambiar de escena", e);
+            }
+        });
     }
 
 
