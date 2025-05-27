@@ -268,7 +268,7 @@ public class LoadingPanelController {
 
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        } //si
     }
 
     private void openGameModoFallos() {
