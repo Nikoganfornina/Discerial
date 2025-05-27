@@ -52,6 +52,18 @@ CREATE DATABASE IF NOT EXISTS discerial;
 USE discerial;
 SHOW VARIABLES LIKE 'max_connections';
 SET GLOBAL max_connections = 2500;
+```
 
+## ⚙️ **Configurar conexión a la base de datos (Hibernate)**
+
+- Antes de iniciar el proyecto, asegúrate de que el puerto de conexión a MySQL sea el correcto.
+- Por defecto, se ha configurado el puerto **3307**. Si estás usando otro puerto (como el clásico **3306**), **debes modificar estas líneas en el archivo** `hibernate.cfg.xml`:
+
+```xml
+<property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+<property name="hibernate.connection.url">jdbc:mysql://localhost:3307/discerial?useSSL=false&amp;serverTimezone=UTC&amp;allowPublicKeyRetrieval=true</property>
+<property name="hibernate.connection.username">root</property>
+<property name="hibernate.connection.password">root</property>
+```
 
 
