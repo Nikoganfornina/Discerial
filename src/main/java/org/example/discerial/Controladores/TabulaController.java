@@ -2,6 +2,7 @@ package org.example.discerial.Controladores;
 
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -61,9 +62,14 @@ public class TabulaController {
     }
 
 
-
     private void cargarBotonesFallos() {
-        vboxFallos.getChildren().clear();
+
+        ObservableList<Node> children = vboxFallos.getChildren();
+
+// Eliminar todos los nodos excepto el primero (que es el Label)
+        for (int i = children.size() - 1; i > 0; i--) {
+            children.remove(i);
+        }
 
         int userId = usuarioDao.currentUser().getId();
         Map<Integer, Long> fallosPorCategoria = preguntaDao.getFallosPorCategoria(userId); // categoríaId -> número fallos
@@ -77,15 +83,16 @@ public class TabulaController {
             if (categoria != null && numFallos > 0) {
                 Button button = new Button(categoria.getNombre() + " (" + numFallos + ")");
 
-                // Estilo verde #4c5b3d y bordes redondeados
-                button.setStyle(
-                        "-fx-background-color: #4c5b3d; " +
-                                "-fx-text-fill: white; " +
-                                "-fx-background-radius: 15; " +
-                                "-fx-font-weight: bold; " +
-                                "-fx-padding: 10 20 10 20;"
-                );
+                button.setMaxWidth(Double.MAX_VALUE); // que ocupe todo el ancho disponible
 
+                button.setStyle(
+                        "-fx-background-color: #4c5b3d; " +    // fondo verde oscuro
+                                "-fx-text-fill: white; " +              // texto blanco
+                                "-fx-background-radius: 15; " +        // bordes redondeados
+                                "-fx-padding: 10 20 10 20; " +          // padding arriba/derecha/abajo/izquierda
+                                "-fx-font-weight: bold; " +             // texto en negrita
+                                "-fx-alignment: CENTER_LEFT; "          // texto alineado a la izquierda (centrado vertical)
+                );
                 button.setOnAction(e -> {
                     List<Pregunta> preguntasErroneas = estadoDao.obtenerPreguntasErroneasPorCategoria(userId, categoriaId);
                     if (preguntasErroneas != null && !preguntasErroneas.isEmpty()) {
@@ -201,11 +208,8 @@ public class TabulaController {
             for (XYChart.Data<String, Number> data : serieAciertos.getData()) {
                 Node node = data.getNode();
                 if (node != null) {
-                    node.setStyle(
-                            "-fx-bar-fill: " + colorAciertos + ";" +
-                                    "-fx-background-radius: 10 10 0 0;" +  // redondeo arriba solo
-                                    "-fx-border-radius: 10 10 0 0;"
-                    );
+                    node.setStyle("-fx-bar-fill: " + colorAciertos + ";" + "-fx-background-radius: 10 10 0 0;" +  // redondeo arriba solo
+                            "-fx-border-radius: 10 10 0 0;");
                     configurarTooltip(data, "Aciertos");
                 }
             }
@@ -213,11 +217,7 @@ public class TabulaController {
             for (XYChart.Data<String, Number> data : serieFallos.getData()) {
                 Node node = data.getNode();
                 if (node != null) {
-                    node.setStyle(
-                            "-fx-bar-fill: " + colorFallos + ";" +
-                                    "-fx-background-radius: 10 10 0 0;" +
-                                    "-fx-border-radius: 10 10 0 0;"
-                    );
+                    node.setStyle("-fx-bar-fill: " + colorFallos + ";" + "-fx-background-radius: 10 10 0 0;" + "-fx-border-radius: 10 10 0 0;");
                     configurarTooltip(data, "Fallos");
                 }
             }
@@ -239,14 +239,8 @@ public class TabulaController {
     }
 
 
-
     private void configurarTooltip(XYChart.Data<String, Number> data, String tipo) {
-        Tooltip tooltip = new Tooltip(
-                String.format("%s\n%s: %d",
-                        data.getXValue(),
-                        tipo,
-                        data.getYValue().intValue())
-        );
+        Tooltip tooltip = new Tooltip(String.format("%s\n%s: %d", data.getXValue(), tipo, data.getYValue().intValue()));
         tooltip.setStyle("-fx-font-size: 14; -fx-font-weight: bold;");
         Tooltip.install(data.getNode(), tooltip);
     }
@@ -269,8 +263,7 @@ public class TabulaController {
         try {
             MusicManager.getInstance().playRandomSoundEffect();
 
-            Parent pnl = FXMLLoader
-                    .load(getClass().getResource("/org/example/discerial/Panels/HomoPanel_view.fxml"));
+            Parent pnl = FXMLLoader.load(getClass().getResource("/org/example/discerial/Panels/HomoPanel_view.fxml"));
             contenedorFXML.getChildren().setAll(pnl);
         } catch (IOException e) {
             e.printStackTrace();
@@ -313,14 +306,12 @@ public class TabulaController {
         try {
             MusicManager.getInstance().playRandomSoundEffect();
 
-            Parent pnl = FXMLLoader
-                    .load(getClass().getResource("/org/example/discerial/Panels/Auxilium_View.fxml"));
+            Parent pnl = FXMLLoader.load(getClass().getResource("/org/example/discerial/Panels/Auxilium_View.fxml"));
             contenedorFXML.getChildren().setAll(pnl);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
 
 
     public void BotoncerrarSesion() throws IOException {
@@ -329,8 +320,7 @@ public class TabulaController {
         MusicManager.getInstance().playRandomSoundEffect();
 
         if (u == null) {
-            new Alert(Alert.AlertType.INFORMATION, "No hay ningún usuario conectado.")
-                    .showAndWait();
+            new Alert(Alert.AlertType.INFORMATION, "No hay ningún usuario conectado.").showAndWait();
             switchScene("/org/example/discerial/MainApp_View.fxml");
             return;
         }
@@ -339,10 +329,7 @@ public class TabulaController {
         conf.setTitle("Cerrar sesión");
         conf.setHeaderText(null);
         conf.setContentText("¿Deseas cerrar sesión de la cuenta: " + u.getNombre() + "?");
-        conf.getButtonTypes().setAll(
-                new ButtonType("Sí", ButtonBar.ButtonData.OK_DONE),
-                new ButtonType("No", ButtonBar.ButtonData.CANCEL_CLOSE)
-        );
+        conf.getButtonTypes().setAll(new ButtonType("Sí", ButtonBar.ButtonData.OK_DONE), new ButtonType("No", ButtonBar.ButtonData.CANCEL_CLOSE));
 
         conf.showAndWait().ifPresent(response -> {
             if (response.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
