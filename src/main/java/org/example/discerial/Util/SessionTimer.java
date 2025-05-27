@@ -39,7 +39,7 @@ public class SessionTimer {
 
 
     public void start() throws Exception {
-        this.usuarioActivo = dao.currentUser(); // Inicialización
+        this.usuarioActivo = dao.currentUser();
 
         if (running) return;
 
@@ -55,6 +55,7 @@ public class SessionTimer {
 
             scheduler = Executors.newSingleThreadScheduledExecutor();
             updateTask = scheduler.scheduleAtFixedRate(() -> {
+
                 try {
                     // Calcular tiempo transcurrido y sumar al total
                     long elapsed = System.currentTimeMillis() - startTime;

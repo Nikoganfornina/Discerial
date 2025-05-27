@@ -57,6 +57,8 @@ public class VistaPreguntaController {
     private Button btnAnterior, btnSiguiente;
     @FXML
     private Label lblCountTest;
+    private boolean modoFallos = false; // <--- esta variable faltaba
+
 
 
     private List<Pregunta> listaPreguntas;
@@ -67,6 +69,7 @@ public class VistaPreguntaController {
 
     private final IusuariosImpl usuarioDao = new IusuariosImpl();
     private Usuarios usuarioActual;
+    private final IEstadoUsuarioImpl estadoDao = new IEstadoUsuarioImpl();
 
     // --- VIDEO ---
     private MediaPlayer goPlayer;
@@ -138,6 +141,20 @@ public class VistaPreguntaController {
         lblCountTest.setText(actual + "/" + total);
     }
 
+    public void initModoFallos(List<Pregunta> preguntasFalladas) {
+
+        this.listaPreguntas = preguntasFalladas;
+        this.modoFallos = true;
+        this.indiceActual = 0;
+        if (preguntasFalladas.size() > 10) {
+            // Limitar a 10 preguntas, tomando las primeras 10
+            this.listaPreguntas = preguntasFalladas.subList(0, 10);
+        } else {
+            // Si son 10 o menos, usar la lista completa
+            this.listaPreguntas = preguntasFalladas;
+        }
+        mostrarPregunta();
+    }
     private void empezarJuegoDespuesVideo() {
         mostrarPregunta();
     }
@@ -331,9 +348,11 @@ public class VistaPreguntaController {
         if (acertada) {
             clicked.getStyleClass().add("correcta");
             musicManager.playRandomSoundWin();
+            saveAttempt(true);
         } else {
             clicked.getStyleClass().add("incorrecta");
             musicManager.playRandomSoundfail();
+            saveAttempt(false);
 
         }
 
@@ -348,15 +367,18 @@ public class VistaPreguntaController {
         deshabilitarOpciones(true);
     }
 
-    private void saveAttempt(boolean acertada) {
-        if (listaPreguntas.isEmpty() || indiceActual < 0 || indiceActual >= listaPreguntas.size()) return;
-
-        Pregunta p = listaPreguntas.get(indiceActual);
+    public void saveAttempt(boolean acertada) {
         Usuarios u = usuarioDao.currentUser();
-        if (u != null) {
-            new IEstadoUsuarioImpl().save(new EstadoUsuario(u, p, acertada));
-            if (acertada) usuarioDao.incrementAcertadas(u.getId());
-            else usuarioDao.incrementErroneas(u.getId());
+        if (u == null || indiceActual < 0 || indiceActual >= listaPreguntas.size()) return;
+
+        Pregunta pregunta = listaPreguntas.get(indiceActual);
+        EstadoUsuario estado = new EstadoUsuario(u, pregunta, acertada);
+        estadoDao.save(estado);
+
+        if (acertada) {
+            usuarioDao.incrementAcertadas(u.getId());
+        } else {
+            usuarioDao.incrementErroneas(u.getId());
         }
     }
 

@@ -17,17 +17,20 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.example.discerial.DAO.*;
 import org.example.discerial.Util.HibernateUtil;
 import org.example.discerial.Util.MusicManager;
 import org.example.discerial.Util.SessionTimer;
 import org.example.discerial.entities.Categoria;
+import org.example.discerial.entities.Pregunta;
 import org.example.discerial.entities.Usuarios;
 
 import java.io.IOException;
 import java.util.*;
 
+import static org.example.discerial.Controladores.CategoriasJuegoController.openGameWithWrongQuestions;
 import static org.example.discerial.Util.SessionManager.switchScene;
 
 public class TabulaController {
@@ -40,6 +43,8 @@ public class TabulaController {
     private Label lblAciertosNumero;
     private final IusuariosImpl usuarioDao = new IusuariosImpl();
     private final IPreguntaImpl preguntaDao = new IPreguntaImpl(); // DAO de preguntas
+    private final ICategoriaImpl categoriaDao = new ICategoriaImpl(); // DAO de categoria
+    private final IEstadoUsuarioImpl estadoDao = new IEstadoUsuarioImpl();
 
     @FXML
     private VBox vboxFallos;
@@ -51,60 +56,54 @@ public class TabulaController {
     public void initialize() {
         mostrarNombreUsuario();
         cargarGraficaAvance();
-        //cargarBotonesFallos();
+        cargarBotonesFallos();
 
     }
 
-   /* public void cargarBotonesFallos() {
-        Usuarios user = usuarioDao.currentUser();
-        if (user == null) {
-            System.out.println("Usuario no encontrado.");
-            return;
-        }
 
-        int userId = user.getId();
-        IEstadoUsuarioImpl estadoUsuarioDAO = new IEstadoUsuarioImpl();
-        ICategoriaImpl categoriaDAO = new ICategoriaImpl();
 
-        Map<Integer, Long> fallosPorCategoria = estadoUsuarioDAO.contarFallosPorCategoria(userId);
-
-        // Limpia el VBox antes de añadir nuevos botones (por si se llama varias veces)
+    private void cargarBotonesFallos() {
         vboxFallos.getChildren().clear();
 
-        if (fallosPorCategoria == null || fallosPorCategoria.isEmpty()) {
-            Label label = new Label("¡No hay fallos registrados!");
-            label.setStyle("-fx-text-fill: #2E8540; -fx-font-weight: bold;");
-            vboxFallos.getChildren().add(label);
-            return;
+        int userId = usuarioDao.currentUser().getId();
+        Map<Integer, Long> fallosPorCategoria = preguntaDao.getFallosPorCategoria(userId); // categoríaId -> número fallos
+
+        for (Map.Entry<Integer, Long> entry : fallosPorCategoria.entrySet()) {
+            int categoriaId = entry.getKey();
+            long numFallos = entry.getValue();
+
+            Categoria categoria = categoriaDao.findById(categoriaId); // Obtenemos datos categoría
+
+            if (categoria != null && numFallos > 0) {
+                Button button = new Button(categoria.getNombre() + " (" + numFallos + ")");
+
+                // Estilo verde #4c5b3d y bordes redondeados
+                button.setStyle(
+                        "-fx-background-color: #4c5b3d; " +
+                                "-fx-text-fill: white; " +
+                                "-fx-background-radius: 15; " +
+                                "-fx-font-weight: bold; " +
+                                "-fx-padding: 10 20 10 20;"
+                );
+
+                button.setOnAction(e -> {
+                    List<Pregunta> preguntasErroneas = estadoDao.obtenerPreguntasErroneasPorCategoria(userId, categoriaId);
+                    if (preguntasErroneas != null && !preguntasErroneas.isEmpty()) {
+                        Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+                        openGameWithWrongQuestions(stage, categoriaId, preguntasErroneas);
+                    } else {
+                        System.out.println("No hay preguntas falladas en esta categoría.");
+                    }
+                });
+
+                vboxFallos.getChildren().add(button);
+            }
         }
 
-        for (Map.Entry<Integer, Long> entrada : fallosPorCategoria.entrySet()) {
-            int categoriaId = entrada.getKey();
-            long cantidadFallos = entrada.getValue();
-
-            // Obtener nombre de la categoría
-            Categoria categoria = categoriaDAO.findById(categoriaId);
-            String nombreCategoria = (categoria != null) ? categoria.getNombre() : "Categoría desconocida";
-
-            // Crear botón
-            Button botonCategoria = new Button(nombreCategoria + " (" + cantidadFallos + " fallos)");
-            botonCategoria.setOnAction(e -> abrirPreguntasFalladasPorCategoria(categoriaId));
-
-            // Estilo opcional
-            botonCategoria.setStyle("""
-            -fx-background-color: #ff6b6b;
-            -fx-text-fill: white;
-            -fx-font-size: 14;
-            -fx-padding: 10 20 10 20;
-            -fx-background-radius: 8;
-        """);
-
-
-
-            // Agregar al VBox
-            vboxFallos.getChildren().add(botonCategoria);
+        if (vboxFallos.getChildren().isEmpty()) {
+            vboxFallos.getChildren().add(new Label("No hay preguntas falladas aún."));
         }
-    }*/
+    }
 
 
     private void mostrarNombreUsuario() {
@@ -288,12 +287,13 @@ public class TabulaController {
     private void FxmlNuntiato() throws IOException {
         MusicManager.getInstance().playRandomSoundEffect();
 
-        //switchScene("/org/example/discerial/Nuntiato_view.fxml");
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Vista no disponible");
         alert.setHeaderText(null);
-        alert.setContentText("Mantengase a la espera, estamos trabajando en la implementaci n de esta secci n.");
+        alert.setContentText("Mantengase a la espera, estamos trabajando en la implementacion de esta seccion.");
         alert.showAndWait();
+        //switchScene("/org/example/discerial/Nuntiato_view.fxml");
+
     }
 
     @FXML
@@ -302,7 +302,7 @@ public class TabulaController {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Vista no disponible");
         alert.setHeaderText(null);
-        alert.setContentText("Mantengase a la espera, estamos trabajando en la implementaci n de esta secci n.");
+        alert.setContentText("Mantengase a la espera, estamos trabajando en la implementacion de esta seccion.");
         alert.showAndWait();
         //switchScene("/org/example/discerial/Adaptationes_view.fxml");
     }
