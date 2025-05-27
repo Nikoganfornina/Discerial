@@ -46,32 +46,31 @@ public class InicioSesionController {
 
 
     @FXML
-    public void iniciarSesion() throws Exception {
+    public void iniciarSesion() {
         IusuariosImpl dao = new IusuariosImpl();
-        String correo = SesionCorreo.getText();
-        String contrasena = SesionContrasena.getText();
-
+        String identificador = SesionCorreo.getText().trim(); // Campo ahora contiene nick o correo
+        String contrasena = SesionContrasena.getText().trim();
 
         try {
-            Usuarios usuario = dao.login(correo, contrasena);
+            Usuarios usuario = dao.login(identificador, contrasena);
             if (usuario != null) {
-                musicManager.playRandomSoundEffect();
-
-                // Iniciar el timer con las horas acumuladas del usuario activo
-
-                SessionTimer.getInstance().start(); // Iniciar el timer
-
-                // Cambiar la vista
+                // Lógica exitosa
+                SessionTimer.getInstance().start();
                 switchScene("/org/example/discerial/Tabula_view.fxml");
             } else {
-                Alert alert = new Alert(Alert.AlertType.ERROR, "Credenciales inválidas. Por favor, inténtalo de nuevo.");
-                alert.showAndWait();
+                showAlert("Error", "Credenciales incorrectas");
             }
         } catch (Exception e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Error en la autenticación: " + e.getMessage());
-            alert.showAndWait();
+            showAlert("Error", "Error: " + e.getMessage());
         }
     }
 
+    private void showAlert(String titulo, String mensaje) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(titulo);
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+        alert.showAndWait();
+    }
 
 }

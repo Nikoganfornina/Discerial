@@ -122,12 +122,7 @@ public class HomoPanelController {
     }
 
 
-    // Método para detener la actualización cuando sea necesario
-    public void detenerActualizacionTiempo() {
-        if (timelineActualizacionTiempo != null) {
-            timelineActualizacionTiempo.stop();
-        }
-    }
+
     private void cargarImagenPerfil() {
         if (usuarioActual.getImagen() != null) {
             try {
@@ -235,14 +230,7 @@ public class HomoPanelController {
         timelineActualizacionTiempo.setCycleCount(Timeline.INDEFINITE);
         timelineActualizacionTiempo.play();
     }
-    // Añadir método en IusuariosImpl
-    public long getHorasJugadasFromBD(long userId) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return ((Number) session.createNativeQuery("SELECT horasJugadas FROM usuarios WHERE id = ?")
-                    .setParameter(1, userId)
-                    .uniqueResult()).longValue();
-        }
-    }
+
 
     private void actualizarTiempoJugado() {
         if (usuarioActual != null) {

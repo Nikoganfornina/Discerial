@@ -1,0 +1,45 @@
+@font-face {
+    font-family: 'Segoe UI';
+    src: local('Segoe UI');
+}
+
+
+
+.title {
+    -fx-font-size: 50px;
+    -fx-text-fill: #4c5b3d;
+    -fx-font-weight: bold;
+}
+
+.subtext {
+    -fx-font-size: 18px;
+    -fx-text-fill: #6a7b5a;
+    -fx-font-style: italic;
+}
+
+.label {
+    -fx-font-size: 22px;
+    -fx-text-fill: #4c5b3d;
+}
+
+.checkbox {
+    -fx-font-size: 20px;
+    -fx-text-fill: #4c5b3d;
+}
+
+.botonPersonalizado {
+    -fx-background-color: #4c5b3d;
+    -fx-text-fill: white;
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+
+    -fx-padding: 12px 25px;
+    -fx-background-radius: 50px;
+    -fx-border-radius: 50px;
+    -fx-border-color: transparent;
+}
+
+
+.boton:hover {
+    -fx-background-color: #3a472f;
+}

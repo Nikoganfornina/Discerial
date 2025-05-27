@@ -23,10 +23,12 @@ import javafx.scene.media.MediaView;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.example.discerial.DAO.IAjustesUsuario;
 import org.example.discerial.DAO.IEstadoUsuarioImpl;
 import org.example.discerial.DAO.IPreguntaImpl;
 import org.example.discerial.DAO.IusuariosImpl;
 import org.example.discerial.Util.MusicManager;
+import org.example.discerial.entities.AjustesUsuario;
 import org.example.discerial.entities.EstadoUsuario;
 import org.example.discerial.entities.Pregunta;
 import org.example.discerial.entities.Usuarios;
@@ -77,16 +79,32 @@ public class VistaPreguntaController {
 
     private final MusicManager musicManager = MusicManager.getInstance();
 
+    private IAjustesUsuario ajustesUsuarioDAO;
+    private int tiempoPreguntaSegundos = 20; // Valor por defecto
+
+    // Añade setters para inyección de dependencias
+    public void setAjustesUsuarioDAO(IAjustesUsuario dao) throws Exception {
+        this.ajustesUsuarioDAO = dao;
+        cargarTiempoDesdeAjustes();
+    }
 
     @FXML
-    public void initialize() {
+    public void initialize() throws Exception {
         usuarioActual = usuarioDao.currentUser();
+        cargarTiempoDesdeAjustes(); // <-- Nuevo método
         musicManager.playAmbientMusic();
         setupTimer();
-
-        // No cargar preguntas aquí porque no tienes categoria_id
         hboxNav.setVisible(false);
         mostrarCuentaAtras();
+    }
+
+    private void cargarTiempoDesdeAjustes() throws Exception {
+        if (ajustesUsuarioDAO != null && usuarioActual != null) {
+            AjustesUsuario ajustes = ajustesUsuarioDAO.getAjustesByUsuarioId(usuarioActual.getId());
+            if (ajustes != null) {
+                tiempoPreguntaSegundos = ajustes.getTiempoPreguntas().getSegundos();
+            }
+        }
     }
 
 
@@ -238,7 +256,7 @@ public class VistaPreguntaController {
 
     private void resetTimer() {
         timer.stop();
-        timeRemaining = 20;
+        timeRemaining = tiempoPreguntaSegundos; // Usar el valor de los ajustes
         lblTimer.setText("Tiempo: " + timeRemaining + "s");
         timer.playFromStart();
     }

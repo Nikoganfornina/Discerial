@@ -46,12 +46,14 @@ public class TabulaController {
     private final IPreguntaImpl preguntaDao = new IPreguntaImpl(); // DAO de preguntas
     private final ICategoriaImpl categoriaDao = new ICategoriaImpl(); // DAO de categoria
     private final IEstadoUsuarioImpl estadoDao = new IEstadoUsuarioImpl();
-
+    private Usuarios usuarioActual;
     @FXML
     private VBox vboxFallos;
     // Este VBox debe estar declarado en tu FXML dentro de contenedorFXML
     @FXML
     private VBox chartContainer;
+
+    private final IAjustesUsuario ajustesDAO = new IAjustesUsuarioImpl(HibernateUtil.getSessionFactory());
 
     @FXML
     public void initialize() {
@@ -290,14 +292,21 @@ public class TabulaController {
     }
 
     @FXML
-    private void FxmlAdaptationes() throws IOException {
-        MusicManager.getInstance().playRandomSoundEffect();
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Vista no disponible");
-        alert.setHeaderText(null);
-        alert.setContentText("Mantengase a la espera, estamos trabajando en la implementacion de esta seccion.");
-        alert.showAndWait();
-        //switchScene("/org/example/discerial/Adaptationes_view.fxml");
+    private void FxmlAdaptationes() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/discerial/Panels/Adaptationes_View.fxml"));
+            Parent root = loader.load();
+
+            // 2. Obtener el controlador y pasarle el DAO
+            AdaptationesController controller = loader.getController();
+            controller.setAjustesDAO(ajustesDAO);
+            controller.setUsuarioActual(usuarioActual); // Asegúrate de tener el usuario logueado
+
+            // ... código para mostrar la ventana
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
