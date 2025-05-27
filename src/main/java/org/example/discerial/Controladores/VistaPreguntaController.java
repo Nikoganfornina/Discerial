@@ -56,7 +56,7 @@ public class VistaPreguntaController {
     @FXML
     private HBox hboxNav;
     @FXML
-    private Button btnAnterior, btnSiguiente;
+    private Button  btnSiguiente;
     @FXML
     private Label lblCountTest;
     private boolean modoFallos = false; // <--- esta variable faltaba
@@ -312,7 +312,7 @@ public class VistaPreguntaController {
 
         resetTimer();
 
-        btnAnterior.setDisable(indiceActual == 0);
+        //btnAnterior.setDisable(indiceActual == 0);
         btnSiguiente.setDisable(false);
 
         actualizarContadorPregunta();
