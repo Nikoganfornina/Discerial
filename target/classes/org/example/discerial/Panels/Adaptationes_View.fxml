@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.collections.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="1000.0" prefWidth="1100.0" stylesheets="@../../../../SettingsStyle.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.discerial.Controladores.AdaptationesController">
+
+    <Label fx:id="homoText" layoutX="54.0" layoutY="66.0" style="-fx-font-size: 50px; -fx-text-fill: #4c5b3d -fx-font-weight: bold; " text="Adaptationes" />
+
+    <!-- Descripción: Volumen -->
+    <Label layoutX="54.0" layoutY="181.0" styleClass="subtext" text="Activa o desactiva el sonido general de la aplicación." />
+    <CheckBox fx:id="chkVolumen" layoutX="51.0" layoutY="235.0" styleClass="checkbox" text="Activar volumen" />
+
+    <!-- Descripción: Efectos -->
+    <Label layoutX="49.0" layoutY="305.0" styleClass="subtext" text="Activa o desactiva efectos sonoros al interactuar." />
+    <CheckBox fx:id="chkEfectos" layoutX="52.0" layoutY="356.0" styleClass="checkbox" text="Activar efectos de sonido" />
+
+    <!-- Descripción: Volumen general -->
+    <Label layoutX="55.0" layoutY="430.0" styleClass="subtext" text="Ajusta el volumen general de todos los sonidos." />
+    <Label layoutX="55.0" layoutY="476.0" styleClass="label" text="Volumen general:" />
+    <Slider fx:id="sliderVolumen" layoutX="301.0" layoutY="481.0" max="100" min="0" prefWidth="400.0" value="50" />
+
+    <!-- Descripción: Tiempo de respuesta -->
+    <Label layoutX="54.0" layoutY="553.0" styleClass="subtext" text="Elige el tiempo que tienes para responder cada pregunta." />
+    <Label layoutX="55.0" layoutY="603.0" styleClass="label" text="Tiempo de respuesta:" />
+    <ChoiceBox fx:id="choiceTiempo" layoutX="301.0" layoutY="598.0" prefWidth="200.0">
+        <items>
+            <FXCollections fx:factory="observableArrayList">
+                <String fx:value="15 segundos" />
+                <String fx:value="20 segundos" />
+                <String fx:value="30 segundos" />
+            </FXCollections>
+        </items>
+    </ChoiceBox>
+
+    <!-- Botón para aplicar ajustes -->
+    <Button fx:id="btnAplicar" layoutX="684.0" layoutY="768.0" prefHeight="50.0" prefWidth="300.0" styleClass="botonPersonalizado"  onAction="#handleAplicarCambios" text="Aplicar cambios" />
+
+</AnchorPane>

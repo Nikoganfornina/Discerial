@@ -25,12 +25,13 @@
                 <Label id="MenuSelectorLabel" onMouseClicked="#FxmlTabula" text="Tabula" />
             </HBox>
 
-            <!-- Nuntiato -->
+            <!-- Nuntiato
 
             <HBox spacing="10">
                 <Pane id="NuntiatioIcon" prefHeight="50.0" prefWidth="50.0" />
                 <Label id="MenuSelectorLabel" onMouseClicked="#FxmlNuntiato" text="Nuntiatio" />
             </HBox>
+             -->
 
             <HBox spacing="10">
                 <Pane id="AdaptationesIcon" prefHeight="50.0" prefWidth="50.0" />

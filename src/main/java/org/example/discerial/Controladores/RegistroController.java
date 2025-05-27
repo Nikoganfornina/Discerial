@@ -5,9 +5,14 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import org.example.discerial.DAO.IAjustesUsuario;
+import org.example.discerial.DAO.IAjustesUsuarioImpl;
 import org.example.discerial.DAO.IusuariosImpl;
+import org.example.discerial.Util.HibernateUtil;
 import org.example.discerial.Util.MusicManager;
 import org.example.discerial.Util.SessionTimer;
+import org.example.discerial.Util.TiempoPreguntas;
+import org.example.discerial.entities.AjustesUsuario;
 import org.example.discerial.entities.Usuarios;
 
 
@@ -19,6 +24,7 @@ public class RegistroController {
     MusicManager musicManager = MusicManager.getInstance();
     @FXML
     public  TextField RegistroNombre , RegistroNickname , RegistroCorreo , RegistroContrasena , RegistroConfirmarContrasena;
+    IAjustesUsuario ajustesDao = new IAjustesUsuarioImpl(HibernateUtil.getSessionFactory()); // Añade esto
 
     public void handleClick(MouseEvent event) throws Exception {
         musicManager.playRandomSoundEffect();
@@ -41,48 +47,59 @@ public class RegistroController {
         RegistroConfirmarContrasena.clear();
     }
 
-    public  void AgregarUsuario() throws Exception {
-
+    public void AgregarUsuario() {
         IusuariosImpl dao = new IusuariosImpl();
 
-        String nombre = RegistroNombre.getText();
-        String nickname = RegistroNickname.getText();
-        String correo = RegistroCorreo.getText();
-        String contrasena = RegistroContrasena.getText();
-        String confirmarContrasena = RegistroConfirmarContrasena.getText();
-
-        if(!contrasena.equals(confirmarContrasena)){
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.setHeaderText("Las contrasenas no coinciden");
-            alert.showAndWait();
-            return;
-        }
-
-        Usuarios usuario = new Usuarios(nombre, nickname, correo, contrasena, 0, 0, "hombre2.jpg" ,false , 0); ;
-
+        String nombre = RegistroNombre.getText().trim();
+        String nickname = RegistroNickname.getText().trim();
+        String correo = RegistroCorreo.getText().trim();
+        String contrasena = RegistroContrasena.getText().trim();
+        String confirmarContrasena = RegistroConfirmarContrasena.getText().trim();
 
         try {
-            // Guarda el usuario en la BD (esto generará su ID automáticamente)
+            // Validación manual
+            if (nombre.isEmpty() || nickname.isEmpty() || correo.isEmpty() || contrasena.isEmpty()) {
+                throw new IllegalArgumentException("Todos los campos son obligatorios");
+            }
+            if (!correo.contains("@")) {
+                throw new IllegalArgumentException("El correo debe contener una @");
+            }
+            if (!contrasena.equals(confirmarContrasena)) {
+                throw new IllegalArgumentException("Las contraseñas no coinciden");
+            }
+
+            // Crear y guardar usuario
+            Usuarios usuario = new Usuarios(nombre, nickname, correo, contrasena, 0, 0, "hombre2.jpg", false, 0);
             Usuarios usuarioGuardado = dao.save(usuario);
 
             if (usuarioGuardado != null) {
-                // Activa la sesión en la base de datos
-                dao.activateUser(usuarioGuardado.getId());
-
-                // Actualiza el objeto local para reflejar el estado activo
-                usuarioGuardado.setSessionActive(true);
-
                 musicManager.playRandomSoundEffect();
+                AjustesUsuario ajustes = new AjustesUsuario(
+                        true,   // efectosActivados
+                        true,   // musicaActivada
+                        100,    // nivelMusica (100% por defecto)
+                        TiempoPreguntas.SEGUNDOS_20,
+                        usuarioGuardado  // Usuario recién creado
+                );
 
-                SessionTimer.getInstance().start(); // Iniciar el timer
-
-                // Cambia de pantalla
-                switchScene("/org/example/discerial/Tabula_view.fxml");
+                ajustesDao.actualizarAjustes(ajustes); // Guardar ajustes
+                limpiarCampos();
+                switchScene("/org/example/discerial/InicioSesion_View.fxml");
             }
-        } catch (Exception e) {
-            new Alert(AlertType.ERROR, "Error: " + e.getMessage()).showAndWait();
-        }
 
+        } catch (IllegalArgumentException e) {
+            showAlert("Error", e.getMessage());
+        } catch (Exception e) {
+            showAlert("Error técnico", "Error al registrar: " + e.getMessage());
+        }
+    }
+
+    private void showAlert(String titulo, String mensaje) {
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle(titulo);
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+        alert.showAndWait();
     }
 
 

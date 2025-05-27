@@ -39,9 +39,15 @@
     </GridPane>
 
     <!-- Navegación -->
-    <HBox fx:id="hboxNav" alignment="CENTER" layoutX="520" layoutY="860" spacing="40" visible="true">
-        <Button fx:id="btnAnterior" onAction="#handleAnterior" prefHeight="120" prefWidth="200" styleClass="boton-custom" text="Anterior" />
-        <Button fx:id="btnSiguiente" onAction="#handleSiguiente" prefHeight="120" prefWidth="200" styleClass="boton-custom" text="Siguiente" />
-    </HBox>
+    <HBox fx:id="hboxNav" alignment="CENTER_RIGHT"
+          layoutX="1286.0" layoutY="885.0"
+          spacing="40" visible="true">
 
+        <Button fx:id="btnSiguiente"
+                onAction="#handleSiguiente"
+                prefHeight="120"
+                prefWidth="200"
+                styleClass="boton-custom"
+                text="Siguiente" />
+    </HBox>
 </AnchorPane>
