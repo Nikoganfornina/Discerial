@@ -348,11 +348,9 @@ public class VistaPreguntaController {
         if (acertada) {
             clicked.getStyleClass().add("correcta");
             musicManager.playRandomSoundWin();
-            saveAttempt(true);
         } else {
             clicked.getStyleClass().add("incorrecta");
             musicManager.playRandomSoundfail();
-            saveAttempt(false);
 
         }
 
