@@ -42,6 +42,10 @@ public interface IPregunta {
      */
     Pregunta update(Pregunta pregunta);
 
+    List<Pregunta> findPreguntasMixta(int userId);
+
+    int getTotalPreguntasCategoria(String nombreCategoria);
+
     /**
      * Elimina una pregunta por su ID.
      * @param id Identificador único de la pregunta a eliminar.
