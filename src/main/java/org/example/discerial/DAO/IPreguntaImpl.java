@@ -151,6 +151,59 @@ public class IPreguntaImpl implements IPregunta {
             return fallosPorCategoria;
         }
     }
+
+
+    @Override
+    public List<Pregunta> findPreguntasMixta(int userId) {
+        IEstadoUsuarioImpl estadoDAO = new IEstadoUsuarioImpl();
+        Map<String, int[]> stats = estadoDAO.getEstadisticasPorCategoria(userId);
+
+        List<Integer> categoriasValidas = new ArrayList<>();
+        ICategoriaImpl categoriaDAO = new ICategoriaImpl();
+
+        for (String nombreCategoria : stats.keySet()) {
+            int totalPreguntas = getTotalPreguntasCategoria(nombreCategoria);
+            int[] datos = stats.get(nombreCategoria);
+            int totalRespondidas = datos[0] + datos[1]; // Aciertos + Fallos
+
+            if (totalRespondidas < totalPreguntas) {
+                int idCategoria = categoriaDAO.getIdCategoriaPorNombre(nombreCategoria);
+                categoriasValidas.add(idCategoria);
+            }
+        }
+
+        if (categoriasValidas.isEmpty()) categoriasValidas = List.of(1, 2, 3, 4);
+
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            String hql = "FROM Pregunta p "
+                    + "WHERE p.categoria.id IN (1, 2, 3, 4) "
+                    + "AND p.id NOT IN ("
+                    + "  SELECT eu.pregunta.id FROM EstadoUsuario eu "
+                    + "  WHERE eu.usuario.id = :userId AND eu.acertada = true"
+                    + ") ORDER BY RAND()";
+
+            return session.createQuery(hql, Pregunta.class)
+                    .setParameter("userId", userId)
+                    .setMaxResults(15) // Trae más para seleccionar las mejores
+                    .getResultList();
+        }
+    }
+
+    @Override
+    public int getTotalPreguntasCategoria(String nombreCategoria) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Long count = session.createQuery(
+                            "SELECT COUNT(p) FROM Pregunta p WHERE p.categoria.nombre = :nombre", Long.class)
+                    .setParameter("nombre", nombreCategoria)
+                    .uniqueResult();
+
+            return count != null ? count.intValue() : 0;
+        }
+    }
+
+
+
+
     /**
      * Elimina una pregunta por su ID.
      * @param id Identificador único de la pregunta a eliminar.

@@ -12,7 +12,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.example.discerial.DAO.IPreguntaImpl;
+import org.example.discerial.DAO.IusuariosImpl;
 import org.example.discerial.entities.Pregunta;
+import org.example.discerial.entities.Usuarios;
 
 import java.util.List;
 
@@ -244,20 +247,26 @@ public class LoadingPanelController {
         timeline.play();
     }
 
-
     private void openGame() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/discerial/VistaGameController.fxml"));
             Parent root = loader.load();
 
             VistaPreguntaController controller = loader.getController();
-            controller.initData(categoria_id);
+
+            if (categoria_id == 5) { // Mixta
+                IPreguntaImpl preguntaDAO = new IPreguntaImpl();
+                Usuarios usuario = new IusuariosImpl().currentUser();
+                List<Pregunta> preguntas = preguntaDAO.findPreguntasMixta(usuario.getId());
+                controller.initData(preguntas); // Llama al nuevo método
+            } else {
+                controller.initData(categoria_id); // Método original
+            }
 
             Stage stage = (Stage) progressBar.getScene().getWindow();
             stage.getScene().setRoot(root);
-            stage.setTitle("Categoría " + categoria_id);
+
         } catch (Exception e) {
-            System.err.println("Error al cargar VistaGameController:");
             e.printStackTrace();
         }
     }
@@ -278,6 +287,8 @@ public class LoadingPanelController {
             e.printStackTrace();
         }
     }
+
+
 
     public void initData(int categoria_id) {
         this.categoria_id = categoria_id;

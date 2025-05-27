@@ -29,6 +29,14 @@ public class ICategoriaImpl implements ICategoria {
     }
 
     @Override
+    public int getIdCategoriaPorNombre(String nombre) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery("SELECT id FROM Categoria WHERE nombre = :nombre", Integer.class)
+                    .setParameter("nombre", nombre)
+                    .uniqueResult();
+        }
+    }
+    @Override
     public List<Categoria> findAll() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             return session.createQuery("FROM Categoria", Categoria.class).list();

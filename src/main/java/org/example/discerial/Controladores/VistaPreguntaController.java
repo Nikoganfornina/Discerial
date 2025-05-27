@@ -155,6 +155,41 @@ public class VistaPreguntaController {
         }
         mostrarPregunta();
     }
+    // Para categoría mixta (5)
+    public void initData(List<Pregunta> preguntasMixtas) {
+        listaPreguntas = preguntasMixtas;
+        manejarListaPreguntas();
+    }
+
+    private void manejarListaPreguntas() {
+        if (listaPreguntas.isEmpty()) {
+            mostrarAlertaCategoriaCompletada();
+            return;
+        }
+
+        Collections.shuffle(listaPreguntas);
+        if (listaPreguntas.size() > 10) {
+            listaPreguntas = listaPreguntas.subList(0, 10);
+        }
+
+        indiceActual = 0;
+        mostrarPregunta();
+    }
+
+    private void mostrarAlertaCategoriaCompletada() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Test terminado");
+        alert.setHeaderText("¡Ya has respondido a todas las preguntas!");
+        alert.setContentText("Has completado todas las preguntas de esta categoría. Puedes probar otra.");
+        alert.showAndWait().ifPresent(response -> {
+            try {
+                switchScene("/org/example/discerial/VistaCategorias.fxml");
+            } catch (IOException e) {
+                throw new RuntimeException("Error al cambiar de escena", e);
+            }
+        });
+    }
+
     private void empezarJuegoDespuesVideo() {
         mostrarPregunta();
     }
