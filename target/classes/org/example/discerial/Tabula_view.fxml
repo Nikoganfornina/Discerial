@@ -59,6 +59,7 @@
     </Pane>
 
     <!-- Aquí va el contenedor de la zona derecha -->
+
     <Pane fx:id="contenedorFXML" layoutX="450.0" prefHeight="1000.0" prefWidth="1100.0">
         <children>
 
@@ -80,6 +81,7 @@
                 <!-- 🟤 Repaso de Fallos -->
                 <VBox fx:id="vboxFallos" alignment="TOP_LEFT" spacing="10.0" prefWidth="250.0" prefHeight="250.0" styleClass="fallos-box">
                     <Label text="Repaso de fallos" styleClass="fallos-titulo" />
+
                     <!-- Aquí irán botones dinámicamente -->
                 </VBox>
 

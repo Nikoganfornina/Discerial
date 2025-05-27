@@ -2,6 +2,7 @@ package org.example.discerial.DAO;
 
 import org.example.discerial.Util.HibernateUtil;
 import org.example.discerial.entities.EstadoUsuario;
+import org.example.discerial.entities.Pregunta;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -59,27 +60,18 @@ public class IEstadoUsuarioImpl implements IEstadoUsuario {
         }
     }
 
-    public Map<Integer, Long> contarFallosPorCategoria(int userId) {
+    public List<Pregunta> obtenerPreguntasErroneasPorCategoria(int userId, int categoriaId) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            String hql = "SELECT eu.pregunta.categoria.id, COUNT(eu) " +
-                    "FROM EstadoUsuario eu " +
-                    "WHERE eu.usuario.id = :uid AND eu.acertada = false " +
-                    "GROUP BY eu.pregunta.categoria.id";
+            String hql = "SELECT eu.pregunta FROM EstadoUsuario eu " +
+                    "WHERE eu.usuario.id = :uid AND eu.pregunta.categoria.id = :catId AND eu.acertada = false";
 
-            List<Object[]> resultados = session.createQuery(hql, Object[].class)
+            return session.createQuery(hql, Pregunta.class)
                     .setParameter("uid", userId)
+                    .setParameter("catId", categoriaId)
                     .getResultList();
-
-            Map<Integer, Long> fallosPorCategoria = new HashMap<>();
-            for (Object[] fila : resultados) {
-                Integer categoriaId = (Integer) fila[0];
-                Long cantidadFallos = (Long) fila[1];
-                fallosPorCategoria.put(categoriaId, cantidadFallos);
-            }
-
-            return fallosPorCategoria;
         }
     }
+
 
     public List<Integer> getIdsPreguntasRespondidasErroneamente(int userId) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {

@@ -6,9 +6,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Implementación de la interfaz IPregunta para gestionar operaciones CRUD en la entidad Pregunta.
@@ -78,6 +76,7 @@ public class IPreguntaImpl implements IPregunta {
      * @param categoriaId Identificador de la categoría.
      * @return Lista de preguntas que pertenecen a la categoría indicada.
      */
+
     @Override
     public List<Pregunta> findByCategoria(int categoriaId) {
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -125,6 +124,33 @@ public class IPreguntaImpl implements IPregunta {
         return pregunta;
     }
 
+
+    /**
+     * Obtiene el número de fallos por categoría para un usuario.
+     * @param userId Identificador del usuario.
+     * @return Mapa con el ID de la categoría como clave y el número de fallos como valor.
+     */
+    public Map<Integer, Long> getFallosPorCategoria(int userId) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            String hql = "SELECT eu.pregunta.categoria.id, COUNT(eu) " +
+                    "FROM EstadoUsuario eu " +
+                    "WHERE eu.usuario.id = :uid AND eu.acertada = false " +
+                    "GROUP BY eu.pregunta.categoria.id";
+
+            List<Object[]> resultados = session.createQuery(hql, Object[].class)
+                    .setParameter("uid", userId)
+                    .getResultList();
+
+            Map<Integer, Long> fallosPorCategoria = new HashMap<>();
+            for (Object[] fila : resultados) {
+                Integer categoriaId = (Integer) fila[0];
+                Long cantidadFallos = (Long) fila[1];
+                fallosPorCategoria.put(categoriaId, cantidadFallos);
+            }
+
+            return fallosPorCategoria;
+        }
+    }
     /**
      * Elimina una pregunta por su ID.
      * @param id Identificador único de la pregunta a eliminar.
