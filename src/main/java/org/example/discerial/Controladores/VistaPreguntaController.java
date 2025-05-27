@@ -57,6 +57,8 @@ public class VistaPreguntaController {
     private Button btnAnterior, btnSiguiente;
     @FXML
     private Label lblCountTest;
+    private boolean modoFallos = false; // <--- esta variable faltaba
+
 
 
     private List<Pregunta> listaPreguntas;
@@ -67,6 +69,7 @@ public class VistaPreguntaController {
 
     private final IusuariosImpl usuarioDao = new IusuariosImpl();
     private Usuarios usuarioActual;
+    private final IEstadoUsuarioImpl estadoDao = new IEstadoUsuarioImpl();
 
     // --- VIDEO ---
     private MediaPlayer goPlayer;
@@ -138,6 +141,55 @@ public class VistaPreguntaController {
         lblCountTest.setText(actual + "/" + total);
     }
 
+    public void initModoFallos(List<Pregunta> preguntasFalladas) {
+
+        this.listaPreguntas = preguntasFalladas;
+        this.modoFallos = true;
+        this.indiceActual = 0;
+        if (preguntasFalladas.size() > 10) {
+            // Limitar a 10 preguntas, tomando las primeras 10
+            this.listaPreguntas = preguntasFalladas.subList(0, 10);
+        } else {
+            // Si son 10 o menos, usar la lista completa
+            this.listaPreguntas = preguntasFalladas;
+        }
+        mostrarPregunta();
+    }
+    // Para categoría mixta (5)
+    public void initData(List<Pregunta> preguntasMixtas) {
+        listaPreguntas = preguntasMixtas;
+        manejarListaPreguntas();
+    }
+
+    private void manejarListaPreguntas() {
+        if (listaPreguntas.isEmpty()) {
+            mostrarAlertaCategoriaCompletada();
+            return;
+        }
+
+        Collections.shuffle(listaPreguntas);
+        if (listaPreguntas.size() > 10) {
+            listaPreguntas = listaPreguntas.subList(0, 10);
+        }
+
+        indiceActual = 0;
+        mostrarPregunta();
+    }
+
+    private void mostrarAlertaCategoriaCompletada() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Test terminado");
+        alert.setHeaderText("¡Ya has respondido a todas las preguntas!");
+        alert.setContentText("Has completado todas las preguntas de esta categoría. Puedes probar otra.");
+        alert.showAndWait().ifPresent(response -> {
+            try {
+                switchScene("/org/example/discerial/VistaCategorias.fxml");
+            } catch (IOException e) {
+                throw new RuntimeException("Error al cambiar de escena", e);
+            }
+        });
+    }
+
     private void empezarJuegoDespuesVideo() {
         mostrarPregunta();
     }
@@ -146,16 +198,18 @@ public class VistaPreguntaController {
         List<Pregunta> preguntasCategoria = new IPreguntaImpl().findNoRespondidasPorCategoria(categoria_id, usuarioActual.getId());
 
         if (preguntasCategoria.isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Test terminado");
-            alert.setHeaderText("¡Ya has respondido a todas las preguntas!");
-            alert.setContentText("Has completado todas las preguntas de esta categoría. Puedes probar otra.");
-            alert.showAndWait().ifPresent(response -> {
-                try {
-                    switchScene("/org/example/discerial/VistaCategorias.fxml");
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            Platform.runLater(() -> {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Test terminado");
+                alert.setHeaderText("¡Ya has respondido a todas las preguntas!");
+                alert.setContentText("Has completado todas las preguntas de esta categoría. Puedes probar otra.");
+                alert.showAndWait().ifPresent(response -> {
+                    try {
+                        switchScene("/org/example/discerial/VistaCategorias.fxml");
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
             });
             return;
         }
@@ -346,15 +400,18 @@ public class VistaPreguntaController {
         deshabilitarOpciones(true);
     }
 
-    private void saveAttempt(boolean acertada) {
-        if (listaPreguntas.isEmpty() || indiceActual < 0 || indiceActual >= listaPreguntas.size()) return;
-
-        Pregunta p = listaPreguntas.get(indiceActual);
+    public void saveAttempt(boolean acertada) {
         Usuarios u = usuarioDao.currentUser();
-        if (u != null) {
-            new IEstadoUsuarioImpl().save(new EstadoUsuario(u, p, acertada));
-            if (acertada) usuarioDao.incrementAcertadas(u.getId());
-            else usuarioDao.incrementErroneas(u.getId());
+        if (u == null || indiceActual < 0 || indiceActual >= listaPreguntas.size()) return;
+
+        Pregunta pregunta = listaPreguntas.get(indiceActual);
+        EstadoUsuario estado = new EstadoUsuario(u, pregunta, acertada);
+        estadoDao.save(estado);
+
+        if (acertada) {
+            usuarioDao.incrementAcertadas(u.getId());
+        } else {
+            usuarioDao.incrementErroneas(u.getId());
         }
     }
 

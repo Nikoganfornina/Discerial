@@ -2,6 +2,7 @@ package org.example.discerial.Controladores;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -9,14 +10,17 @@ import javafx.scene.image.ImageView;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import org.example.discerial.Util.MusicManager;
+import org.example.discerial.entities.Pregunta;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 
 import static org.example.discerial.Util.SessionManager.switchScene;
 
 public class CategoriasJuegoController {
 
-    MusicManager musicManager = MusicManager.getInstance();
+    static MusicManager musicManager = MusicManager.getInstance();
     @FXML
     private ImageView imagenHistoriacategorias;
 
@@ -56,7 +60,10 @@ public class CategoriasJuegoController {
             label.setScaleY(1.05);
         });
 
-        label.setOnMouseClicked(e -> openGameWithCategory(categoria_id));
+        label.setOnMouseClicked(e -> {
+            Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+            openGameWithCategory(stage, categoria_id);
+        });
     }
 
 
@@ -145,20 +152,18 @@ public class CategoriasJuegoController {
         imageView.setClip(clip);
     }
 
-    private void openGameWithCategory(int categoria_id) {
+    public static void openGameWithCategory(Stage stage, int categoria_id) {
         musicManager.playRandomSoundEffect();
 
         try {
             FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/org/example/discerial/LoadingPanelView.fxml")
+                    CategoriasJuegoController.class.getResource("/org/example/discerial/LoadingPanelView.fxml")
             );
             Parent root = loader.load();
 
-            // Aquí está el problema: NO ESTABAS LLAMANDO A INIT
             LoadingPanelController controller = loader.getController();
-            controller.initData(categoria_id);  // 💥 Esto hace que empiece la barra
+            controller.initData(categoria_id);  // Inicia la carga
 
-            Stage stage = (Stage) imagenHistoriacategorias.getScene().getWindow();
             stage.getScene().setRoot(root);
             stage.setTitle("Cargando...");
         } catch (Exception ex) {
@@ -166,13 +171,51 @@ public class CategoriasJuegoController {
         }
     }
 
-    @FXML private void onHistoriaClicked()     { openGameWithCategory(1); }
+    public static void openGameWithWrongQuestions(Stage stage, int categoriaId, List<Pregunta> preguntasErroneas) {
+        musicManager.playRandomSoundEffect();
 
-    @FXML private void onLiteraturaClicked()   { openGameWithCategory(2); }
+        try {
+            FXMLLoader loader = new FXMLLoader(LoadingPanelController.class.getResource("/org/example/discerial/LoadingPanelView.fxml"));
+            Parent root = loader.load();
 
-    @FXML private void onFilosofiaClicked()    { openGameWithCategory(3); }
+            LoadingPanelController controller = loader.getController();
+            controller.initTestFallos(preguntasErroneas, categoriaId);
 
-    @FXML private void onBiologiaClicked()     { openGameWithCategory(4); }
+            stage.getScene().setRoot(root);
+            stage.setTitle("Cargando preguntas erróneas...");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
 
-    @FXML private void onMixtaClicked()        { openGameWithCategory(5); }
+
+    @FXML
+    private void onHistoriaClicked() {
+        Stage stage = (Stage) imagenHistoriacategorias.getScene().getWindow();
+        openGameWithCategory(stage, 1);
+    }
+
+    @FXML
+    private void onLiteraturaClicked() {
+        Stage stage = (Stage) imagenHistoriacategorias.getScene().getWindow();
+        openGameWithCategory(stage, 2);
+    }
+
+    @FXML
+    private void onFilosofiaClicked() {
+        Stage stage = (Stage) imagenHistoriacategorias.getScene().getWindow();
+        openGameWithCategory(stage, 3);
+    }
+
+    @FXML
+    private void onBiologiaClicked() {
+        Stage stage = (Stage) imagenHistoriacategorias.getScene().getWindow();
+        openGameWithCategory(stage, 4);
+    }
+
+    @FXML
+    private void onMixtaClicked() {
+        Stage stage = (Stage) imagenHistoriacategorias.getScene().getWindow();
+        openGameWithCategory(stage, 5);
+    }
 }

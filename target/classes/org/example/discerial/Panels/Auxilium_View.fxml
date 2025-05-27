@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="1000.0" prefWidth="1100.0" stylesheets="@../../../../Styles.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.discerial.Controladores.AuxiliumViewController">
+
+
+    <Label fx:id="homoText" layoutX="54.0" layoutY="66.0" style="-fx-font-size: 50px; -fx-text-fill: #4c5b3d -fx-font-weight: bold; " text="Auxilium" />
+
+    <Label layoutX="54.0" layoutY="189.0" style="-fx-font-size: 20px; -fx-text-fill: #4c5b3d;" text="Trabajo Grupal realizado por Nicolás Ganfornina García y Alberto Bernet Fernandez" />
+    <Label layoutX="54.0" layoutY="228.0" style="-fx-font-size: 20px; -fx-text-fill: #4c5b3d;" text="Realizado en Java Fx con Hibernate y MySQL" />
+
+
+    <Label layoutX="54.0" layoutY="268.0" style="-fx-font-size: 20px; -fx-text-fill: #4c5b3d;" text="Gracias por jugar a Discerial y por colaborar con nosotros" />
+
+    <Label layoutX="54.0" layoutY="311.0" style="-fx-font-size: 20px; -fx-text-fill: #4c5b3d;" text="Cualquier consulta o duda puedes enviarla a: discerial@gmail.com" />
+
+    <Label layoutX="54.0" layoutY="348.0" style="-fx-font-size: 20px; -fx-text-fill: #4c5b3d;" text="Cualquier consulta por redes sociales a traves de ig : @Nikoganfornina " />
+
+    <Label id="imagenPerfil" layoutX="376.0" layoutY="575.0" prefHeight="349.0" prefWidth="349.0" />
+
+
+
+</AnchorPane>

@@ -2,6 +2,7 @@ package org.example.discerial.Controladores;
 
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -17,17 +18,20 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.example.discerial.DAO.*;
 import org.example.discerial.Util.HibernateUtil;
 import org.example.discerial.Util.MusicManager;
 import org.example.discerial.Util.SessionTimer;
 import org.example.discerial.entities.Categoria;
+import org.example.discerial.entities.Pregunta;
 import org.example.discerial.entities.Usuarios;
 
 import java.io.IOException;
 import java.util.*;
 
+import static org.example.discerial.Controladores.CategoriasJuegoController.openGameWithWrongQuestions;
 import static org.example.discerial.Util.SessionManager.switchScene;
 
 public class TabulaController {
@@ -40,7 +44,11 @@ public class TabulaController {
     private Label lblAciertosNumero;
     private final IusuariosImpl usuarioDao = new IusuariosImpl();
     private final IPreguntaImpl preguntaDao = new IPreguntaImpl(); // DAO de preguntas
+    private final ICategoriaImpl categoriaDao = new ICategoriaImpl(); // DAO de categoria
+    private final IEstadoUsuarioImpl estadoDao = new IEstadoUsuarioImpl();
 
+    @FXML
+    private VBox vboxFallos;
     // Este VBox debe estar declarado en tu FXML dentro de contenedorFXML
     @FXML
     private VBox chartContainer;
@@ -49,8 +57,61 @@ public class TabulaController {
     public void initialize() {
         mostrarNombreUsuario();
         cargarGraficaAvance();
+        cargarBotonesFallos();
 
     }
+
+
+    private void cargarBotonesFallos() {
+
+        ObservableList<Node> children = vboxFallos.getChildren();
+
+// Eliminar todos los nodos excepto el primero (que es el Label)
+        for (int i = children.size() - 1; i > 0; i--) {
+            children.remove(i);
+        }
+
+        int userId = usuarioDao.currentUser().getId();
+        Map<Integer, Long> fallosPorCategoria = preguntaDao.getFallosPorCategoria(userId); // categoríaId -> número fallos
+
+        for (Map.Entry<Integer, Long> entry : fallosPorCategoria.entrySet()) {
+            int categoriaId = entry.getKey();
+            long numFallos = entry.getValue();
+
+            Categoria categoria = categoriaDao.findById(categoriaId); // Obtenemos datos categoría
+
+            if (categoria != null && numFallos > 0) {
+                Button button = new Button(categoria.getNombre() + " (" + numFallos + ")");
+
+                button.setMaxWidth(Double.MAX_VALUE); // que ocupe todo el ancho disponible
+
+                button.setStyle(
+                        "-fx-background-color: #4c5b3d; " +    // fondo verde oscuro
+                                "-fx-text-fill: white; " +              // texto blanco
+                                "-fx-background-radius: 15; " +        // bordes redondeados
+                                "-fx-padding: 10 20 10 20; " +          // padding arriba/derecha/abajo/izquierda
+                                "-fx-font-weight: bold; " +             // texto en negrita
+                                "-fx-alignment: CENTER_LEFT; "          // texto alineado a la izquierda (centrado vertical)
+                );
+                button.setOnAction(e -> {
+                    List<Pregunta> preguntasErroneas = estadoDao.obtenerPreguntasErroneasPorCategoria(userId, categoriaId);
+                    if (preguntasErroneas != null && !preguntasErroneas.isEmpty()) {
+                        Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+                        openGameWithWrongQuestions(stage, categoriaId, preguntasErroneas);
+                    } else {
+                        System.out.println("No hay preguntas falladas en esta categoría.");
+                    }
+                });
+
+                vboxFallos.getChildren().add(button);
+            }
+        }
+
+        if (vboxFallos.getChildren().isEmpty()) {
+            vboxFallos.getChildren().add(new Label("No hay preguntas falladas aún."));
+        }
+    }
+
 
     private void mostrarNombreUsuario() {
         Usuarios user = usuarioDao.currentUser();
@@ -147,11 +208,8 @@ public class TabulaController {
             for (XYChart.Data<String, Number> data : serieAciertos.getData()) {
                 Node node = data.getNode();
                 if (node != null) {
-                    node.setStyle(
-                            "-fx-bar-fill: " + colorAciertos + ";" +
-                                    "-fx-background-radius: 10 10 0 0;" +  // redondeo arriba solo
-                                    "-fx-border-radius: 10 10 0 0;"
-                    );
+                    node.setStyle("-fx-bar-fill: " + colorAciertos + ";" + "-fx-background-radius: 10 10 0 0;" +  // redondeo arriba solo
+                            "-fx-border-radius: 10 10 0 0;");
                     configurarTooltip(data, "Aciertos");
                 }
             }
@@ -159,11 +217,7 @@ public class TabulaController {
             for (XYChart.Data<String, Number> data : serieFallos.getData()) {
                 Node node = data.getNode();
                 if (node != null) {
-                    node.setStyle(
-                            "-fx-bar-fill: " + colorFallos + ";" +
-                                    "-fx-background-radius: 10 10 0 0;" +
-                                    "-fx-border-radius: 10 10 0 0;"
-                    );
+                    node.setStyle("-fx-bar-fill: " + colorFallos + ";" + "-fx-background-radius: 10 10 0 0;" + "-fx-border-radius: 10 10 0 0;");
                     configurarTooltip(data, "Fallos");
                 }
             }
@@ -185,14 +239,8 @@ public class TabulaController {
     }
 
 
-
     private void configurarTooltip(XYChart.Data<String, Number> data, String tipo) {
-        Tooltip tooltip = new Tooltip(
-                String.format("%s\n%s: %d",
-                        data.getXValue(),
-                        tipo,
-                        data.getYValue().intValue())
-        );
+        Tooltip tooltip = new Tooltip(String.format("%s\n%s: %d", data.getXValue(), tipo, data.getYValue().intValue()));
         tooltip.setStyle("-fx-font-size: 14; -fx-font-weight: bold;");
         Tooltip.install(data.getNode(), tooltip);
     }
@@ -215,8 +263,7 @@ public class TabulaController {
         try {
             MusicManager.getInstance().playRandomSoundEffect();
 
-            Parent pnl = FXMLLoader
-                    .load(getClass().getResource("/org/example/discerial/Panels/HomoPanel_view.fxml"));
+            Parent pnl = FXMLLoader.load(getClass().getResource("/org/example/discerial/Panels/HomoPanel_view.fxml"));
             contenedorFXML.getChildren().setAll(pnl);
         } catch (IOException e) {
             e.printStackTrace();
@@ -233,12 +280,13 @@ public class TabulaController {
     private void FxmlNuntiato() throws IOException {
         MusicManager.getInstance().playRandomSoundEffect();
 
-        //switchScene("/org/example/discerial/Nuntiato_view.fxml");
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Vista no disponible");
         alert.setHeaderText(null);
-        alert.setContentText("Mantengase a la espera, estamos trabajando en la implementaci n de esta secci n.");
+        alert.setContentText("Mantengase a la espera, estamos trabajando en la implementacion de esta seccion.");
         alert.showAndWait();
+        //switchScene("/org/example/discerial/Nuntiato_view.fxml");
+
     }
 
     @FXML
@@ -247,23 +295,23 @@ public class TabulaController {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Vista no disponible");
         alert.setHeaderText(null);
-        alert.setContentText("Mantengase a la espera, estamos trabajando en la implementaci n de esta secci n.");
+        alert.setContentText("Mantengase a la espera, estamos trabajando en la implementacion de esta seccion.");
         alert.showAndWait();
         //switchScene("/org/example/discerial/Adaptationes_view.fxml");
     }
 
     @FXML
     private void FxmlAuxilium() throws IOException {
-
         MusicManager.getInstance().playRandomSoundEffect();
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Vista no disponible");
-        alert.setHeaderText(null);
-        alert.setContentText("Mantengase a la espera, estamos trabajando en la implementaci n de esta secci n.");
-        alert.showAndWait();
-        //switchScene("/org/example/discerial/Auxilium_view.fxml");
-    }
+        try {
+            MusicManager.getInstance().playRandomSoundEffect();
 
+            Parent pnl = FXMLLoader.load(getClass().getResource("/org/example/discerial/Panels/Auxilium_View.fxml"));
+            contenedorFXML.getChildren().setAll(pnl);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 
     public void BotoncerrarSesion() throws IOException {
@@ -272,8 +320,7 @@ public class TabulaController {
         MusicManager.getInstance().playRandomSoundEffect();
 
         if (u == null) {
-            new Alert(Alert.AlertType.INFORMATION, "No hay ningún usuario conectado.")
-                    .showAndWait();
+            new Alert(Alert.AlertType.INFORMATION, "No hay ningún usuario conectado.").showAndWait();
             switchScene("/org/example/discerial/MainApp_View.fxml");
             return;
         }
@@ -282,10 +329,7 @@ public class TabulaController {
         conf.setTitle("Cerrar sesión");
         conf.setHeaderText(null);
         conf.setContentText("¿Deseas cerrar sesión de la cuenta: " + u.getNombre() + "?");
-        conf.getButtonTypes().setAll(
-                new ButtonType("Sí", ButtonBar.ButtonData.OK_DONE),
-                new ButtonType("No", ButtonBar.ButtonData.CANCEL_CLOSE)
-        );
+        conf.getButtonTypes().setAll(new ButtonType("Sí", ButtonBar.ButtonData.OK_DONE), new ButtonType("No", ButtonBar.ButtonData.CANCEL_CLOSE));
 
         conf.showAndWait().ifPresent(response -> {
             if (response.getButtonData() == ButtonBar.ButtonData.OK_DONE) {

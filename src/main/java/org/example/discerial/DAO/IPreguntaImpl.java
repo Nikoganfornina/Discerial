@@ -6,7 +6,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
-import java.util.List;
+import java.util.*;
 
 /**
  * Implementación de la interfaz IPregunta para gestionar operaciones CRUD en la entidad Pregunta.
@@ -44,19 +44,27 @@ public class IPreguntaImpl implements IPregunta {
 
     public List<Pregunta> findNoRespondidasPorCategoria(int categoriaId, int userId) {
         IEstadoUsuarioImpl estadoUsuarioDAO = new IEstadoUsuarioImpl();
-        List<Integer> idsRespondidas = estadoUsuarioDAO.getIdsPreguntasRespondidas(userId);
+
+        // Obtener IDs de preguntas no respondidas
+        List<Integer> idsNoRespondidas = estadoUsuarioDAO.getIdsPreguntasNoRespondidas(userId);
+
+        // Obtener IDs de preguntas respondidas de forma errónea
+        List<Integer> idsErroneas = estadoUsuarioDAO.getIdsPreguntasRespondidasErroneamente(userId);
+
+        // Unir ambas listas, evitando duplicados
+        Set<Integer> idsAConsiderar = new HashSet<>();
+        idsAConsiderar.addAll(idsNoRespondidas);
+        idsAConsiderar.addAll(idsErroneas);
+
+        if (idsAConsiderar.isEmpty()) {
+            return List.of(); // No hay preguntas que cumplirían la condición
+        }
 
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            String hql = "FROM Pregunta p WHERE p.categoria.id = :categoriaId";
-            if (!idsRespondidas.isEmpty()) {
-                hql += " AND p.id NOT IN (:ids)";
-            }
-
-            var query = session.createQuery(hql, Pregunta.class);
+            String hql = "FROM Pregunta p WHERE p.categoria.id = :categoriaId AND p.id IN (:ids)";
+            Query<Pregunta> query = session.createQuery(hql, Pregunta.class);
             query.setParameter("categoriaId", categoriaId);
-            if (!idsRespondidas.isEmpty()) {
-                query.setParameter("ids", idsRespondidas);
-            }
+            query.setParameter("ids", idsAConsiderar);
 
             return query.getResultList();
         }
@@ -68,6 +76,7 @@ public class IPreguntaImpl implements IPregunta {
      * @param categoriaId Identificador de la categoría.
      * @return Lista de preguntas que pertenecen a la categoría indicada.
      */
+
     @Override
     public List<Pregunta> findByCategoria(int categoriaId) {
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -114,6 +123,86 @@ public class IPreguntaImpl implements IPregunta {
         }
         return pregunta;
     }
+
+
+    /**
+     * Obtiene el número de fallos por categoría para un usuario.
+     * @param userId Identificador del usuario.
+     * @return Mapa con el ID de la categoría como clave y el número de fallos como valor.
+     */
+    public Map<Integer, Long> getFallosPorCategoria(int userId) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            String hql = "SELECT eu.pregunta.categoria.id, COUNT(eu) " +
+                    "FROM EstadoUsuario eu " +
+                    "WHERE eu.usuario.id = :uid AND eu.acertada = false " +
+                    "GROUP BY eu.pregunta.categoria.id";
+
+            List<Object[]> resultados = session.createQuery(hql, Object[].class)
+                    .setParameter("uid", userId)
+                    .getResultList();
+
+            Map<Integer, Long> fallosPorCategoria = new HashMap<>();
+            for (Object[] fila : resultados) {
+                Integer categoriaId = (Integer) fila[0];
+                Long cantidadFallos = (Long) fila[1];
+                fallosPorCategoria.put(categoriaId, cantidadFallos);
+            }
+
+            return fallosPorCategoria;
+        }
+    }
+
+
+    @Override
+    public List<Pregunta> findPreguntasMixta(int userId) {
+        IEstadoUsuarioImpl estadoDAO = new IEstadoUsuarioImpl();
+        Map<String, int[]> stats = estadoDAO.getEstadisticasPorCategoria(userId);
+
+        List<Integer> categoriasValidas = new ArrayList<>();
+        ICategoriaImpl categoriaDAO = new ICategoriaImpl();
+
+        for (String nombreCategoria : stats.keySet()) {
+            int totalPreguntas = getTotalPreguntasCategoria(nombreCategoria);
+            int[] datos = stats.get(nombreCategoria);
+            int totalRespondidas = datos[0] + datos[1]; // Aciertos + Fallos
+
+            if (totalRespondidas < totalPreguntas) {
+                int idCategoria = categoriaDAO.getIdCategoriaPorNombre(nombreCategoria);
+                categoriasValidas.add(idCategoria);
+            }
+        }
+
+        if (categoriasValidas.isEmpty()) categoriasValidas = List.of(1, 2, 3, 4);
+
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            String hql = "FROM Pregunta p "
+                    + "WHERE p.categoria.id IN (1, 2, 3, 4) "
+                    + "AND p.id NOT IN ("
+                    + "  SELECT eu.pregunta.id FROM EstadoUsuario eu "
+                    + "  WHERE eu.usuario.id = :userId AND eu.acertada = true"
+                    + ") ORDER BY RAND()";
+
+            return session.createQuery(hql, Pregunta.class)
+                    .setParameter("userId", userId)
+                    .setMaxResults(15) // Trae más para seleccionar las mejores
+                    .getResultList();
+        }
+    }
+
+    @Override
+    public int getTotalPreguntasCategoria(String nombreCategoria) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Long count = session.createQuery(
+                            "SELECT COUNT(p) FROM Pregunta p WHERE p.categoria.nombre = :nombre", Long.class)
+                    .setParameter("nombre", nombreCategoria)
+                    .uniqueResult();
+
+            return count != null ? count.intValue() : 0;
+        }
+    }
+
+
+
 
     /**
      * Elimina una pregunta por su ID.

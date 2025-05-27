@@ -11,5 +11,8 @@ public interface ICategoria {
 
     List<Categoria> findByNombre(String nombre);
 
+    int getIdCategoriaPorNombre(String nombre);
+
     List<Categoria> findAll();
+     Categoria findById(int id);
 }

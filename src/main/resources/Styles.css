@@ -21,6 +21,15 @@
     -fx-border-color: transparent;
 }
 
+.fallo-label {
+    -fx-background-color: #4c5b3d;
+    -fx-text-fill: white;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-padding: 6 12 6 12; /* un poco más grande */
+}
+
+
 .boton-navegacion {
     -fx-background-color: #4CAF50;
     -fx-text-fill: white;

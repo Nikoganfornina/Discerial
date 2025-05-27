@@ -12,6 +12,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.example.discerial.DAO.IPreguntaImpl;
+import org.example.discerial.DAO.IusuariosImpl;
+import org.example.discerial.entities.Pregunta;
+import org.example.discerial.entities.Usuarios;
+
+import java.util.List;
 
 public class LoadingPanelController {
 
@@ -21,16 +27,15 @@ public class LoadingPanelController {
     @FXML private Label curiosidadLabel;
 
     private int categoria_id;
+    // Añade esta variable para guardar las preguntas falladas que recibiremos
+    private List<Pregunta> preguntasFalladas = null;
 
-    public void initData(int categoria_id) {
-        this.categoria_id = categoria_id;
-        mostrarImagenAleatoria();
-        mostrarCuriosidadAleatoria();
-        startLoadingProgress();
-    }
+    // Añade esta bandera para saber si es modo fallos o no
+    private boolean modoFallos = false;
+
 
     private void mostrarImagenAleatoria() {
-        int index = (int) (Math.random() * 22) + 1; // 1 a 22
+        int index = (int) (Math.random() * 35) + 1; // 1 a 22
         String ruta = "/Images/LoadingGame/loadingimage" + index + ".jpg";
 
         try {
@@ -227,7 +232,12 @@ public class LoadingPanelController {
             if (progress[0] >= 1.0) {
                 progressBar.setProgress(1.0);
                 timeline.stop();
-                openGame();
+
+                if (modoFallos && preguntasFalladas != null) {
+                    openGameModoFallos();
+                } else {
+                    openGame();
+                }
             } else {
                 progressBar.setProgress(progress[0]);
             }
@@ -243,15 +253,62 @@ public class LoadingPanelController {
             Parent root = loader.load();
 
             VistaPreguntaController controller = loader.getController();
-            controller.initData(categoria_id);
+
+            if (categoria_id == 5) { // Mixta
+                IPreguntaImpl preguntaDAO = new IPreguntaImpl();
+                Usuarios usuario = new IusuariosImpl().currentUser();
+                List<Pregunta> preguntas = preguntaDAO.findPreguntasMixta(usuario.getId());
+                controller.initData(preguntas); // Llama al nuevo método
+            } else {
+                controller.initData(categoria_id); // Método original
+            }
 
             Stage stage = (Stage) progressBar.getScene().getWindow();
             stage.getScene().setRoot(root);
-            stage.setTitle("Categoría " + categoria_id);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } //si
+    }
+
+    private void openGameModoFallos() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/discerial/VistaGameController.fxml"));
+            Parent root = loader.load();
+
+            VistaPreguntaController controller = loader.getController();
+            controller.initModoFallos(preguntasFalladas);  // aquí paso las preguntas falladas
+
+            Stage stage = (Stage) progressBar.getScene().getWindow();
+            stage.getScene().setRoot(root);
+            stage.setTitle("Repaso de fallos");
         } catch (Exception e) {
             System.err.println("Error al cargar VistaGameController:");
             e.printStackTrace();
         }
     }
+
+
+
+    public void initData(int categoria_id) {
+        this.categoria_id = categoria_id;
+        mostrarImagenAleatoria();
+        mostrarCuriosidadAleatoria();
+        startLoadingProgress();
+    }
+    public void initTestFallos(List<Pregunta> preguntasFalladas, int categoria_id) {
+        this.categoria_id = categoria_id;
+        this.preguntasFalladas = preguntasFalladas;
+        this.modoFallos = true;
+
+        mostrarImagenAleatoria();
+        mostrarCuriosidadAleatoria();
+        startLoadingProgress();
+    }
+
+
+
+
+
 
 }
