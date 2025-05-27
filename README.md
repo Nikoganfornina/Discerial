@@ -33,13 +33,25 @@
 - **JavaFX**: Para la creación de la interfaz gráfica de usuario (GUI).
 - **Hibernate**: Para la gestión de la base de datos y la persistencia de datos (preguntas, usuarios, puntajes, etc.).
 - **MySQL/MariaDB**: Base de datos utilizada para almacenar información de los usuarios, preguntas y estadísticas.
-- **JSP** (opcional si se utilizó para alguna parte específica de la aplicación): Para el manejo de datos dinámicos.
 
 ## 📋 **Requisitos del Proyecto**
 Para ejecutar este proyecto, es necesario tener instalados los siguientes programas:
 
-- **Java 8 o superior**.
+- **Java 21 o superior**.
 - **JavaFX**.
 - **Hibernate**.
 - **MySQL/MariaDB** o cualquier base de datos compatible con Hibernate.
 - **IDE** como **IntelliJ IDEA**, **NetBeans** o cualquier otro editor compatible con Java.
+
+## 📋 **Inicializar la base de datos**
+- A la hora de crear la base de datos y poder entrar en discerial, lo mas optimo para que funcionase de la manera correcta es a traves de esta query de Mysql
+
+```mysql
+DROP DATABASE IF EXISTS discerial;
+CREATE DATABASE IF NOT EXISTS discerial;
+USE discerial;
+SHOW VARIABLES LIKE 'max_connections';
+SET GLOBAL max_connections = 2500;
+
+
+
