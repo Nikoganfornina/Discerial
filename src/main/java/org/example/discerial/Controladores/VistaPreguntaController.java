@@ -11,7 +11,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -20,15 +19,12 @@ import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import org.example.discerial.DAO.IAjustesUsuario;
 import org.example.discerial.DAO.IEstadoUsuarioImpl;
 import org.example.discerial.DAO.IPreguntaImpl;
 import org.example.discerial.DAO.IusuariosImpl;
 import org.example.discerial.Util.MusicManager;
-import org.example.discerial.entities.AjustesUsuario;
 import org.example.discerial.entities.EstadoUsuario;
 import org.example.discerial.entities.Pregunta;
 import org.example.discerial.entities.Usuarios;
@@ -79,33 +75,20 @@ public class VistaPreguntaController {
 
     private final MusicManager musicManager = MusicManager.getInstance();
 
-    private IAjustesUsuario ajustesUsuarioDAO;
     private int tiempoPreguntaSegundos = 20; // Valor por defecto
 
-    // Añade setters para inyección de dependencias
-    public void setAjustesUsuarioDAO(IAjustesUsuario dao) throws Exception {
-        this.ajustesUsuarioDAO = dao;
-        cargarTiempoDesdeAjustes();
-    }
+
 
     @FXML
     public void initialize() throws Exception {
         usuarioActual = usuarioDao.currentUser();
-        cargarTiempoDesdeAjustes(); // <-- Nuevo método
         musicManager.playAmbientMusic();
         setupTimer();
         hboxNav.setVisible(false);
         mostrarCuentaAtras();
     }
 
-    private void cargarTiempoDesdeAjustes() throws Exception {
-        if (ajustesUsuarioDAO != null && usuarioActual != null) {
-            AjustesUsuario ajustes = ajustesUsuarioDAO.getAjustesByUsuarioId(usuarioActual.getId());
-            if (ajustes != null) {
-                tiempoPreguntaSegundos = ajustes.getTiempoPreguntas().getSegundos();
-            }
-        }
-    }
+
 
 
     public void mostrarCuentaAtras() {

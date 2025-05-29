@@ -53,7 +53,6 @@ public class TabulaController {
     @FXML
     private VBox chartContainer;
 
-    private final IAjustesUsuario ajustesDAO = new IAjustesUsuarioImpl(HibernateUtil.getSessionFactory());
 
     @FXML
     public void initialize() {
@@ -293,20 +292,22 @@ public class TabulaController {
 
     @FXML
     private void FxmlAdaptationes() {
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Vista no disponible");
+        alert.setHeaderText(null);
+        alert.setContentText("Mantengase a la espera, estamos trabajando en la implementacion de esta seccion.");
+        alert.showAndWait();
+        /*
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/discerial/Panels/Adaptationes_View.fxml"));
             Parent root = loader.load();
 
-            // 2. Obtener el controlador y pasarle el DAO
-            AdaptationesController controller = loader.getController();
-            controller.setAjustesDAO(ajustesDAO);
-            controller.setUsuarioActual(usuarioActual); // Asegúrate de tener el usuario logueado
-
-            // ... código para mostrar la ventana
-
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+         */
     }
 
     @FXML
