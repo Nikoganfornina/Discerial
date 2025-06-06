@@ -52,22 +52,44 @@ public class MusicManager {
     // MUSIC CONTROL
     // ───────────────────────
 
-    public void playAmbientMusic() {
-        if (!musicaActivada) return;
-        stopMusic(); // Solo para ambient y action
-        int songNumber = random.nextInt(12) + 1;
-        playMusic("/Songs/TestSong" + songNumber + ".mp3", true, player -> ambientPlayer = player);
-    }
-
     public void playActionMusic() {
         if (!musicaActivada) return;
-        stopMusic();
-        int songNumber = random.nextInt(8) + 1;
-        playMusic("/Songs/GameSongs/gameSong" + songNumber + ".mp3", true, player -> {
-            actionPlayer = player;
-            player.setVolume(0.7); // 70% de volumen, o podrías usar volume * 0.7
-        });
+        stopMusic(); // Detenemos cualquier otra música
+
+        int songNumber = random.nextInt(8) + 1; // Suponiendo que tienes 8 canciones en GameSongs
+        String path = "/Songs/GameSongs/gameSong" + songNumber + ".mp3";
+
+        System.out.println("Cargando canción de acción: " + path);
+        URL resource = getClass().getResource(path);
+        if (resource == null) {
+            System.out.println("⚠️ No se encontró la canción de acción: " + path);
+        } else {
+            System.out.println("✅ Reproduciendo acción: " + resource.toString());
+        }
+
+        playMusic(path, true, player -> actionPlayer = player);
     }
+
+
+
+    public void playAmbientMusic() {
+        if (!musicaActivada) return;
+        stopMusic();
+
+        int songNumber = random.nextInt(12) + 1;
+        String path = "/Songs/TestSong" + songNumber + ".mp3";
+
+        System.out.println("Cargando canción: " + path);
+        URL resource = getClass().getResource(path);
+        if (resource == null) {
+            System.out.println("⚠️ No se encontró la canción: " + path);
+        } else {
+            System.out.println("✅ Reproduciendo: " + resource.toString());
+        }
+
+        playMusic(path, true, player -> ambientPlayer = player);
+    }
+
 
     public void playRandomSoundEffect() {
         if (!efectosActivados) return;

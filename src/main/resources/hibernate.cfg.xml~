@@ -9,7 +9,7 @@
         <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
         <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/discerial?useSSL=false&amp;serverTimezone=UTC&amp;allowPublicKeyRetrieval=true</property>
         <property name="hibernate.connection.username">root</property>
-        <property name="hibernate.connection.password"></property>
+        <property name="hibernate.connection.password">root</property>
 
         <!-- Configuración del pool de conexiones HikariCP -->
         <property name="hibernate.hikari.maximumPoolSize">10</property>

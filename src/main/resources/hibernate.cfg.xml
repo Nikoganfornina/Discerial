@@ -38,7 +38,6 @@
         <mapping class="org.example.discerial.entities.Categoria"/>
         <mapping class="org.example.discerial.entities.Pregunta"/>
         <mapping class="org.example.discerial.entities.EstadoUsuario"/>
-        <mapping class="org.example.discerial.entities.AjustesUsuario"/>
 
     </session-factory>
 </hibernate-configuration>
