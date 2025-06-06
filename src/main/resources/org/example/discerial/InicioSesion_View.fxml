@@ -16,7 +16,7 @@
 
     <Label id="SubtituloStyle" layoutX="908.0" layoutY="473.0" prefHeight="54.0" prefWidth="346.0" text="Escribe tu contraseña" />
 
-    <TextField id="textFieldSesion" fx:id="SesionContrasena" layoutX="895.0" layoutY="533.0" prefHeight="61.0" prefWidth="371.0" promptText="******" />
+    <PasswordField id="textFieldSesion" fx:id="SesionContrasena" layoutX="895.0" layoutY="533.0" prefHeight="61.0" prefWidth="371.0" promptText="******" />
 
     <Button id="botonPersonalizado" onAction="#iniciarSesion" layoutX="926.0" layoutY="626.0" prefHeight="62.0" prefWidth="310.0" text="Ingresar" />
 

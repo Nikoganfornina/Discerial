@@ -22,10 +22,10 @@
         <TextField id="textFieldSesion" fx:id="RegistroCorreo" prefHeight="63.0" prefWidth="375.0" promptText="Discerial@ejemplo.com" />
 
         <Label id="SubtituloStyle" text="Escribe tu contraseña" />
-        <TextField id="textFieldSesion" fx:id="RegistroContrasena" prefHeight="63.0" prefWidth="375.0" promptText="******" />
+        <PasswordField id="textFieldSesion" fx:id="RegistroContrasena" prefHeight="63.0" prefWidth="375.0" promptText="******" />
 
         <Label id="SubtituloStyle" text="Confirma tu contraseña" />
-        <TextField id="textFieldSesion" fx:id="RegistroConfirmarContrasena" prefHeight="63.0" prefWidth="375.0" promptText="******" />
+        <PasswordField id="textFieldSesion" fx:id="RegistroConfirmarContrasena" prefHeight="63.0" prefWidth="375.0" promptText="******" />
     </VBox>
 
 
