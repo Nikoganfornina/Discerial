@@ -2,8 +2,6 @@ package org.example.discerial.Util;
 
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import org.example.discerial.DAO.IAjustesUsuario;
-import org.example.discerial.entities.AjustesUsuario;
 
 import java.net.URL;
 import java.util.Random;
@@ -23,7 +21,6 @@ public class MusicManager {
     private double volume = 1.0;
     private boolean muted = false;
 
-    private IAjustesUsuario ajustesUsuarioDAO;
     private int usuarioId;
 
     // Ajustes cacheados para evitar múltiples consultas en un solo método
@@ -31,10 +28,7 @@ public class MusicManager {
     private boolean efectosActivados = true;
     private double nivelMusica = 1.0;
 
-    public MusicManager(IAjustesUsuario ajustesUsuarioDAO, int usuarioId) {
-        this.ajustesUsuarioDAO = ajustesUsuarioDAO;
-        this.usuarioId = usuarioId;
-    }
+
 
     public MusicManager() {
 
@@ -47,60 +41,57 @@ public class MusicManager {
         return instance;
     }
 
-    public void setAjustesUsuarioDAO(IAjustesUsuario dao) {
-        this.ajustesUsuarioDAO = dao;
-    }
 
     public void setUsuarioId(int id) {
         this.usuarioId = id;
     }
 
-    private void cargarAjustes() {
-        try {
-            AjustesUsuario ajustes = ajustesUsuarioDAO.getAjustesByUsuarioId(usuarioId);
-            this.musicaActivada = ajustes.isMusicaActivada();
-            this.efectosActivados = ajustes.isEfectosActivados();
-            // Nivel música como volumen escalado 0.0-1.0
-            this.nivelMusica = ajustes.getNivelMusica() / 100.0; // Asumiendo que nivel_musica es % 0-100
-            this.volume = nivelMusica;
-            this.muted = !musicaActivada;  // si la música no está activada, mutear
-            applyVolume();
-        } catch (Exception e) {
-            System.err.println("Error cargando ajustes de música: " + e.getMessage());
-            // En caso de error, dejar configuración por defecto:
-            this.musicaActivada = true;
-            this.efectosActivados = true;
-            this.volume = 1.0;
-            this.muted = false;
-            applyVolume();
-        }
-    }
+
 
     // ───────────────────────
     // MUSIC CONTROL
     // ───────────────────────
 
-    public void playAmbientMusic() {
-        cargarAjustes();
+    public void playActionMusic() {
         if (!musicaActivada) return;
-        stopMusic(); // Solo para ambient y action
-        int songNumber = random.nextInt(12) + 1;
-        playMusic("/Songs/TestSong" + songNumber + ".mp3", true, player -> ambientPlayer = player);
+        stopMusic(); // Detenemos cualquier otra música
+
+        int songNumber = random.nextInt(8) + 1; // Suponiendo que tienes 8 canciones en GameSongs
+        String path = "/Songs/GameSongs/gameSong" + songNumber + ".mp3";
+
+        System.out.println("Cargando canción de acción: " + path);
+        URL resource = getClass().getResource(path);
+        if (resource == null) {
+            System.out.println("⚠️ No se encontró la canción de acción: " + path);
+        } else {
+            System.out.println("✅ Reproduciendo acción: " + resource.toString());
+        }
+
+        playMusic(path, true, player -> actionPlayer = player);
     }
 
-    public void playActionMusic() {
-        cargarAjustes();
+
+
+    public void playAmbientMusic() {
         if (!musicaActivada) return;
         stopMusic();
-        int songNumber = random.nextInt(8) + 1;
-        playMusic("/Songs/GameSongs/gameSong" + songNumber + ".mp3", true, player -> {
-            actionPlayer = player;
-            player.setVolume(0.7); // 70% de volumen, o podrías usar volume * 0.7
-        });
+
+        int songNumber = random.nextInt(12) + 1;
+        String path = "/Songs/TestSong" + songNumber + ".mp3";
+
+        System.out.println("Cargando canción: " + path);
+        URL resource = getClass().getResource(path);
+        if (resource == null) {
+            System.out.println("⚠️ No se encontró la canción: " + path);
+        } else {
+            System.out.println("✅ Reproduciendo: " + resource.toString());
+        }
+
+        playMusic(path, true, player -> ambientPlayer = player);
     }
 
+
     public void playRandomSoundEffect() {
-        cargarAjustes();
         if (!efectosActivados) return;
         stopEffect();
         try {
@@ -113,7 +104,6 @@ public class MusicManager {
     }
 
     public void playRandomSoundWin() {
-        cargarAjustes();
         if (!efectosActivados) return;
         stopEffect();
 
@@ -121,7 +111,6 @@ public class MusicManager {
         playMusic(soundFile, false, player -> effectPlayer = player);
     }
     public void playRandomSoundfail() {
-        cargarAjustes();
         if (!efectosActivados) return;
         stopEffect();
 

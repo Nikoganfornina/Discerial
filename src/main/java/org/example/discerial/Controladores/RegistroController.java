@@ -5,14 +5,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import org.example.discerial.DAO.IAjustesUsuario;
-import org.example.discerial.DAO.IAjustesUsuarioImpl;
 import org.example.discerial.DAO.IusuariosImpl;
-import org.example.discerial.Util.HibernateUtil;
 import org.example.discerial.Util.MusicManager;
-import org.example.discerial.Util.SessionTimer;
-import org.example.discerial.Util.TiempoPreguntas;
-import org.example.discerial.entities.AjustesUsuario;
 import org.example.discerial.entities.Usuarios;
 
 
@@ -24,7 +18,6 @@ public class RegistroController {
     MusicManager musicManager = MusicManager.getInstance();
     @FXML
     public  TextField RegistroNombre , RegistroNickname , RegistroCorreo , RegistroContrasena , RegistroConfirmarContrasena;
-    IAjustesUsuario ajustesDao = new IAjustesUsuarioImpl(HibernateUtil.getSessionFactory()); // Añade esto
 
     public void handleClick(MouseEvent event) throws Exception {
         musicManager.playRandomSoundEffect();
@@ -74,15 +67,7 @@ public class RegistroController {
 
             if (usuarioGuardado != null) {
                 musicManager.playRandomSoundEffect();
-                AjustesUsuario ajustes = new AjustesUsuario(
-                        true,   // efectosActivados
-                        true,   // musicaActivada
-                        100,    // nivelMusica (100% por defecto)
-                        TiempoPreguntas.SEGUNDOS_20,
-                        usuarioGuardado  // Usuario recién creado
-                );
 
-                ajustesDao.actualizarAjustes(ajustes); // Guardar ajustes
                 limpiarCampos();
                 switchScene("/org/example/discerial/InicioSesion_View.fxml");
             }

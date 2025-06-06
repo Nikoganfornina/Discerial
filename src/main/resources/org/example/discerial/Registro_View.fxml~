@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="fondoInicioSesion" prefHeight="1000.0" prefWidth="1500.0" stylesheets="@../../../Styles.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.discerial.Controladores.RegistroController">
+
+    <Label id="fotoRegistro" layoutX="20.0" layoutY="34.0" prefHeight="933.0" prefWidth="606.0" />
+
+    <VBox alignment="CENTER" layoutX="898.0" layoutY="88.0" spacing="20">
+        <Label id="TituloStyle" text="Crear Una Cuenta" />
+
+        <Label id="SubtituloStyleRegistro" alignment="CENTER" contentDisplay="CENTER" onMouseClicked="#handleClick" text="¿Ya te registraste? Inicia Sesión" />
+
+        <Label id="SubtituloStyle" text="Escribe tu Nombre" />
+        <TextField id="textFieldSesion" fx:id="RegistroNombre" prefHeight="63.0" prefWidth="375.0" promptText="Nombre Completo" />
+
+        <Label id="SubtituloStyle" text="Escribe tu Nickname" />
+        <TextField id="textFieldSesion" fx:id="RegistroNickname" prefHeight="63.0" prefWidth="375.0" promptText="Nickname" />
+
+        <Label id="SubtituloStyle" text="Escribe tu correo electrónico" />
+        <TextField id="textFieldSesion" fx:id="RegistroCorreo" prefHeight="63.0" prefWidth="375.0" promptText="Discerial@ejemplo.com" />
+
+        <Label id="SubtituloStyle" text="Escribe tu contraseña" />
+        <TextField id="textFieldSesion" fx:id="RegistroContrasena" prefHeight="63.0" prefWidth="375.0" promptText="******" />
+
+        <Label id="SubtituloStyle" text="Confirma tu contraseña" />
+        <TextField id="textFieldSesion" fx:id="RegistroConfirmarContrasena" prefHeight="63.0" prefWidth="375.0" promptText="******" />
+    </VBox>
+
+
+    <Button id="botonPersonalizado" layoutX="930.0" layoutY="868.0" prefHeight="62.0" prefWidth="310.0"  onAction="#AgregarUsuario"  text="Ingresar" />
+
+</AnchorPane>

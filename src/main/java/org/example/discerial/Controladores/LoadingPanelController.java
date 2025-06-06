@@ -12,7 +12,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import org.example.discerial.DAO.IAjustesUsuario;
 import org.example.discerial.DAO.IPreguntaImpl;
 import org.example.discerial.DAO.IusuariosImpl;
 import org.example.discerial.entities.Pregunta;
@@ -34,12 +33,8 @@ public class LoadingPanelController {
     // Añade esta bandera para saber si es modo fallos o no
     private boolean modoFallos = false;
 
-    private IAjustesUsuario ajustesUsuarioDAO;
 
     // Añade setter para inyección de dependencias
-    public void setAjustesUsuarioDAO(IAjustesUsuario dao) {
-        this.ajustesUsuarioDAO = dao;
-    }
     private void mostrarImagenAleatoria() {
         int index = (int) (Math.random() * 35) + 1; // 1 a 22
         String ruta = "/Images/LoadingGame/loadingimage" + index + ".jpg";
@@ -259,7 +254,6 @@ public class LoadingPanelController {
             Parent root = loader.load();
 
             VistaPreguntaController controller = loader.getController();
-            controller.setAjustesUsuarioDAO(ajustesUsuarioDAO); // Inyectar DAO aquí
 
             if (categoria_id == 5) { // Mixta
                 IPreguntaImpl preguntaDAO = new IPreguntaImpl();
@@ -284,7 +278,6 @@ public class LoadingPanelController {
             Parent root = loader.load();
 
             VistaPreguntaController controller = loader.getController();
-            controller.setAjustesUsuarioDAO(ajustesUsuarioDAO); // Inyectar DAO aquí
 
             controller.initModoFallos(preguntasFalladas);  // aquí paso las preguntas falladas
 

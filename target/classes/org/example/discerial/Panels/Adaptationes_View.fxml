@@ -36,6 +36,6 @@
     </ChoiceBox>
 
     <!-- Botón para aplicar ajustes -->
-    <Button fx:id="btnAplicar" layoutX="684.0" layoutY="768.0" prefHeight="50.0" prefWidth="300.0" styleClass="botonPersonalizado"  onAction="#handleAplicarCambios" text="Aplicar cambios" />
+    <Button fx:id="btnAplicar" layoutX="684.0" layoutY="768.0" prefHeight="50.0" prefWidth="300.0" styleClass="botonPersonalizado"  text="Aplicar cambios" />
 
 </AnchorPane>
