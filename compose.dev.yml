@@ -1,0 +1,47 @@
+# Entorno de desarrollo individual; cada equipo crea sus propios contenedores y volúmenes.
+name: discerial-web
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:${APP_PORT:-3100}:3100"
+    environment:
+      NODE_ENV: development
+      DATABASE_URL: "postgresql://${POSTGRES_USER:-discerial}:${POSTGRES_PASSWORD:?Ejecuta ./dev.sh para generar .env}@db:5432/${POSTGRES_DB:-discerial}"
+      NEXT_TELEMETRY_DISABLED: "1"
+      WATCHPACK_POLLING: "true"
+    volumes:
+      - .:/app
+      - node_modules:/app/node_modules
+      - next_cache:/app/.next
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: "${POSTGRES_USER:-discerial}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:?Ejecuta ./dev.sh para generar .env}"
+      POSTGRES_DB: "${POSTGRES_DB:-discerial}"
+    ports:
+      - "127.0.0.1:${DB_PORT:-5433}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./db/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-discerial} -d ${POSTGRES_DB:-discerial}"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+volumes:
+  postgres_data:
+  node_modules:
+  next_cache:

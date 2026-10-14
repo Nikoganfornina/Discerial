@@ -1,0 +1,27 @@
+name: Comprobaciones
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  web:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Obtener repositorio
+        uses: actions/checkout@v4
+      - name: Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - name: Instalar dependencias
+        run: npm ci
+      - name: Compilar Next.js
+        run: npm run build
+      - name: Comprobar TypeScript
+        run: npm run typecheck
+      - name: Comprobar ESLint
+        run: npm run lint

@@ -1,81 +1,97 @@
-# Discerial — Nueva etapa web
+# Discerial — Nueva versión web
 
-Punto de partida para reconstruir Discerial, el juego original de **NG & Bernet**. El código de JavaFX original permanece intacto en `../Discerial-legacy`.
+Discerial es el juego de preguntas de NG & Bernet, reconstruido para web con **Next.js 16, React 19 y TypeScript**, conservando los recursos originales y su estética grecorromana.
 
-## Estado (primera iteración)
+## ¿Qué hay ahora?
 
-- [x] Portada responsive, manteniendo fondos, logotipo y categorías originales.
-- [x] Vista previa de cinco disciplinas (sin partidas activas).
-- [x] Endpoint `GET /api/health` que comprueba conexión real a PostgreSQL.
-- [x] Dos contenedores Docker (aplicación web y base de datos PostgreSQL), almacenamiento persistente.
-- [ ] Registro/login, preguntas, sesiones, estadísticas y administrador.
-- [ ] Salas multijugador, WebSockets, cronómetro y validación de respuestas en servidor.
+- Portada responsive (escritorio y móvil).
+- Cinco categorías visuales y avisos de «próximamente».
+- PostgreSQL 17 en Docker con las cinco categorías sembradas inicialmente.
+- Endpoint `GET /api/health` para comprobar que la aplicación ve la base de datos.
+- **Todavía no hay login ni partidas.** El motor de juego se implementará por fases.
 
-**Atención:** esta es una demo de la portada. Ni el inicio de sesión ni el juego están implementados todavía.
+## Arranque rápido: un comando después de clonar
 
-## Tecnologías
+Requisitos: **Git** y **Docker** instalado e iniciado (Docker Desktop en Windows/Mac, o Docker Engine/Colima). No hace falta instalar Node ni PostgreSQL por separado.
 
-Next.js 16 + React 19 + TypeScript estricto. PostgreSQL 17. Una aplicación Node que sirve web y endpoints; en fases posteriores podrá servir conexiones de tiempo real sin añadir más contenedores inicialmente.
+```bash
+# Cuando exista el nuevo repositorio GitHub:
+git clone URL_DEL_REPOSITORIO
+cd Discerial-web
 
-## Desarrollo local
-
-```sh
-npm ci
-npm run dev
+# Mac, Linux o Windows usando WSL:
+./dev.sh
 ```
 
-Abre http://localhost:3100. La portada funciona sin PostgreSQL. `/api/health` devuelve 503 si la base de datos no está configurada o disponible.
+Abrir **http://localhost:3100**. El primer arranque descargará las imágenes de Docker, instalará dependencias y creará una BD local.
 
-## Iniciar los dos Docker
+El script crea automáticamente `.env` con una contraseña aleatoria si aún no existe. Nunca subas `.env` a Git.
 
-El archivo `.env` local ya se genera con una contraseña aleatoria; no se incluye en Git.
+**Para detener sin perder la base de datos:**
 
-Para configurarlo en un segundo ordenador o en el servidor:
-
-```sh
-cp .env.example .env
-# Sustituye POSTGRES_PASSWORD por una clave fuerte
-docker compose up -d --build
-docker compose ps
-curl http://127.0.0.1:3100/api/health
+```bash
+./stop.sh
 ```
 
-- Web: **http://127.0.0.1:3100** (mapeado al puerto 3000 del contenedor).
-- PostgreSQL: solo escucha en el servidor en **127.0.0.1:5433**, nunca en una interfaz pública.
-- Dentro de Docker, la app llega a la base de datos mediante el servicio `db:5432`.
-- Los datos persisten en el volumen nombrado `discerial_pgdata`, independiente de actualizaciones de los contenedores.
-- No ejecutar `docker compose down -v` salvo que quieras borrar la base de datos.
+Comandos útiles:
 
-Cloudflare Tunnel (ya instalado en el servidor o incorporado en el futuro) apuntaría a `http://127.0.0.1:3100`. No se ha creado ningún túnel ni se ha realizado ningún despliegue en esta iteración.
-
-## Dos desarrolladores, una base de datos
-
-**No expongas 5432/5433 directamente a Internet.** Para conectar aplicaciones en desarrollo al PostgreSQL remoto, abre un túnel SSH **en cada ordenador**:
-
-```sh
-ssh -N -L 5433:127.0.0.1:5433 usuario@servidor
+```bash
+docker compose -f compose.dev.yml ps
+docker compose -f compose.dev.yml logs -f app
+docker compose -f compose.dev.yml logs -f db
+curl http://localhost:3100/api/health
 ```
 
-En el ordenador del desarrollador, crea `.env.local` con:
+Al editar `src/`, Next.js actualiza automáticamente la web. Los dos contenedores son `app` y `db`. Los volúmenes Docker conservan la BD, las dependencias de Node y la caché de Next.js.
 
-```dotenv
-DATABASE_URL=postgresql://discerial:CONTRASENA_REMOTA@127.0.0.1:5433/discerial
+La BD escucha solo en **127.0.0.1:5433** de cada ordenador, y la web en **127.0.0.1:3100**. Para utilizar otros puertos, edita `APP_PORT` y `DB_PORT` en tu `.env`.
+
+**No ejecutes** `docker compose -f compose.dev.yml down -v` a menos que quieras perder tus datos locales.
+
+## Flujo Git de dos desarrolladores
+
+Cada persona clona el **mismo repositorio GitHub**, crea su propia rama y trabaja en local:
+
+```bash
+git switch main
+git pull --ff-only origin main
+git switch -c feat/login
+# editar archivos
+git add .
+git commit -m "feat: pantalla de login"
+git push -u origin feat/login
 ```
 
-Después ejecuta `npm run dev`. La aplicación desplegada no requiere túnel SSH para acceder a PostgreSQL porque usa la red interna de Docker.
+Desde GitHub se abre una **Pull Request** para revisar e incorporar los cambios a `main`. Después, ambos hacen `git pull` para actualizar su copia local.
 
-**Recomendación:** al avanzar, usar una única base de datos de desarrollo compartida y otra de producción, evitando modificar las partidas reales durante las pruebas. Gestionaremos el esquema con migraciones, no con cambios manuales.
+Se comparte **el código y los cambios del esquema** mediante Git, pero **no los datos reales de PostgreSQL**. Cada uno tiene su propio volumen local.
 
-## Próximos hitos propuestos
+En esta iteración se usa un script SQL de arranque (`db/init/001_categorias.sql`) que PostgreSQL solo ejecuta al crear una base de datos vacía. **No es un sistema de migraciones**: cuando empecemos el modelo de usuarios, preguntas y partidas, incorporaremos migraciones versionadas (por ejemplo, Drizzle).
 
-1. Modelado de datos y migraciones: usuarios, preguntas, categorías y partidas.
-2. Autenticación segura, perfiles y roles (administrador/jugador).
-3. Modo individual completo con motor de partidas compartido.
-4. Salas online y respuestas sincronizadas (WebSockets, lógica autoritativa en servidor).
-5. Ranking, recompensas, estadísticas y despliegue público con Cloudflare Tunnel.
+## Arquitectura
 
-## Git
+```
+localhost:3100 --> Next.js (React + TypeScript)
+                         |
+                         | DATABASE_URL (red interna)
+                         v
+                     PostgreSQL 17
+                       volumen local
+```
 
-Este es un **repositorio Git local independiente** del JavaFX. No tiene repositorio remoto todavía: crear un nuevo GitHub y conectar ambos ordenadores requiere elegir un nombre y la visibilidad del repositorio.
+- `compose.dev.yml`: 2 contenedores para trabajo local, con código montado y actualización automática.
+- `compose.yml`: plantilla de despliegue, todavía no desplegada ni probada como producción.
+- `Dockerfile`: etapas separadas para desarrollo y producción.
+- `dev.sh`: inicia el entorno local y genera `.env` con credenciales únicas.
+- `stop.sh`: detiene ambos contenedores sin borrar datos.
+- `db/init/`: SQL de primera inicialización de una base vacía.
+- `src/`: aplicación web.
+- `public/legacy/`: recursos originales usados en el rediseño.
 
-Los recursos gráficos copiados provienen del Discerial original. Antes de publicar públicamente, verifica que tenéis derechos para redistribuir cada música, vídeo e imagen del juego antiguo (aquí solo hay imágenes de la portada y categorías).
+**Importante:** la base de producción futura será independiente de las bases locales de desarrollo. No exponer PostgreSQL a Internet. Cloudflare Tunnel se configurará solo cuando queramos desplegar la web al servidor.
+
+## Estado del repositorio
+
+Esta carpeta es un repositorio Git local en la rama `main`. **No tiene remote de GitHub configurado aún.** Habrá que crear un nuevo repositorio de GitHub (idealmente privado al inicio) y hacer el primer `git push`. No reutilizar el Git del proyecto JavaFX sin decidirlo.
+
+Los assets originales se conservan para respetar la estética. Antes de una publicación pública, comprobar derechos sobre imágenes, vídeos y música del proyecto anterior.

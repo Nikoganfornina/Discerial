@@ -19,7 +19,7 @@ a{color:inherit;text-decoration:none}
 .wordmark{display:inline-flex;align-items:center;gap:10px;width:max-content;font-family:var(--serif);color:var(--olive-dark);font-size:27px;font-weight:600;letter-spacing:-.05em}
 .mark-icon{color:var(--gold);font-family:Georgia,serif;font-size:24px}
 .topbar-credit{color:#575d50;text-align:center;font-size:10px;letter-spacing:.27em;font-weight:700}
-.topbar-link{justify-self:end;display:flex;align-items:center;gap:24px;color:var(--olive-dark);text-transform:uppercase;font-size:11px;font-weight:750;letter-spacing:.18em;border-bottom:1px solid var(--olive-dark);padding-bottom:8px}
+.topbar-link{grid-column:3;justify-self:end;display:flex;align-items:center;gap:24px;color:var(--olive-dark);text-transform:uppercase;font-size:11px;font-weight:750;letter-spacing:.18em;border-bottom:1px solid var(--olive-dark);padding-bottom:8px}
 .topbar-link span{font-size:16px}
 .hero-content{position:relative;z-index:1;display:flex;flex:1;flex-direction:column;align-items:center;justify-content:center;width:min(670px,94%);margin:0 auto;padding:58px 0 80px;text-align:center;animation:enter .7s ease-out both}
 .hero-eyebrow{display:flex;align-items:center;justify-content:center;gap:15px;margin:0 0 23px;color:var(--olive);font-size:11px;font-weight:700;letter-spacing:.22em;white-space:nowrap}
@@ -74,7 +74,7 @@ a{color:inherit;text-decoration:none}
 .topbar{grid-template-columns:1fr auto;padding:23px 0;width:calc(100% - 35px)}
 .wordmark{font-size:23px}
 .topbar-credit{display:none}
-.topbar-link{font-size:10px}
+.topbar-link{grid-column:2;font-size:10px}
 .hero-content{padding:44px 14px 72px}
 .hero-eyebrow{font-size:9px;gap:10px;letter-spacing:.12em}
 .hero-eyebrow .line{width:18px}

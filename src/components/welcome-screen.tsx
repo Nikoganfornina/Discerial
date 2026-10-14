@@ -63,7 +63,6 @@ export function WelcomeScreen() {
             <span className="mark-icon" aria-hidden="true">◈</span>
             Discerial
           </a>
-          <span className="topbar-credit">NG & BERNET · ADYTO GROUP</span>
           <a className="topbar-link" href="#categorias">
             Explorar <span aria-hidden="true">↗</span>
           </a>
