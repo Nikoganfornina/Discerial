@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 
 const categories = [
   {
@@ -92,13 +93,10 @@ export function WelcomeScreen() {
           </p>
 
           <div className="hero-actions">
-            <button
-              type="button"
-              className="primary-action"
-              onClick={() => setPreview("Discerial")}
-            >
+            <Link href="/login" className="primary-action">
               Comenzar <span aria-hidden="true">↗</span>
-            </button>
+            </Link>
+
             <a className="secondary-action" href="#categorias">
               Descubrir el juego <span aria-hidden="true">↓</span>
             </a>

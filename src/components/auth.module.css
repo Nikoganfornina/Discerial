@@ -1,0 +1,102 @@
+
+.page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+
+  background: var(--cream) url("/legacy/pergamino.png") center / cover;
+}
+
+.card {
+  width: 100%;
+  max-width: 430px;
+  padding: 40px;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid #ddd7c9;
+  border-radius: 8px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.06);
+}
+
+.eyebrow {
+  color: var(--gold);
+  font-weight: bold;
+  letter-spacing: 3px;
+  font-size: 12px;
+}
+
+.card h1 {
+  font-family: var(--serif);
+  font-size: 36px;
+  color: var(--olive);
+  margin: 12px 0;
+}
+
+.card p {
+  color: #666;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.form label {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.form input {
+  padding: 13px 15px;
+  border: 1px solid #d1d1d1;
+  border-radius: 5px;
+  font-size: 14px;
+  background: white;
+  color: #333;
+}
+
+.form input:focus {
+  outline: 2px solid var(--olive);
+  outline-offset: 1px;
+}
+
+.button {
+  margin-top: 12px;
+  padding: 15px;
+  border: none;
+  border-radius: 5px;
+  background: var(--olive);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.button:hover {
+  background: var(--olive-dark);
+}
+
+.notice {
+  min-height: 20px;
+  margin-top: 16px;
+  font-size: 13px;
+}
+
+.footer {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 13px;
+}
+
+.footer a {
+  color: var(--olive);
+  font-weight: bold;
+}
+
+@media (max-width: 480px) {
+  .card {
+    padding: 25px;
+  }
+}
