@@ -1,10 +1,9 @@
 import Link from "next/link";
-import styles from "./main-screen.module.css";
+import styles from "@/styles/dashboard.module.css";
 
 export function MainScreen() {
   return (
     <div className={styles.page}>
-
       <header className={styles.header}>
         <Link href="/" className={styles.logo}>
           Discerial
@@ -17,16 +16,10 @@ export function MainScreen() {
       </header>
 
       <main className={styles.main}>
-        <section
-          className={styles.marblePanel}
-          aria-label="Panel principal de Discerial"
-        />
+        <section className={styles.marblePanel} aria-label="Panel principal de Discerial" />
       </main>
 
-      <footer className={styles.footer}>
-        SCIENTIA LOCUM NON OCCUPAT
-      </footer>
-
+      <footer className={styles.footer}>SCIENTIA LOCUM NON OCCUPAT</footer>
     </div>
   );
 }

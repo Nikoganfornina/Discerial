@@ -1,9 +1,8 @@
-
 "use client";
 
 import { useState, type FormEvent } from "react";
 import Link from "next/link";
-import styles from "./auth.module.css";
+import styles from "@/styles/auth.module.css";
 
 export function RegisterScreen() {
   const [message, setMessage] = useState("");
@@ -75,7 +74,9 @@ export function RegisterScreen() {
           </button>
         </form>
 
-        <p className={styles.notice} role="status">{message}</p>
+        <p className={styles.notice} role="status">
+          {message}
+        </p>
 
         <p className={styles.footer}>
           ¿Ya tienes cuenta? <Link href="/login">Inicia sesión</Link>

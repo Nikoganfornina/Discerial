@@ -1,9 +1,8 @@
-
 "use client";
 
 import { useState, type FormEvent } from "react";
 import Link from "next/link";
-import styles from "./auth.module.css";
+import styles from "@/styles/auth.module.css";
 
 export function LoginScreen() {
   const [message, setMessage] = useState("");
@@ -41,12 +40,14 @@ export function LoginScreen() {
             required
           />
 
-          <Link href="/main" className="primary-action">
-                        Iniciar Sesion <span aria-hidden="true">↗</span>
+          <Link href="/main" className={styles.primaryAction}>
+            Iniciar Sesion <span aria-hidden="true">↗</span>
           </Link>
         </form>
 
-        <p className={styles.notice} role="status">{message}</p>
+        <p className={styles.notice} role="status">
+          {message}
+        </p>
 
         <p className={styles.footer}>
           ¿No tienes cuenta? <Link href="/register">Regístrate</Link>
@@ -55,4 +56,3 @@ export function LoginScreen() {
     </main>
   );
 }
-

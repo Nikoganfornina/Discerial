@@ -19,6 +19,8 @@ jobs:
           cache: npm
       - name: Instalar dependencias
         run: npm ci
+      - name: Verificar formato del codigo
+        run: npm run format:check
       - name: Compilar Next.js
         run: npm run build
       - name: Comprobar TypeScript

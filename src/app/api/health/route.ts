@@ -14,10 +14,7 @@ const sql = databaseUrl
 
 export async function GET() {
   if (!sql) {
-    return NextResponse.json(
-      { status: "degraded", database: "not_configured" },
-      { status: 503 },
-    );
+    return NextResponse.json({ status: "degraded", database: "not_configured" }, { status: 503 });
   }
 
   try {
@@ -25,9 +22,6 @@ export async function GET() {
     return NextResponse.json({ status: "ok", database: "connected" });
   } catch {
     // Evitar filtrar host, usuario o credenciales en respuestas HTTP.
-    return NextResponse.json(
-      { status: "degraded", database: "unavailable" },
-      { status: 503 },
-    );
+    return NextResponse.json({ status: "degraded", database: "unavailable" }, { status: 503 });
   }
 }

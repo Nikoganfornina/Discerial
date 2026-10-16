@@ -6,13 +6,13 @@
 
 ## Tecnologías
 
-| Capa | Tecnología |
-| --- | --- |
-| Frontend | Next.js 16, React 19, TypeScript y CSS |
-| Servidor | Next.js (Node.js 22) y rutas API |
-| Base de datos | PostgreSQL 17 |
-| Desarrollo y contenedores | Docker Compose |
-| Control de versiones y CI | GitHub y GitHub Actions |
+| Capa                      | Tecnología                             |
+| ------------------------- | -------------------------------------- |
+| Frontend                  | Next.js 16, React 19, TypeScript y CSS |
+| Servidor                  | Next.js (Node.js 22) y rutas API       |
+| Base de datos             | PostgreSQL 17                          |
+| Desarrollo y contenedores | Docker Compose                         |
+| Control de versiones y CI | GitHub y GitHub Actions                |
 
 Los **dos contenedores** (`app` y `db`) funcionan independientemente en cada ordenador. **No es necesario instalar Node.js ni PostgreSQL** en el sistema anfitrión para desarrollar con Docker.
 
@@ -87,23 +87,32 @@ Las Pull Requests y los cambios a `main` lanzan automáticamente las comprobacio
 
 **Seguridad:** nunca subas `.env`, contraseñas, `node_modules` o datos privados. Estos archivos están excluidos del repositorio.
 
-## Estructura
+## Estructura del proyecto
 
-```text
-Discerial/
-├── src/app/                 # Páginas y rutas API (Next.js)
-├── src/components/          # Componentes React
-├── public/legacy/           # Imágenes del juego original
-├── db/init/                 # Datos iniciales para BD vacía
-├── .github/workflows/ci.yml # Comprobaciones automáticas
-├── compose.dev.yml          # Docker para desarrollo local
-├── compose.yml              # Plantilla para futuro despliegue
-├── Dockerfile               # Etapas de desarrollo y producción
-├── dev.sh                   # Arrancar todo en local
-└── stop.sh                  # Detener sin perder datos
+La arquitectura y las normas del código están documentadas en **[docs/ESTRUCTURA.md](docs/ESTRUCTURA.md)**. Resumen:
+
+- `src/app/`: rutas especiales de Next.js, incluida la API.
+- `src/features/`: pantallas y lógica agrupadas por funcionalidad.
+- `src/styles/`: variables, estilos globales mínimos y CSS Modules de cada pantalla.
+- `src/components/`: componentes reutilizables entre funcionalidades.
+- `src/lib/`, `src/types/`, `src/hooks/` y `src/constants/`: utilidades y contratos compartidos.
+- `db/`: esquema inicial y espacio reservado para migraciones.
+- `public/`: imágenes y recursos; `docs/`: documentación.
+
+Las carpetas vacías llevan `.gitkeep` para que Git las conserve. No representan funciones implementadas.
+
+**Formato automático:** `npm run format` corrige el estilo y `npm run format:check` lo verifica. Se incluyen `.editorconfig` y `.prettierrc.json` para trabajar de forma consistente desde IntelliJ.
+
+### Desarrollo de interfaz sin Docker (Windows, Mac y Linux)
+
+También puedes trabajar **solo en la interfaz**, sin PostgreSQL, teniendo Node.js instalado:
+
+```bash
+npm ci
+npm run dev
 ```
 
-El esquema inicial se crea mediante `db/init/001_categorias.sql`. PostgreSQL ejecuta ese script **solo la primera vez** que crea una base de datos vacía; no sustituye a un sistema de migraciones. Cuando agreguemos usuarios, preguntas y partidas usaremos migraciones versionadas.
+Abre `http://localhost:3100`. La API de salud de la base devolverá 503 si no hay PostgreSQL, pero las pantallas actuales se pueden diseñar y probar igualmente. La instalación con Docker descrita arriba sigue siendo la opción para el entorno completo.
 
 ## Próximos pasos
 

@@ -1,0 +1,10 @@
+/* Paleta y tipografias compartidas. Modificar aqui para cambiar el tema. */
+:root {
+  --olive: #4c5b3d;
+  --olive-dark: #303e2c;
+  --gold: #b69a52;
+  --cream: #f2eee4;
+  --charcoal: #302f29;
+  --serif: "Iowan Old Style", "Baskerville", "Palatino Linotype", Georgia, serif;
+  --sans: "Avenir Next", "Helvetica Neue", Arial, sans-serif;
+}
