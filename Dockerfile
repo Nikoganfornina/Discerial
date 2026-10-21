@@ -12,6 +12,7 @@ CMD ["npm", "run", "dev"]
 
 FROM node:22-alpine AS builder
 WORKDIR /app
+ENV BACKEND_INTERNAL_URL=http://backend:8080
 ENV NEXT_TELEMETRY_DISABLED=1
 COPY --from=dependencies /app/node_modules ./node_modules
 COPY . .

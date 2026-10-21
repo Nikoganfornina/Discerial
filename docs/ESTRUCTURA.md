@@ -14,7 +14,6 @@ No es necesario llenar todas las carpetas desde el primer día. Los archivos `.g
 Discerial/
 ├── src/
 │   ├── app/                      Rutas Next.js: page.tsx, layout.tsx y route.ts
-│   │   ├── api/health/route.ts    Endpoint de salud de servidor y BD
 │   │   ├── login/page.tsx         URL /login
 │   │   ├── register/page.tsx      URL /register
 │   │   ├── main/page.tsx          URL /main
@@ -44,15 +43,17 @@ Discerial/
 │   │   ├── ui/                   Componentes reutilizables (Button, Modal...)
 │   │   └── layout/               Header/Footer reutilizables entre pantallas
 │   ├── lib/
-│   │   ├── db/                   Cliente de BD y consultas compartidas del servidor
+│   │   ├── db/                   Reservada; PostgreSQL se consulta desde Java
 │   │   ├── validators/           Validadores transversales
 │   │   └── utils/                Utilidades genéricas sin lógica específica
 │   ├── hooks/                    Hooks reutilizables de React, si hacen falta
 │   ├── types/                    Tipos e interfaces compartidos
 │   └── constants/                Constantes transversales (no secretos)
-├── db/
-│   ├── init/                     Script inicial para crear una BD nueva
-│   └── migrations/               Reservado para futuras migraciones versionadas
+├── backend/                     Java 21 / Spring Boot
+│   ├── src/main/java/es/discerial/backend/    Controladores, entidades y repositorios
+│   ├── src/main/resources/db/migration/      Migraciones SQL Flyway
+│   ├── src/test/                Pruebas Java
+│   └── pom.xml                  Dependencias y comandos Maven
 ├── public/legacy/                Recursos gráficos originales (URLs /legacy/...)
 ├── docs/                         Documentación técnica, decisiones y planificación
 ├── .github/workflows/            Automatizaciones CI
@@ -77,7 +78,7 @@ export default function LoginPage() {
 }
 ```
 
-Los endpoints en `app/api/` recibirán las peticiones, validarán la entrada y delegarán en lógica de servidor; no deben contener CSS ni JSX. Ningún código de navegador debe acceder directamente a la base de datos.
+El backend Java recibe las peticiones HTTP en sus controladores Spring Boot. Next.js redirige las llamadas `/api/*` a Java desde `next.config.ts`. La base de datos y la lógica sensible del juego no pertenecen al frontend.
 
 ### `src/features/`: código propio de cada ámbito
 
@@ -107,9 +108,9 @@ Evitar estilos inline cuando se puedan expresar con clases. Agrupar estilos por 
 
 Solo material reutilizado **por más de una funcionalidad**. No usar estas carpetas para esconder componentes de una sola pantalla. Los accesos a BD y secretos van exclusivamente en código de servidor. No crear hooks, tipos o abstracciones hasta que exista un caso de uso concreto.
 
-### `db/`, `public/`, `docs/`
+### `backend/`, `public/`, `docs/`
 
-- `db/init/` tiene el SQL que PostgreSQL ejecuta **solo la primera vez** que crea el volumen. `db/migrations/` está reservado: **todavía no tenemos herramienta de migraciones**.
+- `backend/` contiene el proyecto Spring Boot. Su carpeta `health/` alberga controladores; `user/` contiene una entidad JPA y un repositorio. El SQL versionado se guarda en `backend/src/main/resources/db/migration/` y lo ejecuta Flyway. No usar `db/init/` para crear nuevas tablas.
 - `public/` guarda archivos estáticos accesibles desde el navegador: `public/legacy/logo.png` se usa como `/legacy/logo.png`. No guardar secretos.
 - `docs/` guarda arquitectura, decisiones, guías de colaboración y futuros diagramas.
 
@@ -130,8 +131,8 @@ Solo material reutilizado **por más de una funcionalidad**. No usar estas carpe
 ## Advertencias actuales
 
 - **Login/registro son demostraciones visuales**. El enlace de login conduce a `/main` sin validar una cuenta; no es autenticación real ni una zona protegida.
-- El `GET /api/health` responde con 503 cuando PostgreSQL no está configurado, lo que es normal si se trabaja sin Docker.
-- La base de datos inicial solo tiene categorías. No se ha añadido lógica de partidas, administración, usuarios ni recompensas en esta reorganización.
+- `GET /api/health` pasa de Next.js a Java. Si PostgreSQL está caído, Java responde 503; si Java no está arrancado, la web no podrá conectar con la API.
+- Flyway V1 crea `users`, pero **registro y login siguen sin implementar**. Spring Security, la verificación de correo y las sesiones se añadirán posteriormente. La tabla `categories` de bases locales antiguas se conserva sin utilizarse.
 
 ## Cómo trabajar y comprobar cambios
 
@@ -175,7 +176,7 @@ Después de mover una pantalla o una hoja CSS, probar `/`, `/login`, `/register`
 
 - **Pantalla nueva**: `src/app/ruta/page.tsx` y `src/features/<funcion>/components/pantalla.tsx`.
 - **Estilo de pantalla**: `src/styles/<funcion>.module.css`.
-- **Acción HTTP**: `src/app/api/<recurso>/route.ts` y lógica de servidor en su funcionalidad.
+- **Acción HTTP**: controlador REST y servicio en `backend/src/main/java/es/discerial/backend/`. No duplicar la API en Next.js.
 - **Componente compartido**: `src/components/ui/` o `src/components/layout/`, solo si realmente se reutiliza.
 - **Dato permanente**: diseñar el esquema y las migraciones antes de asumir que basta con un archivo SQL de inicio.
 
