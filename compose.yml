@@ -1,14 +1,32 @@
+# Plantilla de produccion: solo frontend expuesto en localhost.
+name: discerial-web
+
 services:
   app:
     build:
       context: .
       dockerfile: Dockerfile
+      target: production
     restart: unless-stopped
     ports:
       - "127.0.0.1:${APP_PORT:-3100}:3000"
     environment:
-      DATABASE_URL: "postgresql://${POSTGRES_USER:-discerial}:${POSTGRES_PASSWORD:?Define POSTGRES_PASSWORD in .env}@db:5432/${POSTGRES_DB:-discerial}"
+      BACKEND_INTERNAL_URL: http://backend:8080
       NODE_ENV: production
+    depends_on:
+      backend:
+        condition: service_started
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: production
+    restart: unless-stopped
+    environment:
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://db:5432/${POSTGRES_DB:-discerial}"
+      SPRING_DATASOURCE_USERNAME: "${POSTGRES_USER:-discerial}"
+      SPRING_DATASOURCE_PASSWORD: "${POSTGRES_PASSWORD:?Define POSTGRES_PASSWORD in .env}"
     depends_on:
       db:
         condition: service_healthy
@@ -22,8 +40,6 @@ services:
       POSTGRES_DB: "${POSTGRES_DB:-discerial}"
     volumes:
       - discerial_pgdata:/var/lib/postgresql/data
-    ports:
-      - "127.0.0.1:${DB_PORT:-5433}:5432"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-discerial} -d ${POSTGRES_DB:-discerial}"]
       interval: 5s

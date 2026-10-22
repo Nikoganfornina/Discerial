@@ -1,129 +1,111 @@
 # Discerial
 
-**Discerial** es un juego de preguntas sobre Historia, Filosofía, Literatura y Biología, desarrollado originalmente como proyecto de fin de grado por **NG & Bernet**. Esta es su **nueva versión web**, con una interfaz inspirada en el diseño grecorromano original.
-
-> **Estado actual:** portada responsive y previsualización de categorías. Todavía no se han implementado usuarios, preguntas jugables ni multijugador.
+Discerial es un juego web de preguntas basado en un proyecto JavaFX original de NG & Bernet. Se está reconstruyendo para la web: por ahora tenemos una portada, pantallas de acceso de demostración y la base técnica del nuevo backend Java.
 
 ## Tecnologías
 
-| Capa                      | Tecnología                             |
-| ------------------------- | -------------------------------------- |
-| Frontend                  | Next.js 16, React 19, TypeScript y CSS |
-| Servidor                  | Next.js (Node.js 22) y rutas API       |
-| Base de datos             | PostgreSQL 17                          |
-| Desarrollo y contenedores | Docker Compose                         |
-| Control de versiones y CI | GitHub y GitHub Actions                |
+| Parte                    | Tecnología                                    | Ubicación                                |
+| ------------------------ | --------------------------------------------- | ---------------------------------------- |
+| Interfaz                 | Next.js 16, React 19, TypeScript, CSS Modules | src/                                     |
+| Backend                  | Java 21, Spring Boot 4.1, Spring Web MVC      | backend/src/main/java/                   |
+| Persistencia             | Spring Data JPA, Hibernate, PostgreSQL 17     | backend/.../user/, Docker                |
+| Esquema de base de datos | Flyway                                        | backend/src/main/resources/db/migration/ |
+| Contenedores             | Docker Compose                                | compose.dev.yml                          |
 
-Los **dos contenedores** (`app` y `db`) funcionan independientemente en cada ordenador. **No es necesario instalar Node.js ni PostgreSQL** en el sistema anfitrión para desarrollar con Docker.
+**Aún no existe registro/login real ni partidas.** El formulario de registro actual es una maqueta; el backend Java no expone contraseñas ni permite dar de alta usuarios todavía. La autenticación se implementará con Spring Security en próximos pasos.
 
-## Inicio rápido (Mac, Linux o Windows con WSL)
+## Inicio rápido con Docker
 
-**Requisitos:** Git, Docker (Docker Desktop, Docker Engine o Colima) y el motor Docker en ejecución. En Windows se recomienda WSL2 con integración de Docker Desktop.
+Requisitos: Docker Desktop o Docker Engine iniciado, Git y un terminal Bash (macOS, Linux, Git Bash o WSL). No hace falta instalar Java ni Node.js en el sistema operativo.
 
-Clona el proyecto **una sola vez**:
+    git clone https://github.com/Nikoganfornina/Discerial.git
+    cd Discerial
+    ./dev.sh
 
-```bash
-git clone https://github.com/Nikoganfornina/Discerial.git
-cd Discerial
-```
+Se crean o reutilizan tres servicios: frontend, backend y base de datos.
 
-Cada vez que quieras trabajar, **un único comando**:
+- Web: http://localhost:3100
+- API Java: http://localhost:8080/api/health
+- API desde la web: http://localhost:3100/api/health
+- PostgreSQL local: 127.0.0.1:5433
 
-```bash
-./dev.sh
-```
+La primera ejecución puede tardar varios minutos porque Maven descarga dependencias Java. El script genera un archivo .env local con credenciales aleatorias si falta; ese archivo no se debe subir a Git.
 
-Abre **http://localhost:3100**.
+Para detener sin borrar tus datos:
 
-La primera ejecución tarda más: descarga y construye las imágenes, instala las dependencias dentro del contenedor, genera un archivo `.env` local con contraseña aleatoria y prepara PostgreSQL con las cinco categorías. El comando comprueba que la aplicación y la base de datos responden antes de indicar que están listas.
+    ./stop.sh
 
-Los cambios en `src/` se ven con **recarga automática**. No tienes que reconstruir Docker por cada modificación de React o CSS.
+No ejecutes docker compose down -v sin querer eliminar la base de datos. La información de PostgreSQL permanece en un volumen Docker.
 
-Para parar los contenedores **sin borrar tus datos**:
+## Trabajar sin Docker en los servidores de desarrollo
 
-```bash
-./stop.sh
-```
+Para modificar solo la interfaz (Node.js 22):
 
-### Comandos útiles
+    npm ci
+    npm run dev
 
-```bash
-# Estado de los contenedores
-docker compose -f compose.dev.yml ps
+El frontend funciona en http://localhost:3100. Las rutas /api/\* se redirigen a http://localhost:8080 de forma predeterminada; si Java no está arrancado, esas peticiones fallarán, aunque las pantallas se pueden diseñar.
 
-# Logs en tiempo real
-docker compose -f compose.dev.yml logs -f app
+Para ejecutar **Java fuera de Docker** necesitas JDK 21 y PostgreSQL disponible:
 
-# Estado de la base de datos
-curl http://localhost:3100/api/health
+    cd backend
+    ./mvnw spring-boot:run
 
-# Volver a construir si cambian dependencias
-./dev.sh
-```
+Configura SPRING_DATASOURCE_URL, SPRING_DATASOURCE_USERNAME y SPRING_DATASOURCE_PASSWORD para conectar con tu BD local. En Windows usa mvnw.cmd en lugar de ./mvnw.
 
-La aplicación escucha solo en **127.0.0.1:3100** y PostgreSQL en **127.0.0.1:5433**. Si esos puertos están ocupados, cambia `APP_PORT` y `DB_PORT` en tu `.env` local.
+La opción más sencilla para trabajar en Java sin instalar JDK 21 es usar ./dev.sh, y modificar las clases de backend/ con IntelliJ. El contenedor de desarrollo recompila al arrancar: para cambios en Java reinicia el servicio backend con docker compose -f compose.dev.yml restart backend.
 
-**No ejecutes `docker compose -f compose.dev.yml down -v`** salvo que quieras eliminar tu base de datos local. `./stop.sh` no borra volúmenes.
+## Cómo se comunica la aplicación
 
-## Trabajar entre dos desarrolladores
+1. El navegador solicita /api/health en el mismo origen que Next.js.
+2. Next.js reenvía /api/\* al servicio interno backend:8080.
+3. El controlador Spring Boot ejecuta SELECT 1 en PostgreSQL y devuelve JSON.
+4. Toda la lógica sensible futura (registro, puntuación, partidas, permisos) residirá en Java.
 
-Ambos clonamos **este mismo repositorio**, pero cada uno tiene su **propia base de datos local**. Los datos de prueba no se sincronizan mediante Git: lo que compartimos son el código y los scripts versionados que crean o actualizan la estructura.
+Next.js no debe gestionar contraseñas, permisos de jugadores ni accesos directos a PostgreSQL. Se ha retirado Better Auth porque la autenticación futura será Java/Spring Security.
 
-Para una funcionalidad nueva:
+## Organización
 
-```bash
-git switch main
-git pull --ff-only origin main
-git switch -c feat/nombre-funcionalidad
-# Realiza tus cambios...
-git add .
-git commit -m "feat: descripción del cambio"
-git push -u origin feat/nombre-funcionalidad
-```
+- src/app: rutas Next.js; src/features: pantallas por funcionalidad; src/styles: CSS centralizado y modular.
+- backend/src/main/java/es/discerial/backend/health: primer controlador REST.
+- backend/src/main/java/es/discerial/backend/user: entidad User, estado y repositorio JPA.
+- backend/src/main/resources/db/migration: migraciones Flyway versionadas (V1 conserva el esquema users que ya diseñaste).
+- backend/src/test: pruebas del backend.
+- docs/ESTRUCTURA.md: normas de arquitectura y organización.
+- backend/README.md: guía práctica para continuar programando Java.
 
-Después, abre una **Pull Request** hacia `main` para que el otro revise y apruebe los cambios. Antes de empezar otra tarea, actualiza tu `main` con `git pull --ff-only`.
+Flyway puede incorporar bases locales antiguas con tablas preexistentes sin eliminarlas, mediante baseline versión 0. **No cambies la migración V1 después de compartirla:** los cambios posteriores requieren V2, V3, etc. Si ya tienes un esquema de usuarios diferente, revísalo antes de aplicar migraciones.
 
-Las Pull Requests y los cambios a `main` lanzan automáticamente las comprobaciones de **compilación, TypeScript y ESLint** mediante GitHub Actions.
+## Comprobaciones
 
-**Seguridad:** nunca subas `.env`, contraseñas, `node_modules` o datos privados. Estos archivos están excluidos del repositorio.
+Frontend:
 
-## Estructura del proyecto
+    npm ci
+    npm run format:check
+    npm run typecheck
+    npm run lint
+    npm run build
 
-La arquitectura y las normas del código están documentadas en **[docs/ESTRUCTURA.md](docs/ESTRUCTURA.md)**. Resumen:
+Backend (Java 21):
 
-- `src/app/`: rutas especiales de Next.js, incluida la API.
-- `src/features/`: pantallas y lógica agrupadas por funcionalidad.
-- `src/styles/`: variables, estilos globales mínimos y CSS Modules de cada pantalla.
-- `src/components/`: componentes reutilizables entre funcionalidades.
-- `src/lib/`, `src/types/`, `src/hooks/` y `src/constants/`: utilidades y contratos compartidos.
-- `db/`: esquema inicial y espacio reservado para migraciones.
-- `public/`: imágenes y recursos; `docs/`: documentación.
+    cd backend
+    ./mvnw test
+    ./mvnw package
 
-Las carpetas vacías llevan `.gitkeep` para que Git las conserve. No representan funciones implementadas.
+Antes de fusionar, comprobar las cuatro rutas /, /login, /register y /main, y que /api/health responde desde Java.
 
-**Formato automático:** `npm run format` corrige el estilo y `npm run format:check` lo verifica. Se incluyen `.editorconfig` y `.prettierrc.json` para trabajar de forma consistente desde IntelliJ.
+## Trabajo en equipo y Git
 
-### Desarrollo de interfaz sin Docker (Windows, Mac y Linux)
+Cada desarrollador tiene su propia base de datos local. Versionamos las migraciones, no los datos ni las contraseñas.
 
-También puedes trabajar **solo en la interfaz**, sin PostgreSQL, teniendo Node.js instalado:
+    git switch main
+    git pull --ff-only origin main
+    git switch -c feat/nombre-cambio
+    # Programa y prueba
+    git add .
+    git commit -m "feat: describe el cambio en español"
+    git push -u origin feat/nombre-cambio
 
-```bash
-npm ci
-npm run dev
-```
+Abre una Pull Request hacia main. Nunca subas .env ni credenciales.
 
-Abre `http://localhost:3100`. La API de salud de la base devolverá 503 si no hay PostgreSQL, pero las pantallas actuales se pueden diseñar y probar igualmente. La instalación con Docker descrita arriba sigue siendo la opción para el entorno completo.
-
-## Próximos pasos
-
-- Modelo de datos, migraciones y panel de administración de preguntas.
-- Cuentas de usuario con contraseñas protegidas, roles y sesiones separadas.
-- Modo individual con puntuación, temporizador y estadísticas.
-- Partidas online por salas con lógica de juego validada en el servidor.
-- Despliegue al servidor privado con Docker y Cloudflare Tunnel, **más adelante**.
-
-## Origen
-
-Esta versión sustituye el contenido del antiguo repositorio JavaFX. Se conserva su **historial Git** para poder recuperar el proyecto original; los archivos que se muestran ahora en `main` pertenecen exclusivamente a la versión web. El desarrollo actual **se realiza solo en localhost**, sin servidores externos ni base de datos remota.
-
-Los gráficos reutilizados proceden del proyecto original. Antes de publicar el juego, verificar las licencias de todos los recursos visuales y de audio.
+El backend inicial y la plantilla de producción no constituyen un despliegue público listo para usuarios: faltan autenticación, autorización, validaciones y endurecimiento de seguridad. Los recursos visuales heredados requieren comprobar sus licencias antes de publicar el juego.
